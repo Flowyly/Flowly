@@ -4,6 +4,33 @@
   <title>Study Tracker</title>
   <style>
   body {
+
+    .container {
+  position: relative;
+  z-index: 1;
+}
+    .bg-shape {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+}
+
+.shape1 {
+  width: 300px;
+  height: 300px;
+  background: #93c5fd; /* light blue */
+  top: -50px;
+  left: -50px;
+}
+
+.shape2 {
+  width: 300px;
+  height: 300px;
+  background: #bfdbfe; /* softer blue */
+  bottom: -50px;
+  right: -50px;
+}
     margin: 0;
     font-family: Arial, sans-serif;
     background: linear-gradient(to right, #f8fafc, #e0f2fe);
@@ -85,9 +112,12 @@
 </head>
 <body>
 
+<div class="bg-shape shape1"></div>
+<div class="bg-shape shape2"></div>
+
 <!-- Navbar -->
 <div class="navbar">
-  <div class="logo">StudyTrack</div>
+  <div class="logo">Flowly</div>
 
   <div class="nav-links">
     <a href="login1.html">Login</a>
