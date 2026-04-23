@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Study Tracker</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1220;
+      color: white;
+      text-align: center;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 50px;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .nav-links a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-login {
+      background: transparent;
+      border: 1px solid white;
+      color: white;
+    }
+
+    .btn-register {
+      background: #3b82f6;
+      color: white;
+    }
+
+    /* Hero Section */
+    .hero {
+      margin-top: 100px;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .hero span {
+      color: #60a5fa;
+    }
+
+    .hero p {
+      max-width: 600px;
+      margin: 20px auto;
+      color: #cbd5e1;
+    }
+
+    .hero-buttons {
+      margin-top: 20px;
+    }
+
+    .hero-buttons button {
+      margin: 10px;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 100px;
+      padding: 20px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+  <div class="logo">StudyTrack</div>
+
+  <div class="nav-links">
+    <a href="login.html">Login</a>
+    <a href="register.html">
+      <button class="btn btn-register">Register</button>
+    </a>
+  </div>
+</div>
+
+<!-- Hero Section -->
+<div class="hero">
+  <h1>Stop guessing.<br><span>Start tracking.</span></h1>
+
+  <p>
+    A simple study tracker that helps you manage your coursework,
+    track your progress, and stay consistent with your learning.
+  </p>
+
+  <div class="hero-buttons">
+    <button class="btn btn-register" onclick="goRegister()">Get Started</button>
+    <button class="btn btn-login" onclick="goLogin()">Login</button>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  © 2026 StudyTrack. All rights reserved.
+</div>
+
+<script>
+function goLogin() {
+  window.location.href = "login.html";
+}
+
+function goRegister() {
+  window.location.href = "register.html";
+}
+</script>
+
+</body>
+</html>
