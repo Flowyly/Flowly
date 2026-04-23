@@ -2,25 +2,93 @@
 <html>
 <head>
   <title>Register</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f8fafc, #dbeafe, #e0f2fe);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      width: 320px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #1e293b;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    a {
+      text-decoration: none;
+      color: #3b82f6;
+    }
+
+    .links {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    #message {
+      margin-top: 10px;
+      font-size: 14px;
+      color: red;
+    }
+  </style>
 </head>
+
 <body>
 
-<h2>Register</h2>
+<div class="container">
+  <h2>Register</h2>
 
-<form onsubmit="registerUser(event)">
-  <label>Username:</label><br>
-  <input type="text" id="username" required><br><br>
+  <form onsubmit="registerUser(event)">
+    <input type="text" id="username" placeholder="Username" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
 
-  <label>Email:</label><br>
-  <input type="email" id="email" required><br><br>
+    <button type="submit">Register</button>
+  </form>
 
-  <label>Password:</label><br>
-  <input type="password" id="password" required><br><br>
+  <div class="links">
+    <p>Already have an account? <a href="login.html">Login</a></p>
+  </div>
 
-  <button type="submit">Register</button>
-</form>
-
-<p id="message"></p>
+  <p id="message"></p>
+</div>
 
 <script>
 function registerUser(event) {
@@ -30,13 +98,18 @@ function registerUser(event) {
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
 
-  // Simulate saving (later use database)
+  // Simulated check
   if (email === "test@gmail.com") {
+    document.getElementById("message").style.color = "red";
     document.getElementById("message").innerText = "Email already exists!";
   } else {
+    document.getElementById("message").style.color = "green";
     document.getElementById("message").innerText = "Registration successful!";
-    // redirect to login
-    window.location.href = "login.html";
+    
+    // Redirect to login
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 1000);
   }
 }
 </script>
