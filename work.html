@@ -36,18 +36,71 @@
 
     /* Navbar */
     .navbar {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      justify-content: space-between;
-      padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: rgb(116, 191, 218);
+    border-bottom: 1px solid #000000;
     }
 
-    .logo {
-      font-weight: bold;
-      font-size: 20px;
-      color: #1e293b;
-    }
+     .nav-left {
+
+    
+    display: flex;
+    align-items: center;
+    gap: 250px;
+  }
+
+   .nav-item {
+    cursor: pointer;
+    font-weight: 500;
+    color: #000000;
+  }
+
+  .nav-item.active {
+    color: #000000;
+    font-weight: bold;
+    cursor: crosshair;
+    
+    
+  }
+
+     /* PROFILE */
+  .profile {
+    position: relative;
+    cursor: pointer;
+    font-size: 15px;
+  }
+
+  .profile-menu {
+    font: arial;
+    border: 2px solid black;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 35px;
+    background: rgb(255, 255, 255);
+    border-radius: 19px;
+    width: 180px;
+    box-shadow: 7px 13px 15px -1px rgba(0, 0, 0, 0.15);
+    
+  }
+
+  .profile-menu div {
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 19px;
+  }
+
+  .profile-menu div:hover {
+    background: #6fa0d0;
+    color: white;
+    border-radius: 19px;
+    border: 2px solid black;
+  }
+
+    
 
     .logout-btn {
       background: #ef4444;
@@ -122,15 +175,28 @@
 
 <body>
 
-<!-- Background -->
-<div class="bg-shape shape1"></div>
-<div class="bg-shape shape2"></div>
-
-<!-- Navbar -->
+<!-- NAVBAR -->
 <div class="navbar">
-  <div class="logo">StudyTrack</div>
-  <button class="logout-btn" onclick="logout()">Logout</button>
+  <div class="nav-left">
+    <div class="nav-item " onclick="goHome()">Home</div>
+    <div class="nav-item.active" onclick="goWork()">Work</div>
+    <div class="nav-item" onclick="goCalender()">Calendar</div>
+  </div>
+
+  <div class="profile" onclick="toggleMenu()">
+    👤
+    <div class="profile-menu" id="menu">
+      <div onclick="goProfile()">Profile</div>
+      <div onclick="goSettings()">Settings</div>
+      <div onclick="logout()">Logout</div>
+    </div>
+  </div>
 </div>
+
+
+
+
+
 
 <!-- Main -->
 <div class="container">
@@ -165,6 +231,35 @@
 </div>
 
 <script>
+
+function toggleMenu() {
+  let menu = document.getElementById("menu");
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+function goHome() {
+  window.location.href = "dashboard.html";
+}
+
+function goWork() {
+  window.location.href = "work.html";
+}
+
+function goCalender() {
+  window.location.href = "calendar.html";
+}
+
+function goProfile() {
+  window.location.href = "profile.html";
+}
+
+function goSettings() {
+  window.location.href = "settings.html";
+}
+
+function logout() {
+  window.location.href = "login1.html";
+}
 let coursework = [];
 
 function addCoursework() {

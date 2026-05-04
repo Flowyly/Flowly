@@ -134,7 +134,7 @@
   <div class="nav-left">
     <div class="nav-item active" onclick="goHome()">Home</div>
     <div class="nav-item" onclick="goWork()">Work</div>
-    <div class="nav-item">Calendar</div>
+    <div class="nav-item" onclick="goCalender()">Calendar</div>
   </div>
 
   <div class="profile" onclick="toggleMenu()">
@@ -189,6 +189,10 @@ function goHome() {
 
 function goWork() {
   window.location.href = "work.html";
+}
+
+function goCalender() {
+  window.location.href = "calendar.html";
 }
 
 function goProfile() {
