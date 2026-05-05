@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flowly Dashboard</title>
+
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>📋 Flowly Dashboard</h1>
+
+    <!-- ==============================
+         ADD MEMBER FORM
+    ============================== -->
+    <div class="card">
+        <h2>Add Group Member</h2>
+
+        <input type="text" id="name" placeholder="Name">
+        <input type="email" id="email" placeholder="Email">
+        <input type="text" id="role" placeholder="Role">
+        <input type="number" id="coursework_id" placeholder="Coursework ID">
+
+        <button onclick="addMember()">Add Member</button>
+    </div>
+
+    <!-- ==============================
+         UPCOMING TASKS
+    ============================== -->
+    <div class="card">
+        <h2>📅 Upcoming Coursework</h2>
+        <button onclick="loadUpcoming()">Refresh</button>
+        <ul id="taskList"></ul>
+    </div>
+
+    <!-- ==============================
+         ALERTS
+    ============================== -->
+    <div class="card">
+        <h2>⚠️ Urgent Tasks</h2>
+        <button onclick="loadAlerts()">Check Alerts</button>
+        <ul id="alertList"></ul>
+    </div>
+
+    <!-- Link JS -->
+    <script src="script.js"></script>
+
+</body>
+</html>
