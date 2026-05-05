@@ -41,20 +41,20 @@
 
                     {% for item in coursework_list %}
                     <tr>
-                        <td>{{ item[0] }}</td>
-                        <td>{{ item[1] }}</td>
-                        <td>{{ item[2] }}</td>
-                        <td>{{ item[3] }}</td>
-                        <td>{{ item[4] }}</td>
-    <a href="/edit/{{ item[0] }}">
-        <button type="button">Edit</button>
-    </a>
-
-    <a href="/delete/{{ item[0] }}" onclick="return confirm('Are you sure?')">
-        <button type="button">Delete</button>
-    </a>
-</td>
-                    </tr>
+    <td>{{ item[0] }}</td>
+    <td>{{ item[1] }}</td>
+    <td>{{ item[2] }}</td>
+    <td>{{ item[3] }}</td>
+    <td>{{ item[4] }}</td>
+    <td>
+        <a href="/edit/{{ item[0] }}">
+            <button>Edit</button>
+        </a>
+        <a href="/delete/{{ item[0] }}" onclick="return confirm('Are you sure?')">
+            <button>Delete</button>
+        </a>
+    </td>
+</tr>
                     {% endfor %}
                 </table>
             {% else %}
