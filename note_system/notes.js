@@ -1,10 +1,11 @@
-// ===== NAVIGATION =====
+// ===== FRIEND NAVIGATION CODE =====
 
 function toggleMenu() {
     let menu = document.getElementById("menu");
 
     if (menu) {
-        menu.style.display = menu.style.display === "block" ? "none" : "block";
+        menu.style.display =
+            menu.style.display === "block" ? "none" : "block";
     }
 }
 
@@ -68,8 +69,10 @@ function saveNotes() {
 
 function copyNotes() {
     const notesArea = document.getElementById("notesArea");
+
     notesArea.select();
     document.execCommand("copy");
+
     alert("Notes copied.");
 }
 
@@ -78,104 +81,60 @@ function clearNotes() {
 }
 
 
-// ===== PROGRESS TRACKING =====
+// ===== SUBJECT SWITCHING + PROGRESS TRACKING =====
 
-const subjectCards =
-document.querySelectorAll(".subject-card");
+const subjectCards = document.querySelectorAll(".subject-card");
 
 const topicLists = {
-    software:
-    document.getElementById("softwareTopics"),
-
-    ethical:
-    document.getElementById("ethicalTopics"),
-
-    system:
-    document.getElementById("systemTopics")
+    software: document.getElementById("softwareTopics"),
+    ethical: document.getElementById("ethicalTopics"),
+    system: document.getElementById("systemTopics")
 };
 
-
-// SUBJECT SWITCHING
-
 subjectCards.forEach(card => {
-
     card.addEventListener("click", () => {
 
-        // remove active highlight
         subjectCards.forEach(c => {
             c.classList.remove("active-subject");
         });
 
-        // add active highlight
         card.classList.add("active-subject");
 
-        // hide all topic lists
-        Object.values(topicLists)
-        .forEach(list => {
+        Object.values(topicLists).forEach(list => {
             list.classList.add("hidden");
         });
 
-        // show selected topic list
-        const selectedSubject =
-        card.dataset.subject;
+        const selectedSubject = card.dataset.subject;
 
-        topicLists[selectedSubject]
-        .classList.remove("hidden");
+        topicLists[selectedSubject].classList.remove("hidden");
 
-        // update percentage
         updateProgress();
-
     });
-
 });
 
-
-// UPDATE PROGRESS
+document.querySelectorAll(".topic-check").forEach(box => {
+    box.addEventListener("change", updateProgress);
+});
 
 function updateProgress() {
+    const activeSubject = document.querySelector(".active-subject").dataset.subject;
 
-    const activeSubject =
-    document.querySelector(".active-subject")
-    .dataset.subject;
-
-    const checkboxes =
-    document.querySelectorAll(
+    const checkboxes = document.querySelectorAll(
         `.topic-check[data-subject="${activeSubject}"]`
     );
 
-    const checked =
-    document.querySelectorAll(
+    const checked = document.querySelectorAll(
         `.topic-check[data-subject="${activeSubject}"]:checked`
     );
 
     const total = checkboxes.length;
 
     const percentage =
-    total === 0
-    ? 0
-    : Math.round((checked.length / total) * 100);
+        total === 0 ? 0 : Math.round((checked.length / total) * 100);
 
-    document.getElementById("currentProgress")
-    .textContent = percentage + "%";
-
-    document.getElementById(`${activeSubject}-percent`)
-    .textContent = percentage + "%";
-
-    document.getElementById(`${activeSubject}-bar`)
-    .style.width = percentage + "%";
+    document.getElementById("currentProgress").textContent = percentage + "%";
+    document.getElementById(`${activeSubject}-percent`).textContent = percentage + "%";
+    document.getElementById(`${activeSubject}-bar`).style.width = percentage + "%";
 }
-
-
-// CHECKBOX LISTENERS
-
-document.querySelectorAll(".topic-check")
-.forEach(box => {
-
-    box.addEventListener("change", updateProgress);
-
-});
-
-
-// INITIALIZE
 
 updateProgress();
