@@ -299,7 +299,8 @@
   <div class="nav-left">
     <div class="nav-item" onclick="goHome()">Home</div>
     <div class="nav-item" onclick="goWork()">Work</div>
-    <div class="nav-item active">Quiz Generator</div>
+    <div class="nav-item active" onclick="goGenerateQuiz()">Quiz</div>
+    <div class="nav-item" onclick="goGenerateNotes()">Notes</div>
   </div>
 
   <div class="profile" onclick="toggleMenu()">
@@ -398,6 +399,11 @@ function goHome() {
 function goWork() {
   window.location.href = "work.html";
 }
+
+function goGenerateNotes() {
+  window.location.href = "generatenotes.html";
+}
+
 
 function showFileName() {
   let file = document.getElementById("pdfFile").files[0];
