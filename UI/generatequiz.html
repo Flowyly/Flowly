@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz Generator</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:#8fb9d6
+      
+    }
+
+    /* NAVBAR */
+   /* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 16px 30px;
+  margin: 20px;
+
+  background: rgba(255, 255, 255, 0.75);
+
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.08);
+
+  transition: all 0.3s ease;
+}
+
+/* LEFT NAV */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* NAV ITEMS */
+.nav-item {
+  position: relative;
+
+  padding: 10px 18px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  font-weight: 500;
+  color: #334155;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.2s ease;
+}
+
+/* HOVER EFFECT */
+.nav-item:hover {
+  background: #dbeafe;
+
+  color: #2563eb;
+
+  transform: translateY(-2px);
+}
+
+/* ACTIVE PAGE */
+.nav-item.active {
+  background: linear-gradient(
+    135deg,
+    #3b82f6,
+    #2563eb
+  );
+
+  color: white;
+
+  font-weight: 600;
+
+  box-shadow:
+    0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+/* PROFILE */
+.profile {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eff6ff;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    transform 0.2s ease;
+}
+
+.profile:hover {
+  background: #dbeafe;
+
+  transform: scale(1.08);
+}
+
+    .profile {
+    position: relative;
+    cursor: pointer;
+    font-size: 15px;
+  }
+
+  .profile-menu {
+    font: arial;
+    border: 2px solid black;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 35px;
+    background: rgb(255, 255, 255);
+    border-radius: 19px;
+    width: 180px;
+    box-shadow: 7px 13px 15px -1px rgba(0, 0, 0, 0.15);
+    
+  }
+
+  .profile-menu div {
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 19px;
+  }
+
+  .profile-menu div:hover {
+    background: #6fa0d0;
+    color: white;
+    border-radius: 19px;
+    border: 2px solid black;
+  }
+
+    /* MAIN */
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    .title-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .title-section h1 {
+      margin-bottom: 10px;
+      font-size: 38px;
+    }
+
+    .title-section p {
+      color: #64748b;
+    }
+
+    /* UPLOAD CARD */
+    .upload-card {
+      background: white;
+      border: 2px dashed #93c5fd;
+      border-radius: 15px;
+      padding: 50px 30px;
+      text-align: center;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+
+    .upload-icon {
+      font-size: 60px;
+      margin-bottom: 15px;
+    }
+
+    .upload-card h2 {
+      margin-bottom: 10px;
+    }
+
+    .upload-card p {
+      color: #64748b;
+      margin-bottom: 20px;
+    }
+
+    input[type="file"] {
+      margin-top: 10px;
+    }
+
+    /* OPTIONS */
+    .options {
+      display: flex;
+      gap: 20px;
+      margin-top: 25px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    select,
+    input[type="number"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+    }
+
+    /* BUTTON */
+    .generate-btn {
+      margin-top: 25px;
+      padding: 12px 30px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .generate-btn:hover {
+      background: #2563eb;
+    }
+
+    /* FILE NAME */
+    #fileName {
+      margin-top: 15px;
+      color: #475569;
+      font-size: 14px;
+    }
+
+    /* LOADING */
+    .loading {
+      display: none;
+      text-align: center;
+      margin-top: 30px;
+      font-size: 18px;
+      color: #3b82f6;
+      font-weight: bold;
+    }
+
+    /* QUIZ SECTION */
+    .quiz-section {
+      margin-top: 50px;
+    }
+
+    .question-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+
+    .question-card h3 {
+      margin-top: 0;
+    }
+
+    .option {
+      margin-top: 10px;
+      padding: 10px;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+
+    /* SUBMIT */
+    .submit-btn {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 30px;
+      background: #10b981;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .submit-btn:hover {
+      background: #059669;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+  <div class="nav-left">
+    <div class="nav-item" onclick="goHome()">Home</div>
+    <div class="nav-item" onclick="goWork()">Work</div>
+    <div class="nav-item active" onclick="goGenerateQuiz()">Quiz</div>
+    <div class="nav-item" onclick="goGenerateNotes()">Notes</div>
+  </div>
+
+  <div class="profile" onclick="toggleMenu()">
+    👤
+    <div class="profile-menu" id="menu">
+      <div onclick="goProfile()">Profile</div>
+      <div onclick="goSettings()">Settings</div>
+      <div onclick="logout()">Logout</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+  <!-- TITLE -->
+  <div class="title-section">
+    <h1>Generate Quiz from PDF</h1>
+    <p>Upload lecture notes or coursework materials to generate quizzes automatically.</p>
+  </div>
+
+  <!-- UPLOAD -->
+  <div class="upload-card">
+
+    <div class="upload-icon">📄</div>
+
+    <h2>Upload PDF File</h2>
+
+    <p>Drag & drop your PDF or choose file</p>
+
+    <input type="file" id="pdfFile" accept=".pdf" onchange="showFileName()">
+
+    <div id="fileName"></div>
+
+    <!-- OPTIONS -->
+    <div class="options">
+
+      <select id="difficulty">
+        <option>Easy</option>
+        <option>Medium</option>
+        <option>Hard</option>
+      </select>
+
+      <input type="number" id="questionCount" placeholder="Questions" min="1" max="20">
+
+    </div>
+
+    <button class="generate-btn" onclick="generateQuiz()">
+      Generate Quiz
+    </button>
+
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading" id="loading">
+    ⏳ Generating quiz...
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-section" id="quizSection"></div>
+
+  <!-- SUBMIT -->
+  <div style="text-align:center;">
+    <button class="submit-btn" id="submitBtn">
+      Submit Quiz
+    </button>
+  </div>
+
+</div>
+
+<script>
+
+
+function toggleMenu() {
+  let menu = document.getElementById("menu");
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+function goProfile() {
+  window.location.href = "profile.html";
+}
+
+function goSettings() {
+  window.location.href = "settings.html";
+}
+
+function logout() {
+  window.location.href = "login1.html";
+}
+
+function goHome() {
+  window.location.href = "dashboard.html";
+}
+
+function goWork() {
+  window.location.href = "work.html";
+}
+
+function goGenerateNotes() {
+  window.location.href = "generatenotes.html";
+}
+
+
+function showFileName() {
+  let file = document.getElementById("pdfFile").files[0];
+
+  if (file) {
+    document.getElementById("fileName").innerText =
+      "Uploaded: " + file.name;
+  }
+}
+
+function generateQuiz() {
+
+  let file = document.getElementById("pdfFile").files[0];
+
+  if (!file) {
+    alert("Please upload a PDF file");
+    return;
+  }
+
+  // SHOW LOADING
+  document.getElementById("loading").style.display = "block";
+
+  // SIMULATE BACKEND RESPONSE
+  setTimeout(() => {
+
+    document.getElementById("loading").style.display = "none";
+
+    displayQuiz();
+
+  }, 2500);
+}
+
+function displayQuiz() {
+
+  let quizSection = document.getElementById("quizSection");
+
+  quizSection.innerHTML = `
+
+    <div class="question-card">
+      <h3>Question 1</h3>
+
+      <p>What is Newton's First Law?</p>
+
+      <div class="option">
+        <input type="radio" name="q1"> Law of Motion
+      </div>
+
+      <div class="option">
+        <input type="radio" name="q1"> Gravity
+      </div>
+
+      <div class="option">
+        <input type="radio" name="q1"> Energy
+      </div>
+
+      <div class="option">
+        <input type="radio" name="q1"> Momentum
+      </div>
+    </div>
+
+    <div class="question-card">
+      <h3>Question 2</h3>
+
+      <p>What planet is known as the Red Planet?</p>
+
+      <div class="option">
+        <input type="radio" name="q2"> Earth
+      </div>
+
+      <div class="option">
+        <input type="radio" name="q2"> Mars
+      </div>
+
+      <div class="option">
+        <input type="radio" name="q2"> Venus
+      </div>
+
+      <div class="option">
+        <input type="radio" name="q2"> Jupiter
+      </div>
+    </div>
+
+  `;
+
+  document.getElementById("submitBtn").style.display = "inline-block";
+}
+
+</script>
+
+</body>
+</html>

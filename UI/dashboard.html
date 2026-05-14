@@ -7,37 +7,111 @@
    body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #f8fafc, #e0f2fe);
+    background:#8fb9d6
   }
 
   /* NAVBAR */
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background: rgb(116, 191, 218);
-    border-bottom: 1px solid #000000;
-  }
+ /* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-  .nav-left {
-    display: flex;
-    align-items: center;
-    gap: 250px;
-  }
+  padding: 16px 30px;
+  margin: 20px;
 
-  .nav-item {
-    cursor: pointer;
-    font-weight: 500;
-    color: #000000;
-  }
+  background: rgba(255, 255, 255, 0.75);
 
-  .nav-item.active {
-    color: #000000;
-    font-weight: bold;
-    
-    
-  }
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.08);
+
+  transition: all 0.3s ease;
+}
+
+/* LEFT NAV */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* NAV ITEMS */
+.nav-item {
+  position: relative;
+
+  padding: 10px 18px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  font-weight: 500;
+  color: #334155;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.2s ease;
+}
+
+/* HOVER EFFECT */
+.nav-item:hover {
+  background: #dbeafe;
+
+  color: #2563eb;
+
+  transform: translateY(-2px);
+}
+
+/* ACTIVE PAGE */
+.nav-item.active {
+  background: linear-gradient(
+    135deg,
+    #3b82f6,
+    #2563eb
+  );
+
+  color: white;
+
+  font-weight: 600;
+
+  box-shadow:
+    0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+/* PROFILE */
+.profile {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eff6ff;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    transform 0.2s ease;
+}
+
+.profile:hover {
+  background: #dbeafe;
+
+  transform: scale(1.08);
+}
 
   /* PROFILE */
   .profile {
@@ -163,7 +237,8 @@
   <div class="nav-left">
     <div class="nav-item active" onclick="goHome()">Home</div>
     <div class="nav-item" onclick="goWork()">Work</div>
-    <div class="nav-item" onclick="goCalender()">Calendar</div>
+    <div class="nav-item" onclick="goGenerateQuiz()"> Quiz</div>
+    <div class="nav-item" onclick="goGenerateNotes()">Notes</div>
   </div>
 
   <div class="profile" onclick="toggleMenu()">
@@ -192,7 +267,7 @@
     <div class="card">
       <h3>Reminder</h3>
       <div class="item">Assignment due tomorrow</div>
-      <div class="item">Meeting at 5 PM</div>
+      <div class="item">Meeting at  PM</div>
     </div>
 
     <!-- CALENDAR -->
@@ -236,8 +311,12 @@ function goWork() {
   window.location.href = "work.html";
 }
 
-function goCalender() {
-  window.location.href = "calendar.html";
+function goGenerateQuiz() {
+  window.location.href = "generatequiz.html";
+}
+
+function goGenerateNotes() {
+  window.location.href = "generatenotes.html";
 }
 
 function goProfile() {
