@@ -1,426 +1,827 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Study Notes</title>
 
-    <link rel="stylesheet" href="notes.css">
+    <!-- ========================= -->
+    <!-- CSS SECTION -->
+    <!-- ========================= -->
+
+    <style>
+
+        /* ========================= */
+        /* GLOBAL STYLING */
+        /* ========================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #eef9ff, #dff3ff);
+            color: #1f2937;
+        }
+
+        /* ========================= */
+        /* NAVBAR */
+        /* ========================= */
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 16px 30px;
+            margin: 20px;
+
+            background: rgba(255, 255, 255, 0.75);
+
+            backdrop-filter: blur(12px);
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .nav-item {
+            padding: 10px 18px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-weight: 500;
+            color: #334155;
+        }
+
+        .nav-item:hover {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(
+                135deg,
+                #3b82f6,
+                #2563eb
+            );
+
+            color: white;
+
+            font-weight: 600;
+        }
+
+        /* ========================= */
+        /* PROFILE MENU */
+        /* ========================= */
+
+        .profile {
+            position: relative;
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #eff6ff;
+
+            cursor: pointer;
+        }
+
+        .profile-menu {
+            display: none;
+
+            position: absolute;
+
+            right: 0;
+            top: 50px;
+
+            background: white;
+
+            border-radius: 16px;
+
+            width: 180px;
+
+            box-shadow:
+                0 8px 18px rgba(0,0,0,0.15);
+
+            overflow: hidden;
+        }
+
+        .profile-menu div {
+            padding: 12px;
+            cursor: pointer;
+        }
+
+        .profile-menu div:hover {
+            background: #dbeafe;
+        }
+
+        /* ========================= */
+        /* PAGE LAYOUT */
+        /* ========================= */
+
+        .page-container {
+            width: 86%;
+            margin: auto;
+        }
+
+        .hero {
+            text-align: center;
+            margin: 50px 0 35px;
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #6b7280;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        /* ========================= */
+        /* CARDS */
+        /* ========================= */
+
+        .sidebar,
+        .upload-card,
+        .notes-card,
+        .progress-card {
+
+            background-color: white;
+
+            border: 2px dashed #a7d8ff;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 8px 22px rgba(0,0,0,0.04);
+
+            padding: 28px;
+        }
+
+        /* ========================= */
+        /* SUBJECT SIDEBAR */
+        /* ========================= */
+
+        .sidebar h2 {
+            margin-bottom: 18px;
+        }
+
+        .subject-card {
+
+            background-color: #f8fbff;
+
+            border: 1px solid #e5f3ff;
+
+            border-radius: 14px;
+
+            padding: 16px;
+
+            margin-bottom: 16px;
+
+            transition: 0.3s ease;
+
+            cursor: pointer;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .active-subject {
+            background-color: #eaf8ff;
+            border-color: #72bfd7;
+        }
+
+        .subject-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .subject-top span {
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .mini-progress {
+            width: 100%;
+            height: 8px;
+
+            background-color: #dbeafe;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .mini-bar {
+            height: 100%;
+            width: 0%;
+
+            background-color: #3b82f6;
+
+            transition: width 0.3s ease;
+        }
+
+        /* ========================= */
+        /* MAIN PANEL */
+        /* ========================= */
+
+        .main-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            border: 1px solid #cfe8f7;
+
+            background-color: #f8fbff;
+        }
+
+        /* ========================= */
+        /* UPLOAD SECTION */
+        /* ========================= */
+
+        .upload-box {
+
+            border: 2px dashed #9ddcff;
+
+            background-color: #f8fcff;
+
+            border-radius: 16px;
+
+            padding: 40px;
+
+            text-align: center;
+
+            margin-bottom: 24px;
+        }
+
+        .upload-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .upload-box p {
+            color: #6b7280;
+            margin: 12px 0 20px;
+        }
+
+        .upload-box input {
+            display: none;
+        }
+
+        /* ========================= */
+        /* BUTTONS */
+        /* ========================= */
+
+        .upload-btn,
+        .generate-btn {
+
+            background-color: #2563eb;
+
+            color: white;
+
+            border: none;
+
+            padding: 13px 22px;
+
+            border-radius: 10px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .upload-btn:hover,
+        .generate-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* ========================= */
+        /* NOTES */
+        /* ========================= */
+
+        .notes-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 18px;
+        }
+
+        .status-badge {
+
+            background-color: #e0f2fe;
+
+            color: #2563eb;
+
+            padding: 7px 14px;
+
+            border-radius: 20px;
+
+            font-weight: bold;
+        }
+
+        textarea {
+
+            width: 100%;
+
+            height: 340px;
+
+            resize: vertical;
+
+            padding: 18px;
+
+            border-radius: 14px;
+
+            border: none;
+
+            background-color: white;
+
+            box-shadow:
+                inset 0 0 0 1px #dbeafe;
+        }
+
+        .button-row {
+
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 18px;
+        }
+
+        .button-row button {
+
+            background-color: #e0f2fe;
+
+            color: #2563eb;
+
+            border: none;
+
+            padding: 11px 18px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+        }
+
+        /* ========================= */
+        /* CHECKLIST */
+        /* ========================= */
+
+        .topic-list {
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 14px;
+        }
+
+        .topic-list label {
+
+            background-color: #f8fbff;
+
+            border: 1px solid #e5f3ff;
+
+            border-radius: 12px;
+
+            padding: 14px;
+
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+    </style>
+
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
+<!-- ========================= -->
+<!-- HTML SECTION -->
+<!-- ========================= -->
 
-    <div class="navbar">
+<div class="navbar">
 
-        <div class="nav-left">
-            <div class="nav-item" onclick="goHome()">Home</div>
+    <div class="nav-left">
 
-            <div class="nav-item" onclick="goWork()">Work</div>
-
-            <div class="nav-item" onclick="goGenerateQuiz()">Quiz</div>
-
-            <div class="nav-item active" onclick="goGenerateNotes()">
-                Notes
-            </div>
+        <div class="nav-item">
+            Home
         </div>
 
-        <div class="profile" onclick="toggleMenu()">
+        <div class="nav-item">
+            Work
+        </div>
 
-            👤
+        <div class="nav-item">
+            Quiz
+        </div>
 
-            <div class="profile-menu" id="menu">
+        <div class="nav-item active">
+            Notes
+        </div>
 
-                <div onclick="goProfile()">Profile</div>
+    </div>
 
-                <div onclick="goSettings()">Settings</div>
+    <div class="profile" onclick="toggleMenu()">
 
-                <div onclick="logout()">Logout</div>
+        👤
 
-            </div>
+        <div class="profile-menu" id="menu">
+
+            <div>Profile</div>
+
+            <div>Settings</div>
+
+            <div>Logout</div>
 
         </div>
 
     </div>
 
+</div>
 
-    <main class="page-container">
+<main class="page-container">
 
-        <!-- HERO -->
+    <section class="hero">
 
-        <section class="hero">
+        <h1>AI Study Notes</h1>
 
-            <h1>AI Study Notes</h1>
+        <p>
+            Upload study material, generate editable notes,
+            and track revision progress.
+        </p>
 
-            <p>
-                Upload study material, generate editable notes,
-                and track revision progress.
-            </p>
+    </section>
 
-        </section>
+    <section class="workspace">
 
+        <!-- SIDEBAR -->
 
-        <section class="workspace">
+        <aside class="sidebar">
 
-            <!-- SIDEBAR -->
+            <h2>Subjects</h2>
 
-            <aside class="sidebar">
+            <div class="subject-card active-subject"
+                 data-subject="software">
 
-                <h2>Subjects</h2>
+                <div class="subject-top">
 
-                <!-- SOFTWARE -->
+                    <h3>Software Security</h3>
 
-                <div class="subject-card active-subject"
-                     data-subject="software">
-
-                    <div class="subject-top">
-
-                        <h3>Software Security</h3>
-
-                        <span id="software-percent">0%</span>
-
-                    </div>
-
-                    <div class="mini-progress">
-                        <div class="mini-bar"
-                             id="software-bar"></div>
-                    </div>
-
-                    <p>Secure Coding Notes</p>
+                    <span id="software-percent">0%</span>
 
                 </div>
 
+                <div class="mini-progress">
+                    <div class="mini-bar"
+                         id="software-bar"></div>
+                </div>
 
-                <!-- ETHICAL -->
+            </div>
 
-                <div class="subject-card"
-                     data-subject="ethical">
+            <div class="subject-card"
+                 data-subject="ethical">
 
-                    <div class="subject-top">
+                <div class="subject-top">
 
-                        <h3>Ethical Hacking</h3>
+                    <h3>Ethical Hacking</h3>
 
-                        <span id="ethical-percent">0%</span>
-
-                    </div>
-
-                    <div class="mini-progress">
-                        <div class="mini-bar"
-                             id="ethical-bar"></div>
-                    </div>
-
-                    <p>Reconnaissance Notes</p>
+                    <span id="ethical-percent">0%</span>
 
                 </div>
 
-
-                <!-- SYSTEM -->
-
-                <div class="subject-card"
-                     data-subject="system">
-
-                    <div class="subject-top">
-
-                        <h3>System Security</h3>
-
-                        <span id="system-percent">0%</span>
-
-                    </div>
-
-                    <div class="mini-progress">
-                        <div class="mini-bar"
-                             id="system-bar"></div>
-                    </div>
-
-                    <p>Access Control Notes</p>
-
+                <div class="mini-progress">
+                    <div class="mini-bar"
+                         id="ethical-bar"></div>
                 </div>
 
-            </aside>
+            </div>
 
+        </aside>
 
-            <!-- MAIN PANEL -->
+        <!-- MAIN CONTENT -->
 
-            <section class="main-panel">
+        <section class="main-panel">
 
-                <!-- GENERATE NOTES -->
+            <div class="upload-card">
 
-                <div class="upload-card">
+                <h2>Generate Notes</h2>
 
-                    <h2>Generate Notes</h2>
+                <div class="upload-box">
 
-                    <div class="form-grid">
+                    <div class="upload-icon">📄</div>
 
-                        <div class="form-group">
+                    <h3>Upload Study Material</h3>
 
-                            <label>Subject</label>
+                    <p>Choose your files below</p>
 
-                            <select>
+                    <input type="file" id="fileUpload">
 
-                                <option>Software Security</option>
+                    <button class="upload-btn"
+                            onclick="document.getElementById('fileUpload').click()">
 
-                                <option>Ethical Hacking</option>
-
-                                <option>System Security</option>
-
-                            </select>
-
-                        </div>
-
-                        <div class="form-group">
-
-                            <label>Chapter / Topic</label>
-
-                            <input type="text"
-                                   placeholder="Example: Secure Coding">
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- UPLOAD BOX -->
-
-                    <div class="upload-box">
-
-                        <div class="upload-icon">📄</div>
-
-                        <h3>Upload Study Material</h3>
-
-                        <p>
-                            Drag & drop your files here or click below
-                        </p>
-
-                        <input type="file" id="fileUpload">
-
-                        <button class="upload-btn"
-                                onclick="document.getElementById('fileUpload').click()">
-
-                            Choose File
-
-                        </button>
-
-                    </div>
-
-
-                    <!-- GENERATE BUTTON -->
-
-                    <button class="generate-btn"
-                            onclick="generateDummyNotes()">
-
-                        Generate Notes
+                        Choose File
 
                     </button>
 
                 </div>
 
+                <button class="generate-btn"
+                        onclick="generateDummyNotes()">
 
-                <!-- REVISION CHECKLIST -->
+                    Generate Notes
 
-                <div class="progress-card">
+                </button>
 
-                    <div class="notes-header">
+            </div>
 
-                        <div>
+            <div class="progress-card">
 
-                            <h2>Revision Checklist</h2>
+                <div class="notes-header">
 
-                            <p>
-                                Tick the topics you have revised.
-                                Progress updates automatically.
-                            </p>
+                    <h2>Revision Progress</h2>
 
-                        </div>
+                    <span class="status-badge"
+                          id="currentProgress">
 
-                        <span class="status-badge"
-                              id="currentProgress">
+                        0%
 
-                            0%
-
-                        </span>
-
-                    </div>
-
-
-                    <!-- SOFTWARE TOPICS -->
-
-                    <div class="topic-list"
-                         id="softwareTopics">
-
-                        <label>
-                            <input type="checkbox"
-                                   class="topic-check"
-                                   data-subject="software">
-
-                            Secure Coding
-                        </label>
-
-                        <label>
-                            <input type="checkbox"
-                                   class="topic-check"
-                                   data-subject="software">
-
-                            Input Validation
-                        </label>
-
-                        <label>
-                            <input type="checkbox"
-                                   class="topic-check"
-                                   data-subject="software">
-
-                            Authentication
-                        </label>
-
-                        <label>
-                            <input type="checkbox"
-                                   class="topic-check"
-                                   data-subject="software">
-
-                            SQL Injection
-                        </label>
-
-                    </div>
-
-
-                    <!-- ETHICAL TOPICS -->
-
-                    <div class="topic-list hidden"
-                         id="ethicalTopics">
-
-                        <label>
-                            <input type="checkbox"
-                                   class="topic-check"
-                                   data-subject="ethical">
-
-                            Reconnaissance
-                        </label>
-
-                        <label>
-                            <input type="checkbox"
-                                   class="topic-check"
-                                   data-subject="ethical">
-
-                            Nmap Scanning
-                        </label>
-
-                        <label>
-                            <input type="checkbox"
-                                   class="topic-check"
-                                   data-subject="ethical">
-
-                            DNS Enumeration
-                        </label>
-
-                        <label>
-                            <input type="checkbox"
-                                   class="topic-check"
-                                   data-subject="ethical">
-
-                            Vulnerability Scanning
-                        </label>
-
-                    </div>
-
-
-                    <!-- SYSTEM TOPICS -->
-
-                    <div class="topic-list hidden"
-                         id="systemTopics">
-
-                        <label>
-                            <input type="checkbox"
-                                   class="topic-check"
-                                   data-subject="system">
-
-                            Access Control
-                        </label>
-
-                        <label>
-                            <input type="checkbox"
-                                   class="topic-check"
-                                   data-subject="system">
-
-                            User Permissions
-                        </label>
-
-                        <label>
-                            <input type="checkbox"
-                                   class="topic-check"
-                                   data-subject="system">
-
-                            System Hardening
-                        </label>
-
-                        <label>
-                            <input type="checkbox"
-                                   class="topic-check"
-                                   data-subject="system">
-
-                            Backup and Recovery
-                        </label>
-
-                    </div>
+                    </span>
 
                 </div>
 
+                <div class="topic-list"
+                     id="softwareTopics">
 
-                <!-- NOTES AREA -->
+                    <label>
+                        <input type="checkbox"
+                               class="topic-check"
+                               data-subject="software">
 
-                <div class="notes-card">
+                        Secure Coding
+                    </label>
 
-                    <div class="notes-header">
+                    <label>
+                        <input type="checkbox"
+                               class="topic-check"
+                               data-subject="software">
 
-                        <div>
-
-                            <h2>Generated Notes</h2>
-
-                            <p>
-                                You can edit the notes before saving.
-                            </p>
-
-                        </div>
-
-                        <span class="status-badge">
-                            Editable
-                        </span>
-
-                    </div>
-
-                    <textarea id="notesArea"
-                              placeholder="AI-generated notes will appear here..."></textarea>
-
-                    <div class="button-row">
-
-                        <button onclick="saveNotes()">
-                            Save Notes
-                        </button>
-
-                        <button onclick="copyNotes()">
-                            Copy
-                        </button>
-
-                        <button class="clear-btn"
-                                onclick="clearNotes()">
-
-                            Clear
-
-                        </button>
-
-                    </div>
+                        SQL Injection
+                    </label>
 
                 </div>
 
-            </section>
+                <div class="topic-list hidden"
+                     id="ethicalTopics">
+
+                    <label>
+                        <input type="checkbox"
+                               class="topic-check"
+                               data-subject="ethical">
+
+                        Reconnaissance
+                    </label>
+
+                    <label>
+                        <input type="checkbox"
+                               class="topic-check"
+                               data-subject="ethical">
+
+                        Nmap
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="notes-card">
+
+                <div class="notes-header">
+
+                    <h2>Generated Notes</h2>
+
+                    <span class="status-badge">
+                        Editable
+                    </span>
+
+                </div>
+
+                <textarea id="notesArea"
+                          placeholder="Generated notes here..."></textarea>
+
+            </div>
 
         </section>
 
-    </main>
+    </section>
 
+</main>
 
-    <!-- JS -->
+<!-- ========================= -->
+<!-- JAVASCRIPT SECTION -->
+<!-- ========================= -->
 
-    <script src="notes.js"></script>
+<script>
+
+    // =========================
+    // PROFILE MENU
+    // =========================
+
+    function toggleMenu() {
+
+        let menu =
+        document.getElementById("menu");
+
+        if (menu) {
+
+            menu.style.display =
+            menu.style.display === "block"
+            ? "none"
+            : "block";
+        }
+    }
+
+    // =========================
+    // GENERATE NOTES
+    // =========================
+
+    function generateDummyNotes() {
+
+        const notesArea =
+        document.getElementById("notesArea");
+
+        notesArea.value =
+        `Generated AI Notes
+
+1. Secure coding protects systems.
+
+2. SQL Injection happens through unsafe input.
+
+3. Input validation is important.`;
+    }
+
+    // =========================
+    // SUBJECT SWITCHING
+    // =========================
+
+    const subjectCards =
+    document.querySelectorAll(".subject-card");
+
+    const topicLists = {
+
+        software:
+        document.getElementById("softwareTopics"),
+
+        ethical:
+        document.getElementById("ethicalTopics")
+    };
+
+    subjectCards.forEach(card => {
+
+        card.addEventListener("click", () => {
+
+            subjectCards.forEach(c => {
+
+                c.classList.remove("active-subject");
+            });
+
+            card.classList.add("active-subject");
+
+            Object.values(topicLists)
+            .forEach(list => {
+
+                list.classList.add("hidden");
+            });
+
+            const selectedSubject =
+            card.dataset.subject;
+
+            topicLists[selectedSubject]
+            .classList.remove("hidden");
+
+            updateProgress();
+        });
+    });
+
+    // =========================
+    // PROGRESS TRACKING
+    // =========================
+
+    document.querySelectorAll(".topic-check")
+    .forEach(box => {
+
+        box.addEventListener(
+            "change",
+            updateProgress
+        );
+    });
+
+    function updateProgress() {
+
+        const activeSubject =
+        document.querySelector(".active-subject")
+        .dataset.subject;
+
+        const checkboxes =
+        document.querySelectorAll(
+            `.topic-check[data-subject="${activeSubject}"]`
+        );
+
+        const checked =
+        document.querySelectorAll(
+            `.topic-check[data-subject="${activeSubject}"]:checked`
+        );
+
+        const total =
+        checkboxes.length;
+
+        const percentage =
+        total === 0
+        ? 0
+        : Math.round((checked.length / total) * 100);
+
+        document.getElementById(
+            "currentProgress"
+        ).textContent =
+        percentage + "%";
+
+        document.getElementById(
+            `${activeSubject}-percent`
+        ).textContent =
+        percentage + "%";
+
+        document.getElementById(
+            `${activeSubject}-bar`
+        ).style.width =
+        percentage + "%";
+    }
+
+    updateProgress();
+
+</script>
 
 </body>
 </html>
