@@ -418,6 +418,58 @@ textarea {
     color: #374151 !important;
 }
 
+
+/* ===== CUSTOM ACTION BUTTONS FOR NOTES PAGE ===== */
+
+.subject-add button,
+.checklist-add button,
+.subject-actions button,
+.topic-item button {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: 0.2s ease;
+}
+
+.subject-add button:hover,
+.checklist-add button:hover,
+.subject-actions button:hover,
+.topic-item button:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.subject-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.topic-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.topic-item span {
+    flex: 1;
+}
+
+.subject-actions button:last-child,
+.topic-item button:last-child {
+    background-color: #ef4444;
+}
+
+.subject-actions button:last-child:hover,
+.topic-item button:last-child:hover {
+    background-color: #dc2626;
+}
+
 @media (max-width: 900px) {
 
     .workspace {
