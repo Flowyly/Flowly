@@ -5,65 +5,134 @@
 
   <style>
 
-  .top-bar {
+ .top-bar {
   position: fixed;
-  top: 20px;
-  left: 20px;
-}
+  top: 25px;
+  left: 25px;
 
+  z-index: 2;
+
+  padding: 12px 20px;
+
+  background: rgba(255,255,255,0.5);
+
+  backdrop-filter: blur(12px);
+
+  border-radius: 15px;
+
+  border: 1px solid rgba(255,255,255,0.4);
+}
 .home-btn {
   text-decoration: none;
-  color: #3b82f6;
-  font-size: 16px;
-  font-weight: bold;
+  color: #1e3a5f;
+  font-size: 15px;
+  font-weight: 600;
 }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f8fafc, #dbeafe, #e0f2fe);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
 
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      width: 320px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      text-align: center;
-    }
+.home-btn:hover {
+  color: #2563eb;
+}
+   body {
+  margin: 0;
+  font-family: Arial, sans-serif;
 
-    h2 {
-      margin-bottom: 20px;
-      color: #1e293b;
-    }
+  background: linear-gradient(
+    135deg,
+    #9fb3c8,
+    #b5c7da,
+    #c8d8e8
+  );
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+   .container {
+  position: relative;
+  z-index: 1;
+
+  width: 400px;
+  padding: 40px;
+
+  background: rgba(255,255,255,0.95);
+
+  border-radius: 24px;
+
+  border: 1px solid rgba(255,255,255,0.5);
+
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.12);
+
+  text-align: center;
+}
+
+   h2 {
+  color: #1e293b;
+  font-size: 30px;
+  margin-bottom: 10px;
+}
 
     input {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-    }
+  width: 100%;
+  box-sizing: border-box;
 
-    button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      background: #3b82f6;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+  padding: 12px 15px;
+  margin: 10px 0;
 
-    button:hover {
-      background: #2563eb;
-    }
+  border: 2px solid #dbeafe;
+  border-radius: 10px;
+
+  background: #f8fafc;
+
+  font-size: 14px;
+
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+
+  border-color: #3b82f6;
+
+  box-shadow:
+    0 0 0 4px rgba(59,130,246,0.15);
+
+  background: white;
+}
+
+   button {
+  width: 100%;
+  padding: 12px;
+
+  margin-top: 15px;
+
+  background: linear-gradient(
+    135deg,
+    #3b82f6,
+    #2563eb
+  );
+
+  color: white;
+
+  border: none;
+  border-radius: 10px;
+
+  font-size: 15px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 25px rgba(37,99,235,0.25);
+}
 
     a {
       text-decoration: none;
@@ -80,13 +149,40 @@
       font-size: 14px;
       color: red;
     }
+
+
+    .bg-shape {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.7;
+  z-index: 0;
+}
+
+.shape1 {
+  width: 350px;
+  height: 350px;
+  background: #c7d7e7;
+  top: -100px;
+  left: -100px;
+}
+
+.shape2 {
+  width: 350px;
+  height: 350px;
+  background: #9db8d4;
+  bottom: -100px;
+  right: -100px;
+}
   </style>
 </head>
 
 <body>
+  <div class="bg-shape shape1"></div>
+<div class="bg-shape shape2"></div>
 
 <div class="top-bar">
-  <a href="websitepage.html" class="home-btn">← Home</a>
+  <a href="websitepage.html" class="home-btn">Home</a>
 </div>
 
 <div class="container">
