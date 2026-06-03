@@ -37,47 +37,15 @@
         <section class="workspace">
 
             <aside class="sidebar">
-                <h2>Subjects</h2>
+    <h2>Subjects</h2>
 
-                <div class="subject-card active-subject" data-subject="software">
-                    <div class="subject-top">
-                        <h3>Software Security</h3>
-                        <span id="software-percent">0%</span>
-                    </div>
+    <div class="subject-add">
+        <input type="text" id="newSubjectInput" placeholder="Add new subject">
+        <button type="button" onclick="addSubject()">Add</button>
+    </div>
 
-                    <div class="mini-progress">
-                        <div class="mini-bar" id="software-bar"></div>
-                    </div>
-
-                    <p>Secure coding notes</p>
-                </div>
-
-                <div class="subject-card" data-subject="ethical">
-                    <div class="subject-top">
-                        <h3>Ethical Hacking</h3>
-                        <span id="ethical-percent">0%</span>
-                    </div>
-
-                    <div class="mini-progress">
-                        <div class="mini-bar" id="ethical-bar"></div>
-                    </div>
-
-                    <p>Reconnaissance notes</p>
-                </div>
-
-                <div class="subject-card" data-subject="system">
-                    <div class="subject-top">
-                        <h3>System Security</h3>
-                        <span id="system-percent">0%</span>
-                    </div>
-
-                    <div class="mini-progress">
-                        <div class="mini-bar" id="system-bar"></div>
-                    </div>
-
-                    <p>Access control notes</p>
-                </div>
-            </aside>
+    <div id="subjectList"></div>
+</aside>
 
             <section class="main-panel">
 
@@ -88,10 +56,8 @@
                         <div class="form-group">
                             <label>Subject</label>
                             <select id="subjectSelect">
-                                <option value="software">Software Security</option>
-                                <option value="ethical">Ethical Hacking</option>
-                                <option value="system">System Security</option>
-                            </select>
+    <option value="">No subject added yet</option>
+</select>
                         </div>
 
                         <div class="form-group">
@@ -126,26 +92,12 @@
                         <span class="status-badge" id="currentProgress">0%</span>
                     </div>
 
-                    <div class="topic-list" id="softwareTopics">
-                        <label><input type="checkbox" class="topic-check" data-subject="software"> Secure Coding</label>
-                        <label><input type="checkbox" class="topic-check" data-subject="software"> Input Validation</label>
-                        <label><input type="checkbox" class="topic-check" data-subject="software"> Authentication</label>
-                        <label><input type="checkbox" class="topic-check" data-subject="software"> SQL Injection</label>
-                    </div>
+                    <div class="checklist-add">
+    <input type="text" id="newTopicInput" placeholder="Add revision topic">
+    <button type="button" onclick="addTopic()">Add Topic</button>
+</div>
 
-                    <div class="topic-list hidden" id="ethicalTopics">
-                        <label><input type="checkbox" class="topic-check" data-subject="ethical"> Reconnaissance</label>
-                        <label><input type="checkbox" class="topic-check" data-subject="ethical"> Nmap Scanning</label>
-                        <label><input type="checkbox" class="topic-check" data-subject="ethical"> DNS Enumeration</label>
-                        <label><input type="checkbox" class="topic-check" data-subject="ethical"> Vulnerability Scanning</label>
-                    </div>
-
-                    <div class="topic-list hidden" id="systemTopics">
-                        <label><input type="checkbox" class="topic-check" data-subject="system"> Access Control</label>
-                        <label><input type="checkbox" class="topic-check" data-subject="system"> User Permissions</label>
-                        <label><input type="checkbox" class="topic-check" data-subject="system"> System Hardening</label>
-                        <label><input type="checkbox" class="topic-check" data-subject="system"> Backup and Recovery</label>
-                    </div>
+<div class="topic-list" id="topicList"></div>
                 </div>
 
                 <div class="notes-card">
