@@ -308,30 +308,8 @@ function updateProgress() {
 function generateDummyNotes() {
     const notesArea = document.getElementById("notesArea");
 
-    if (selectedSubjectIndex === null || !subjects[selectedSubjectIndex]) {
-        alert("Please add or select a subject first.");
-        return;
-    }
-
-    const subjectName = subjects[selectedSubjectIndex].name;
-
-    notesArea.value = `Generated Study Notes
-
-Subject: ${subjectName}
-
-1. Overview
-These notes are generated as a frontend demo.
-
-2. Key Points
-- Main ideas are summarized clearly.
-- Notes can be edited manually.
-- Backend will connect the real AI later.
-
-3. Revision
-After reading the notes, tick the related checklist items to update progress.
-
-4. Summary
-This page allows students to upload material, generate notes, edit them, and track revision progress.`;
+    notesArea.value = "";
+    alert("AI generation is not connected yet.");
 }
 function showSelectedFile() {
     const fileInput = document.getElementById("fileUpload");
