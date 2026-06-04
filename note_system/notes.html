@@ -10,22 +10,22 @@
 <body>
 
     <div class="navbar">
-  <div class="nav-left">
-    <div class="nav-item" onclick="goHome()">Home</div>
-    <div class="nav-item" onclick="goWork()">Work</div>
-    <div class="nav-item" onclick="goGenerateQuiz()"> Quiz</div>
-    <div class="nav-item active" onclick="goGenerateNotes()"> Notes</div>
-  </div>
+        <div class="nav-left">
+            <div class="nav-item" onclick="goHome()">Home</div>
+            <div class="nav-item" onclick="goWork()">Work</div>
+            <div class="nav-item" onclick="goGenerateQuiz()"> Quiz</div>
+            <div class="nav-item active" onclick="goGenerateNotes()"> Notes</div>
+        </div>
 
-  <div class="profile" onclick="toggleMenu()">
-    👤
-    <div class="profile-menu" id="menu">
-      <div onclick="goProfile()">Profile</div>
-      <div onclick="goSettings()">Settings</div>
-      <div onclick="logout()">Logout</div>
+        <div class="profile" onclick="toggleMenu()">
+            👤
+            <div class="profile-menu" id="menu">
+                <div onclick="goProfile()">Profile</div>
+                <div onclick="goSettings()">Settings</div>
+                <div onclick="logout()">Logout</div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
     <main class="page-container">
 
@@ -37,15 +37,15 @@
         <section class="workspace">
 
             <aside class="sidebar">
-    <h2>Subjects</h2>
+                <h2>Subjects</h2>
 
-    <div class="subject-add">
-        <input type="text" id="newSubjectInput" placeholder="Add new subject">
-        <button type="button" onclick="addSubject()">Add</button>
-    </div>
+                <div class="subject-add">
+                    <input type="text" id="newSubjectInput" placeholder="Add new subject">
+                    <button type="button" onclick="addSubject()">Add</button>
+                </div>
 
-    <div id="subjectList"></div>
-</aside>
+                <div id="subjectList"></div>
+            </aside>
 
             <section class="main-panel">
 
@@ -56,32 +56,33 @@
                         <div class="form-group">
                             <label>Subject</label>
                             <select id="subjectSelect">
-    <option value="">No subject added yet</option>
-</select>
+                                <option value="">No subject added yet</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
-    <label>Chapter / Topic</label>
-    <input type="text" id="topicInput" placeholder="Example: Secure Coding">
-</div>
+                            <label>Chapter / Topic</label>
+                            <input type="text" id="topicInput" placeholder="Example: Secure Coding">
+                        </div>
+                    </div>
 
                     <div class="upload-box">
-    <div class="upload-icon">📄</div>
-    <h3>Upload Study Material</h3>
-    <p>Drag & drop your files here or click below</p>
+                        <div class="upload-icon">📄</div>
+                        <h3>Upload Study Material</h3>
+                        <p>Drag & drop your files here or click below</p>
 
-    <input type="file" id="fileUpload" onchange="showSelectedFile()">
+                        <input type="file" id="fileUpload" onchange="showSelectedFile()">
 
-    <button type="button" class="upload-btn" onclick="document.getElementById('fileUpload').click()">
-        Choose File
-    </button>
+                        <button type="button" class="upload-btn" onclick="document.getElementById('fileUpload').click()">
+                            Choose File
+                        </button>
 
-    <p id="fileNameDisplay" class="file-name-display">No file selected</p>
-</div>
+                        <p id="fileNameDisplay" class="file-name-display">No file selected</p>
+                    </div>
 
-                   <button class="generate-btn" onclick="generateDummyNotes()">
-    Generate Notes
-</button>
+                    <button type="button" class="generate-btn" onclick="generateDummyNotes()">
+                        Generate Notes
+                    </button>
                 </div>
 
                 <div class="progress-card">
@@ -95,11 +96,11 @@
                     </div>
 
                     <div class="checklist-add">
-    <input type="text" id="newTopicInput" placeholder="Add revision topic">
-    <button type="button" onclick="addTopic()">Add Topic</button>
-</div>
+                        <input type="text" id="newTopicInput" placeholder="Add revision topic">
+                        <button type="button" onclick="addTopic()">Add Topic</button>
+                    </div>
 
-<div class="topic-list" id="topicList"></div>
+                    <div class="topic-list" id="topicList"></div>
                 </div>
 
                 <div class="notes-card">
@@ -115,9 +116,9 @@
                     <textarea id="notesArea" placeholder="AI-generated notes will appear here..."></textarea>
 
                     <div class="button-row">
-                        <button onclick="saveNotes()">Save Notes</button>
-                        <button onclick="copyNotes()">Copy</button>
-                        <button class="clear-btn" onclick="clearNotes()">Clear</button>
+                        <button type="button" onclick="saveNotes()">Save Notes</button>
+                        <button type="button" onclick="copyNotes()">Copy</button>
+                        <button type="button" class="clear-btn" onclick="clearNotes()">Clear</button>
                     </div>
                 </div>
 
