@@ -381,7 +381,46 @@ Format:
 
     reader.readAsText(file);
 }
+function showSelectedFile() {
+    const fileInput = document.getElementById("fileUpload");
+    const fileNameDisplay = document.getElementById("fileNameDisplay");
 
+    if (fileInput.files.length > 0) {
+        fileNameDisplay.textContent = "Selected file: " + fileInput.files[0].name;
+    } else {
+        fileNameDisplay.textContent = "No file selected";
+    }
+}
+
+
+// ===== SAVE / COPY / CLEAR =====
+
+function saveNotes() {
+    const notesArea = document.getElementById("notesArea");
+
+    if (selectedSubjectIndex === null || !subjects[selectedSubjectIndex]) {
+        alert("Please add or select a subject first.");
+        return;
+    }
+
+    subjects[selectedSubjectIndex].notes = notesArea.value;
+    saveSubjects();
+
+    alert("Notes saved successfully.");
+}
+
+function copyNotes() {
+    const notesArea = document.getElementById("notesArea");
+
+    notesArea.select();
+    document.execCommand("copy");
+
+    alert("Notes copied.");
+}
+
+function clearNotes() {
+    document.getElementById("notesArea").value = "";
+}
 
 // ===== INITIAL LOAD =====
 
