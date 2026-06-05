@@ -308,20 +308,37 @@ function updateProgress() {
 async function generateDummyNotes() {
     const notesArea = document.getElementById("notesArea");
     const topicInput = document.getElementById("topicInput");
+    const fileInput = document.getElementById("fileUpload");
 
     if (selectedSubjectIndex === null || !subjects[selectedSubjectIndex]) {
         alert("Please add or select a subject first.");
         return;
     }
 
+    if (fileInput.files.length === 0) {
+        alert("Please choose a study material file first.");
+        return;
+    }
+
     const subjectName = subjects[selectedSubjectIndex].name;
     const topic = topicInput.value.trim();
+    const file = fileInput.files[0];
 
-    const promptText = `
+    notesArea.value = "Reading uploaded file...";
+
+    const reader = new FileReader();
+
+    reader.onload = async function (event) {
+        const fileContent = event.target.result;
+
+        const promptText = `
 Subject: ${subjectName}
 Topic: ${topic}
 
-Please generate clear, structured study notes for this subject and topic.
+Study Material:
+${fileContent}
+
+Please generate clear, structured study notes based ONLY on the uploaded study material.
 
 Format:
 1. Overview
@@ -331,69 +348,38 @@ Format:
 5. Summary
 `;
 
-    notesArea.value = "Generating notes with AI...";
+        notesArea.value = "Generating notes with AI...";
 
-    try {
-        const response = await fetch("http://127.0.0.1:5000/summarize_notes", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                notes: promptText
-            })
-        });
+        try {
+            const response = await fetch("http://127.0.0.1:5000/summarize_notes", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    notes: promptText
+                })
+            });
 
-        const data = await response.json();
+            const data = await response.json();
 
-        if (data.success && data.summary) {
-            notesArea.value = data.summary;
-        } else {
-            notesArea.value = data.message || "AI generation failed.";
+            if (data.success && data.summary) {
+                notesArea.value = data.summary;
+            } else {
+                notesArea.value = data.message || "AI generation failed.";
+            }
+
+        } catch (error) {
+            console.error(error);
+            notesArea.value = "Error connecting to backend. Make sure Flask backend is running.";
         }
+    };
 
-    } catch (error) {
-        console.error(error);
-        notesArea.value = "Error connecting to backend. Make sure Flask backend is running.";
-    }
-}
-function showSelectedFile() {
-    const fileInput = document.getElementById("fileUpload");
-    const fileNameDisplay = document.getElementById("fileNameDisplay");
+    reader.onerror = function () {
+        notesArea.value = "Failed to read uploaded file.";
+    };
 
-    if (fileInput.files.length > 0) {
-        fileNameDisplay.textContent = "Selected file: " + fileInput.files[0].name;
-    } else {
-        fileNameDisplay.textContent = "No file selected";
-    }
-}
-// ===== SAVE / COPY / CLEAR =====
-
-function saveNotes() {
-    const notesArea = document.getElementById("notesArea");
-
-    if (selectedSubjectIndex === null || !subjects[selectedSubjectIndex]) {
-        alert("Please add or select a subject first.");
-        return;
-    }
-
-    subjects[selectedSubjectIndex].notes = notesArea.value;
-    saveSubjects();
-
-    alert("Notes saved successfully.");
-}
-
-function copyNotes() {
-    const notesArea = document.getElementById("notesArea");
-
-    notesArea.select();
-    document.execCommand("copy");
-
-    alert("Notes copied.");
-}
-
-function clearNotes() {
-    document.getElementById("notesArea").value = "";
+    reader.readAsText(file);
 }
 
 
