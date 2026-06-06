@@ -763,12 +763,12 @@ function addSubject() {
     }
 
     subjects.push({
-        name: subjectName,
-        description: "",
-        topics: [],
-        notes: "",
-        progress: 0
-    });
+    name: subjectName,
+    description: "",
+    topics: [],
+    notesByTopic: {},
+    progress: 0
+});
 
     selectedSubjectIndex = subjects.length - 1;
     input.value = "";
@@ -997,31 +997,59 @@ function showSelectedFile() {
 
 function saveNotes() {
     const notesArea = document.getElementById("notesArea");
+    const topicInput = document.getElementById("topicInput");
 
     if (selectedSubjectIndex === null || !subjects[selectedSubjectIndex]) {
         alert("Please add or select a subject first.");
         return;
     }
 
-    subjects[selectedSubjectIndex].notes = notesArea.value;
+    const topic = topicInput.value.trim();
+
+    if (topic === "") {
+        alert("Please enter a chapter/topic before saving notes.");
+        return;
+    }
+
+    if (!subjects[selectedSubjectIndex].notesByTopic) {
+        subjects[selectedSubjectIndex].notesByTopic = {};
+    }
+
+    subjects[selectedSubjectIndex].notesByTopic[topic] = notesArea.value;
+
     saveSubjects();
 
-    alert("Notes saved successfully.");
+    alert("Notes saved successfully for topic: " + topic);
 }
 
-function copyNotes() {
+// ===== LOAD NOTES =====
+
+function loadNotesByTopic() {
     const notesArea = document.getElementById("notesArea");
+    const topicInput = document.getElementById("topicInput");
 
-    notesArea.select();
-    document.execCommand("copy");
+    if (selectedSubjectIndex === null || !subjects[selectedSubjectIndex]) {
+        return;
+    }
 
-    alert("Notes copied.");
+    const topic = topicInput.value.trim();
+
+    if (topic === "") {
+        notesArea.value = "";
+        return;
+    }
+
+    const selectedSubject = subjects[selectedSubjectIndex];
+
+    if (selectedSubject.notesByTopic && selectedSubject.notesByTopic[topic]) {
+        notesArea.value = selectedSubject.notesByTopic[topic];
+    } else {
+        notesArea.value = "";
+    }
 }
 
-function clearNotes() {
-    document.getElementById("notesArea").value = "";
-}
-
+// ===== EVENT LISTENERS =====
+document.getElementById("topicInput").addEventListener("change", loadNotesByTopic);
 // ===== INITIAL LOAD =====
 
 renderSubjects();
