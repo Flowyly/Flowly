@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Profile</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f8fafc, #e0f2fe);
+    }
+
+    /* NAVBAR */
+  .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 16px 30px;
+  margin: 20px;
+
+  background: rgba(255, 255, 255, 0.75);
+
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.08);
+
+  transition: all 0.3s ease;
+}
+
+/* LEFT NAV */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* NAV ITEMS */
+.nav-item {
+  position: relative;
+
+  padding: 10px 18px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  font-weight: 500;
+  color: #334155;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.2s ease;
+}
+
+/* HOVER EFFECT */
+.nav-item:hover {
+  background: #dbeafe;
+
+  color: #2563eb;
+
+  transform: translateY(-2px);
+}
+
+/* ACTIVE PAGE */
+.nav-item.active {
+  background: linear-gradient(
+    135deg,
+    #3b82f6,
+    #2563eb
+  );
+
+  color: white;
+
+  font-weight: 600;
+
+  box-shadow:
+    0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+    .profile-icon {
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .avatar {
+      text-align: center;
+      font-size: 50px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    .section {
+      margin-top: 25px;
+    }
+
+    #message {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="nav-left">
+    <div class="nav-item" onclick="goHome()">Home</div>
+    <div class="nav-item active" onclick="goHome()">Profile</div>
+    
+  </div>
+
+  <div class="profile-icon">👤</div>
+</div>
+
+<!-- PROFILE -->
+<div class="container">
+  <div class="avatar">👤</div>
+  <h2>Profile</h2>
+
+  <!-- EDIT PROFILE -->
+  <div class="section">
+    <label>Username</label>
+    <input type="text" id="username" value="Adam">
+
+    <label>Email</label>
+    <input type="email" id="email" value="adam@gmail.com">
+
+    <button onclick="saveProfile()">Save Changes</button>
+  </div>
+
+  <!-- CHANGE PASSWORD -->
+  <div class="section">
+    <h3>Change Password</h3>
+
+    <input type="password" id="currentPass" placeholder="Current Password">
+    <input type="password" id="newPass" placeholder="New Password">
+    <input type="password" id="confirmPass" placeholder="Confirm Password">
+
+    <button onclick="changePassword()">Update Password</button>
+  </div>
+
+  <p id="message"></p>
+</div>
+
+<script>
+
+  if (!localStorage.getItem("userEmail")) {
+  window.location.href = "login1.html";
+}
+
+function goHome() {
+  window.location.href = "dashboard.html";
+}
+
+function goWork() {
+  window.location.href = "work.html";
+}
+
+async function saveProfile() {
+
+  let username = document.getElementById("username").value;
+  let email = document.getElementById("email").value;
+  let message = document.getElementById("message");
+
+  try {
+
+    const res = await fetch("http://127.0.0.1:5000/update_profile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username,
+        email
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      message.style.color = "green";
+      message.innerText = data.message;
+    } else {
+      message.style.color = "red";
+      message.innerText = data.message;
+    }
+
+  } catch (err) {
+    console.log(err);
+    message.style.color = "red";
+    message.innerText = "Server error";
+  }
+}
+
+async function changePassword() {
+
+  let current = document.getElementById("currentPass").value;
+  let newPass = document.getElementById("newPass").value;
+  let confirm = document.getElementById("confirmPass").value;
+  let email = document.getElementById("email").value;
+
+  let message = document.getElementById("message");
+
+  if (!current || !newPass || !confirm) {
+    message.style.color = "red";
+    message.innerText = "Please fill all fields";
+    return;
+  }
+
+  if (newPass !== confirm) {
+    message.style.color = "red";
+    message.innerText = "Passwords do not match";
+    return;
+  }
+
+  try {
+
+    const res = await fetch("http://127.0.0.1:5000/change_password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email,
+        current_password: current,
+        new_password: newPass
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      message.style.color = "green";
+      message.innerText = data.message;
+
+      // clear inputs
+      document.getElementById("currentPass").value = "";
+      document.getElementById("newPass").value = "";
+      document.getElementById("confirmPass").value = "";
+
+    } else {
+      message.style.color = "red";
+      message.innerText = data.message;
+    }
+
+  } catch (err) {
+    console.log(err);
+    message.style.color = "red";
+    message.innerText = "Server error";
+  }
+}
+</script>
+
+</body>
+</html>
