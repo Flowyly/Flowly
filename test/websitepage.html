@@ -6,7 +6,12 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #f8fafc, #e0f2fe);
+  background: linear-gradient(
+    135deg,
+    #dbe4f0,
+    #cbdcf5,
+    #d6e6f5
+  );
   color: #1e293b;
   text-align: center;
 }
@@ -22,7 +27,7 @@ body {
 .shape1 {
   width: 300px;
   height: 300px;
-  background: #dbeafe;
+  background: #ffffff;
   top: -50px;
   left: -50px;
 }
@@ -30,7 +35,7 @@ body {
 .shape2 {
   width: 300px;
   height: 300px;
-  background: #e0f2fe;
+  background: #bfdbfe;
   bottom: -50px;
   right: -50px;
 }
@@ -159,8 +164,8 @@ body {
     const fontSize = appearance.fontSize || "Medium";
 
     if (theme === "Default Blue") {
-        document.body.style.background = "linear-gradient(135deg, #f8fbff, #eaf6ff, #dbeafe)";
-        document.body.style.color = "#1f2937";
+    document.body.style.background = "linear-gradient(135deg, #dbe4f0, #cbdcf5, #d6e6f5)";
+    document.body.style.color = "#1f2937";
     } else if (theme === "Light") {
         document.body.style.background = "#f8fbff";
         document.body.style.color = "#1f2937";
