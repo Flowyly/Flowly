@@ -146,21 +146,41 @@
 </div>
 
 <script>
-function resetPassword(event) {
+async function resetPassword(event) {
   event.preventDefault();
 
   let email = document.getElementById("email").value;
+  let message = document.getElementById("message");
 
-  let savedEmail = "test@gmail.com";
+  message.style.color = "black";
+message.innerText = "Sending reset link...";
 
-  if (email === savedEmail) {
-    document.getElementById("message").style.color = "green";
-    document.getElementById("message").innerText =
-      "Reset link sent to your email!";
-  } else {
-    document.getElementById("message").style.color = "red";
-    document.getElementById("message").innerText =
-      "Email not found!";
+  try {
+    const res = await fetch("http://127.0.0.1:5000/forgot_password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: email
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      message.style.color = "green";
+      message.innerText = data.message;
+    } else {
+      message.style.color = "red";
+      message.innerText = data.message;
+    }
+
+  } catch (error) {
+    console.log(error);
+
+    message.style.color = "red";
+    message.innerText = "Server error. Please try again.";
   }
 }
 </script>

@@ -147,6 +147,12 @@
     border: 2px solid black;
   }
 
+  .active-menu {
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
+}
+
   /* DASHBOARD */
   .container {
     padding: 30px;
@@ -258,17 +264,14 @@
     <!-- TO DO -->
     <div class="card">
   <h3>To Do</h3>
-  <div class="item urgent">Math Assignment (Due Tomorrow)</div>
-  <div class="item warning">Group Project (3 days left)</div>
-  <div class="item done">English Essay (Completed)</div>
+  <div id="todoList"></div>
 </div>
 
-    <!-- REMINDER -->
-    <div class="card">
-      <h3>Reminder</h3>
-      <div class="item">Assignment due tomorrow</div>
-      <div class="item">Meeting at  PM</div>
-    </div>
+<!-- REMINDER -->
+<div class="card">
+  <h3>Reminder</h3>
+  <div id="reminderList"></div>
+</div>
 
     <!-- CALENDAR -->
     <div class="card calendar-card">
@@ -298,37 +301,96 @@
 
 <script>
 
+if (!localStorage.getItem("userEmail")) {
+  window.location.href = "login1.html";
+} 
+
+async function loadAlerts() {
+  try {
+    const res = await fetch("http://127.0.0.1:5000/alerts");
+    const data = await res.json();
+
+    const container = document.getElementById("todoList");
+    container.innerHTML = "";
+
+    if (!data.length) {
+      container.innerHTML = "<div class='item'>No urgent tasks 🎉</div>";
+      return;
+    }
+
+    data.forEach(task => {
+      const div = document.createElement("div");
+      div.classList.add("item");
+
+      div.textContent = `${task.title} (${task.days_left} days left)`;
+
+      if (task.days_left <= 1) {
+        div.classList.add("urgent");
+      } else {
+        div.classList.add("warning");
+      }
+
+      container.appendChild(div);
+    });
+
+  } catch (err) {
+    console.log("Error loading alerts:", err);
+    document.getElementById("todoList").innerHTML =
+      "<div class='item'>Failed to load alerts</div>";
+  }
+}
+
+async function loadUpcoming() {
+  try {
+    const res = await fetch("http://127.0.0.1:5000/upcoming");
+    const data = await res.json();
+
+    const box = document.getElementById("reminderList");
+    box.innerHTML = "";
+
+    if (!data.length) {
+      box.innerHTML = "<div class='item'>No upcoming tasks 📅</div>";
+      return;
+    }
+
+    data.slice(0, 3).forEach(task => {
+      const div = document.createElement("div");
+
+      if (task.days_left <= 1) {
+        div.className = "item urgent";
+      }
+      else if (task.days_left <= 3) {
+        div.className = "item warning";
+      }
+      else {
+        div.className = "item done";
+      }
+
+      div.textContent = `${task.title} - ${task.days_left} days left`;
+
+      box.appendChild(div);
+    });
+
+  } catch (err) {
+    console.log("Error loading upcoming:", err);
+
+    document.getElementById("reminderList").innerHTML =
+      "<div class='item'>Failed to load tasks</div>";
+  }
+}
+
 function toggleMenu() {
   let menu = document.getElementById("menu");
   menu.style.display = menu.style.display === "block" ? "none" : "block";
 }
 
-function goHome() {
-  window.location.href = "dashboard.html";
-}
-
-function goWork() {
-  window.location.href = "work.html";
-}
-
-function goGenerateQuiz() {
-  window.location.href = "generatequiz.html";
-}
-
-function goGenerateNotes() {
-  window.location.href = "generatenotes.html";
-}
-
-function goProfile() {
-  window.location.href = "profile.html";
-}
-
-function goSettings() {
-  window.location.href = "settings.html";
-}
-
-function logout() {
-  window.location.href = "login1.html";
+function goHome() { window.location.href = "dashboard.html"; }
+function goWork() { window.location.href = "work.html"; }
+function goGenerateQuiz() { window.location.href = "generatequiz.html"; }
+function goGenerateNotes() { window.location.href = "generatenotes.html"; }
+function goProfile() { window.location.href = "profile.html"; }
+function goSettings() { window.location.href = "settings.html"; }
+function logout() { window.location.href = "login1.html"; }
 
 let currentDate = new Date();
 
@@ -374,10 +436,15 @@ function prevMonth() {
   renderCalendar();
 }
 
+loadAlerts();
+loadUpcoming();
 renderCalendar();
 
+setInterval(() => {
+  loadAlerts();
+  loadUpcoming();
+}, 10000); // refresh every 10 seconds
 
-}
 </script>
 
 </body>

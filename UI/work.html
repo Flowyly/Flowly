@@ -233,8 +233,13 @@
     }
 
     .delete-btn {
-      background: #ef4444;
-    }
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
 
     /* Status colors */
     .status-progress { color: orange; }
@@ -303,61 +308,109 @@
 </div>
 
 <script>
+  if (!localStorage.getItem("userEmail")) {
+  window.location.href = "login1.html";
+}
 
+let coursework = [];
+
+/* ================= NAV ================= */
 function toggleMenu() {
-  let menu = document.getElementById("menu");
+  const menu = document.getElementById("menu");
   menu.style.display = menu.style.display === "block" ? "none" : "block";
 }
 
-function goHome() {
-  window.location.href = "dashboard.html";
+function goHome() { window.location.href = "dashboard.html"; }
+function goWork() { window.location.href = "work.html"; }
+function goGenerateQuiz() { window.location.href = "generatequiz.html"; }
+function goGenerateNotes() { window.location.href = "generatenotes.html"; }
+function goProfile() { window.location.href = "profile.html"; }
+function goSettings() { window.location.href = "settings.html"; }
+function logout() { window.location.href = "login1.html"; }
+
+
+/* ================= LOAD ================= */
+async function loadCoursework() {
+  try {
+    const res = await fetch("http://127.0.0.1:5000/coursework");
+    const data = await res.json();
+
+    coursework = data;
+    displayCoursework();
+
+  } catch (err) {
+    console.log("Error loading coursework:", err);
+  }
 }
 
-function goWork() {
-  window.location.href = "work.html";
-}
 
-function goGenerateQuiz() {
-  window.location.href = "generatequiz.html";
-}
+/* ================= ADD ================= */
+async function addCoursework() {
+  const subject = document.getElementById("subject").value.trim();
+  const members = document.getElementById("members").value.trim();
+  const dueDate = document.getElementById("dueDate").value;
+  const status = document.getElementById("status").value;
 
-function goGenerateNotes() {
-  window.location.href = "generatenotes.html";
-}
-
-function goProfile() {
-  window.location.href = "profile.html";
-}
-
-function goSettings() {
-  window.location.href = "settings.html";
-}
-
-function logout() {
-  window.location.href = "login1.html";
-}
-let coursework = [];
-
-function addCoursework() {
-  let subject = document.getElementById("subject").value;
-  let members = document.getElementById("members").value;
-  let dueDate = document.getElementById("dueDate").value;
-  let status = document.getElementById("status").value;
-
+  // validation
   if (!subject || !members || !dueDate) {
     alert("Please fill all fields");
     return;
   }
 
-  coursework.push({ subject, members, dueDate, status });
-  displayCoursework();
+  if (new Date(dueDate) < new Date().setHours(0,0,0,0)) {
+    alert("Due date cannot be in the past");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://127.0.0.1:5000/add_coursework", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        title: subject,
+        description: members,
+        due_date: dueDate,
+        status: status
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      // clear inputs AFTER success
+      document.getElementById("subject").value = "";
+      document.getElementById("members").value = "";
+      document.getElementById("dueDate").value = "";
+      document.getElementById("status").value = "In Progress";
+
+      loadCoursework();
+    } else {
+      alert(data.error || "Failed to add coursework");
+    }
+
+  } catch (err) {
+    console.log("Add error:", err);
+  }
 }
 
+
+/* ================= DISPLAY ================= */
 function displayCoursework() {
-  let table = document.getElementById("tableBody");
+  const table = document.getElementById("tableBody");
   table.innerHTML = "";
 
-  coursework.forEach((c, index) => {
+  if (!coursework.length) {
+    table.innerHTML = `
+      <tr>
+        <td colspan="5">No coursework yet</td>
+      </tr>
+    `;
+    return;
+  }
+
+  coursework.forEach((c) => {
     let statusClass = "";
 
     if (c.status === "In Progress") statusClass = "status-progress";
@@ -366,26 +419,43 @@ function displayCoursework() {
 
     table.innerHTML += `
       <tr>
-        <td>${c.subject}</td>
-        <td>${c.members}</td>
-        <td>${c.dueDate}</td>
+        <td>${c.title}</td>
+        <td>${c.description}</td>
+        <td>${c.due_date}</td>
         <td class="${statusClass}">${c.status}</td>
         <td>
-          <button class="delete-btn" onclick="deleteCoursework(${index})">Delete</button>
+          <button class="delete-btn" onclick="deleteCoursework(${c.id})">
+            Delete
+          </button>
         </td>
       </tr>
     `;
   });
 }
 
-function deleteCoursework(index) {
-  coursework.splice(index, 1);
-  displayCoursework();
+
+/* ================= DELETE ================= */
+async function deleteCoursework(id) {
+  if (!confirm("Delete this coursework?")) return;
+
+  try {
+    await fetch(`http://127.0.0.1:5000/delete_coursework/${id}`, {
+      method: "DELETE"
+    });
+
+    loadCoursework();
+
+  } catch (err) {
+    console.log("Delete error:", err);
+  }
 }
 
-function logout() {
-  window.location.href = "login1.html";
-}
+
+/* ================= AUTO LOAD ================= */
+loadCoursework();
+
+// refresh every 30 seconds
+setInterval(loadCoursework, 30000);
 </script>
 
 </body>

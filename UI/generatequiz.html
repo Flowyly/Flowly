@@ -345,12 +345,16 @@
         <option>Hard</option>
       </select>
 
-      <input type="number" id="questionCount" placeholder="Questions" min="1" max="20">
+      <input type="number"
+       id="questionCount"
+       value="10"
+       min="1"
+       max="20">
 
     </div>
 
-    <button class="generate-btn" onclick="generateQuiz()">
-      Generate Quiz
+    <button type="button" class="generate-btn" id="generateBtn">
+  Generate Quiz
     </button>
 
   </div>
@@ -365,15 +369,16 @@
 
   <!-- SUBMIT -->
   <div style="text-align:center;">
-    <button class="submit-btn" id="submitBtn">
-      Submit Quiz
-    </button>
+    
   </div>
 
 </div>
 
 <script>
 
+if (!localStorage.getItem("userEmail")) {
+  window.location.href = "login1.html";
+}
 
 function toggleMenu() {
   let menu = document.getElementById("menu");
@@ -403,7 +408,9 @@ function goWork() {
 function goGenerateNotes() {
   window.location.href = "generatenotes.html";
 }
-
+function goGenerateQuiz() {
+  window.location.href = "generatequiz.html";
+}
 
 function showFileName() {
   let file = document.getElementById("pdfFile").files[0];
@@ -411,85 +418,103 @@ function showFileName() {
   if (file) {
     document.getElementById("fileName").innerText =
       "Uploaded: " + file.name;
+
+    // ✅ SAVE HERE (correct place)
+    localStorage.setItem("lastFileName", file.name);
   }
 }
 
-function generateQuiz() {
+async function generateQuiz(event) {
+  if (event) event.preventDefault();
+
+  document.getElementById("generateBtn").disabled = true;
+  document.getElementById("loading").style.display = "block";
 
   let file = document.getElementById("pdfFile").files[0];
 
   if (!file) {
-    alert("Please upload a PDF file");
+    alert("Please upload a PDF");
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("generateBtn").disabled = false;
     return;
   }
 
-  // SHOW LOADING
-  document.getElementById("loading").style.display = "block";
+  try {
+    const formData = new FormData();
+    formData.append("pdf", file);
+    formData.append("difficulty", document.getElementById("difficulty").value);
+    formData.append("questionCount", document.getElementById("questionCount").value);
 
-  // SIMULATE BACKEND RESPONSE
-  setTimeout(() => {
+    localStorage.setItem("lastDifficulty", document.getElementById("difficulty").value);
+    localStorage.setItem("lastCount", document.getElementById("questionCount").value);
+
+    const res = await fetch("http://127.0.0.1:5000/generate_quiz", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
 
     document.getElementById("loading").style.display = "none";
+    document.getElementById("generateBtn").disabled = false;
 
-    displayQuiz();
+    if (data.success) {
+      displayQuizFromAI(data.quiz);
+    } else {
+      console.log("BACKEND ERROR:", data.message);
+      alert(data.message);
+    }
 
-  }, 2500);
+  } catch (err) {
+    console.error(err);
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("generateBtn").disabled = false;
+    alert("Server Error");
+  }
 }
 
-function displayQuiz() {
+function displayQuizFromAI(quizText) {
+  const quizSection = document.getElementById("quizSection");
 
-  let quizSection = document.getElementById("quizSection");
+  // ✅ Guard - don't re-render if quiz already showing
+  if (quizSection.dataset.locked === "true") return;
+  quizSection.dataset.locked = "true";
 
-  quizSection.innerHTML = `
+  quizSection.innerHTML = "";
 
-    <div class="question-card">
-      <h3>Question 1</h3>
+  const questions = quizText.split(/(?=Q\d+\.)/g);
 
-      <p>What is Newton's First Law?</p>
+  if (!questions || questions.length === 0) {
+    quizSection.innerHTML = "<p>Failed to parse quiz</p>";
+    return;
+  }
 
-      <div class="option">
-        <input type="radio" name="q1"> Law of Motion
-      </div>
-
-      <div class="option">
-        <input type="radio" name="q1"> Gravity
-      </div>
-
-      <div class="option">
-        <input type="radio" name="q1"> Energy
-      </div>
-
-      <div class="option">
-        <input type="radio" name="q1"> Momentum
-      </div>
-    </div>
-
-    <div class="question-card">
-      <h3>Question 2</h3>
-
-      <p>What planet is known as the Red Planet?</p>
-
-      <div class="option">
-        <input type="radio" name="q2"> Earth
-      </div>
-
-      <div class="option">
-        <input type="radio" name="q2"> Mars
-      </div>
-
-      <div class="option">
-        <input type="radio" name="q2"> Venus
-      </div>
-
-      <div class="option">
-        <input type="radio" name="q2"> Jupiter
-      </div>
-    </div>
-
-  `;
-
-  document.getElementById("submitBtn").style.display = "inline-block";
+  questions.forEach(q => {
+    const card = document.createElement("div");
+    card.className = "question-card";
+    card.innerHTML = `<pre style="white-space: pre-wrap;">${q}</pre>`;
+    quizSection.appendChild(card);
+  });
 }
+
+window.onload = function () {
+  // Restore saved preferences
+  const diff = localStorage.getItem("lastDifficulty");
+  const count = localStorage.getItem("lastCount");
+  const fileName = localStorage.getItem("lastFileName");
+
+  if (diff) document.getElementById("difficulty").value = diff;
+  if (count) document.getElementById("questionCount").value = count;
+  if (fileName)
+    document.getElementById("fileName").innerText = "Uploaded: " + fileName;
+
+  // Attach button listener here (not in DOMContentLoaded)
+  document.getElementById("generateBtn").addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    generateQuiz(event);
+  });
+};
 
 </script>
 

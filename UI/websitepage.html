@@ -3,128 +3,121 @@
 <head>
   <title>Study Tracker</title>
   <style>
-  body {
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #f8fafc, #e0f2fe);
+  color: #1e293b;
+  text-align: center;
+}
 
+/* BACKGROUND SHAPES */
+.bg-shape {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+}
 
-    .nav-links a {
+.shape1 {
+  width: 300px;
+  height: 300px;
+  background: #93c5fd;
+  top: -50px;
+  left: -50px;
+}
+
+.shape2 {
+  width: 300px;
+  height: 300px;
+  background: #bfdbfe;
+  bottom: -50px;
+  right: -50px;
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.nav-links a {
   margin-left: 20px;
   text-decoration: none;
   color: #1e293b;
   font-size: 14px;
 }
 
-    .container {
-         background: rgba(255, 255, 255, 0.7);
-         backdrop-filter: blur(10px);
-        }
-    .bg-shape {
-        position: fixed;
-        border-radius: 50%;
-        filter: blur(80px);
-        z-index: 0;
-        }
+.nav-links a:hover {
+  color: #3b82f6;
+}
 
-    .shape1 {
-        width: 300px;
-        height: 300px;
-        background: #93c5fd; /* light blue */
-        top: -50px;
-        left: -50px;
-        }
+/* BUTTONS */
+.btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
 
-    .shape2 {
-        width: 300px;
-        height: 300px;
-        background: #bfdbfe; /* softer blue */
-        bottom: -50px;
-        right: -50px;
-        }
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #f8fafc, #e0f2fe);
-    color: #1e293b;
-    text-align: center;
-  }
+.btn-login {
+  background: transparent;
+  border: 1px solid #1e293b;
+  color: #1e293b;
+}
 
-  /* Navbar */
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 50px;
-  }
+.btn-register {
+  background: #3b82f6;
+  color: white;
+}
 
-  .logo {
-    font-weight: bold;
-    font-size: 20px;
-  }
+/* HERO */
+.hero {
+  margin-top: 100px;
+}
 
-  .nav-links a {
-    margin-left: 20px;
-    text-decoration: none;
-    color: #1e293b;
-  }
+.hero h1 {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
 
-  .btn {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-  }
+.hero span {
+  color: #3b82f6;
+}
 
-  .btn-login {
-    background: transparent;
-    border: 1px solid #1e293b;
-    color: #1e293b;
-  }
+.hero p {
+  max-width: 600px;
+  margin: 20px auto;
+  color: #475569;
+}
 
-  .btn-register {
-    background: #3b82f6;
-    color: white;
-  }
+.hero-buttons {
+  margin-top: 20px;
+}
 
-  /* Hero Section */
-  .hero {
-    margin-top: 100px;
-  }
+.hero-buttons button {
+  margin: 10px;
+}
 
-  .hero h1 {
-    font-size: 48px;
-    margin-bottom: 10px;
-  }
-
-  .hero span {
-    color: #3b82f6;
-  }
-
-  .hero p {
-    max-width: 600px;
-    margin: 20px auto;
-    color: #475569;
-  }
-
-  .hero-buttons {
-    margin-top: 20px;
-  }
-
-  .hero-buttons button {
-    margin: 10px;
-  }
-
-  /* Footer */
-  .footer {
-    margin-top: 100px;
-    padding: 20px;
-    color: #64748b;
-  }
+/* FOOTER */
+.footer {
+  margin-top: 100px;
+  padding: 20px;
+  color: #64748b;
+}
 </style>
 </head>
 <body>
 
 <div class="bg-shape shape1"></div>
 <div class="bg-shape shape2"></div>
-
-<div class="container"></div>
-
 
 <div class="navbar">
   <div class="logo">Flowly</div>
@@ -169,4 +162,4 @@ function goRegister() {
 </script>
 
 </body>
-</html>
+</html>``

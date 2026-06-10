@@ -206,25 +206,31 @@ button:hover {
 </div>
 
 <script>
-function registerUser(event) {
+async function registerUser(event) {
   event.preventDefault();
 
   let username = document.getElementById("username").value;
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
 
-  // Simulated check
-  if (email === "test@gmail.com") {
-    document.getElementById("message").style.color = "red";
-    document.getElementById("message").innerText = "Email already exists!";
-  } else {
+  const res = await fetch("http://127.0.0.1:5000/register", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({username, email, password})
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
     document.getElementById("message").style.color = "green";
     document.getElementById("message").innerText = "Registration successful!";
-    
-    // Redirect to login
+
     setTimeout(() => {
       window.location.href = "login1.html";
     }, 1000);
+  } else {
+    document.getElementById("message").style.color = "red";
+    document.getElementById("message").innerText = data.message;
   }
 }
 </script>

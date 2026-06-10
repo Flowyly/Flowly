@@ -196,6 +196,11 @@
 </div>
 
 <script>
+
+  if (!localStorage.getItem("userEmail")) {
+  window.location.href = "login1.html";
+}
+
 function goHome() {
   window.location.href = "dashboard.html";
 }
@@ -204,33 +209,98 @@ function goWork() {
   window.location.href = "work.html";
 }
 
-function saveProfile() {
+async function saveProfile() {
+
   let username = document.getElementById("username").value;
   let email = document.getElementById("email").value;
+  let message = document.getElementById("message");
 
-  document.getElementById("message").style.color = "green";
-  document.getElementById("message").innerText = "Profile updated successfully!";
+  try {
+
+    const res = await fetch("http://127.0.0.1:5000/update_profile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username,
+        email
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      message.style.color = "green";
+      message.innerText = data.message;
+    } else {
+      message.style.color = "red";
+      message.innerText = data.message;
+    }
+
+  } catch (err) {
+    console.log(err);
+    message.style.color = "red";
+    message.innerText = "Server error";
+  }
 }
 
-function changePassword() {
+async function changePassword() {
+
   let current = document.getElementById("currentPass").value;
   let newPass = document.getElementById("newPass").value;
   let confirm = document.getElementById("confirmPass").value;
+  let email = document.getElementById("email").value;
+
+  let message = document.getElementById("message");
 
   if (!current || !newPass || !confirm) {
-    document.getElementById("message").style.color = "red";
-    document.getElementById("message").innerText = "Please fill all fields";
+    message.style.color = "red";
+    message.innerText = "Please fill all fields";
     return;
   }
 
   if (newPass !== confirm) {
-    document.getElementById("message").style.color = "red";
-    document.getElementById("message").innerText = "Passwords do not match";
+    message.style.color = "red";
+    message.innerText = "Passwords do not match";
     return;
   }
 
-  document.getElementById("message").style.color = "green";
-  document.getElementById("message").innerText = "Password updated successfully!";
+  try {
+
+    const res = await fetch("http://127.0.0.1:5000/change_password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email,
+        current_password: current,
+        new_password: newPass
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      message.style.color = "green";
+      message.innerText = data.message;
+
+      // clear inputs
+      document.getElementById("currentPass").value = "";
+      document.getElementById("newPass").value = "";
+      document.getElementById("confirmPass").value = "";
+
+    } else {
+      message.style.color = "red";
+      message.innerText = data.message;
+    }
+
+  } catch (err) {
+    console.log(err);
+    message.style.color = "red";
+    message.innerText = "Server error";
+  }
 }
 </script>
 
