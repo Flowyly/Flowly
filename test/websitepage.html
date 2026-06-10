@@ -22,7 +22,7 @@ body {
 .shape1 {
   width: 300px;
   height: 300px;
-  background: #93c5fd;
+  background: #dbeafe;
   top: -50px;
   left: -50px;
 }
@@ -30,7 +30,7 @@ body {
 .shape2 {
   width: 300px;
   height: 300px;
-  background: #bfdbfe;
+  background: #e0f2fe;
   bottom: -50px;
   right: -50px;
 }
@@ -159,19 +159,23 @@ body {
     const fontSize = appearance.fontSize || "Medium";
 
     if (theme === "Default Blue") {
-        document.body.style.background = "#8fb9d6";
+        document.body.style.background = "linear-gradient(135deg, #f8fbff, #eaf6ff, #dbeafe)";
         document.body.style.color = "#1f2937";
     } else if (theme === "Light") {
-        document.body.style.background = "#eaf8ff";
+        document.body.style.background = "#f8fbff";
         document.body.style.color = "#1f2937";
     } else if (theme === "Dark") {
         document.body.style.background = "#1e293b";
         document.body.style.color = "#f8fafc";
     }
 
-    if (fontSize === "Small") document.body.style.fontSize = "14px";
-    else if (fontSize === "Medium") document.body.style.fontSize = "16px";
-    else if (fontSize === "Large") document.body.style.fontSize = "18px";
+    if (fontSize === "Small") {
+        document.body.style.fontSize = "14px";
+    } else if (fontSize === "Medium") {
+        document.body.style.fontSize = "16px";
+    } else if (fontSize === "Large") {
+        document.body.style.fontSize = "18px";
+    }
 })();
 
 function goLogin() {
