@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #8fb9d6;
+      color: #1f2937;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 16px 30px;
+      margin: 20px;
+
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .nav-item {
+      position: relative;
+      padding: 10px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #334155;
+      transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+    }
+
+    .nav-item:hover {
+      background: #dbeafe;
+      color: #2563eb;
+      transform: translateY(-2px);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+
+    .profile {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #eff6ff;
+      font-size: 20px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.25s ease, transform 0.2s ease;
+    }
+
+    .profile:hover {
+      background: #dbeafe;
+      transform: scale(1.08);
+    }
+
+    .profile-menu {
+      border: 2px solid black;
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 50px;
+      background: white;
+      border-radius: 19px;
+      width: 180px;
+      box-shadow: 7px 13px 15px -1px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      z-index: 10;
+      font-size: 15px;
+    }
+
+    .profile-menu div {
+      padding: 12px;
+      cursor: pointer;
+      border-radius: 15px;
+    }
+
+    .profile-menu div:hover {
+      background: #6fa0d0;
+      color: white;
+    }
+
+    /* MAIN */
+    .container {
+      width: 86%;
+      max-width: 1100px;
+      margin: auto;
+      padding: 40px 20px 60px;
+    }
+
+    .title-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .title-section h1 {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    .title-section p {
+      color: #475569;
+      font-size: 16px;
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .settings-card {
+      background: white;
+      border: 2px dashed #93c5fd;
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+
+    .settings-card h2 {
+      margin-bottom: 8px;
+      font-size: 24px;
+    }
+
+    .settings-card .desc {
+      color: #64748b;
+      margin-bottom: 22px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: #f8fbff;
+      font-size: 14px;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    .btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .danger-btn {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s ease;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+
+    .danger-btn:hover {
+      background: #dc2626;
+      transform: translateY(-1px);
+    }
+
+    .secondary-btn {
+      background: #e0f2fe;
+      color: #2563eb;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s ease;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+
+    .secondary-btn:hover {
+      background: #c7eafe;
+      transform: translateY(-1px);
+    }
+
+    .status-message {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      display: none;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .warning {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .data-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .info-box {
+      background: #f8fbff;
+      border: 1px solid #dbeafe;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 16px;
+      color: #475569;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .container {
+        width: 94%;
+      }
+
+      .nav-left {
+        gap: 8px;
+      }
+
+      .nav-item {
+        padding: 9px 12px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <div class="nav-left">
+      <div class="nav-item" onclick="goHome()">Home</div>
+      <div class="nav-item" onclick="goWork()">Work</div>
+      <div class="nav-item" onclick="goGenerateQuiz()">Quiz</div>
+      <div class="nav-item" onclick="goGenerateNotes()">Notes</div>
+    </div>
+
+    <div class="profile" onclick="toggleMenu()">
+      👤
+      <div class="profile-menu" id="menu">
+        <div onclick="goProfile()">Profile</div>
+        <div class="active-menu" onclick="goSettings()">Settings</div>
+        <div onclick="logout()">Logout</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="container">
+
+    <section class="title-section">
+      <h1>Settings</h1>
+      <p>Manage your profile, study preferences, appearance, and saved app data.</p>
+    </section>
+
+    <section class="settings-grid">
+
+      <!-- PROFILE SETTINGS -->
+      <div class="settings-card">
+        <h2>Profile Information</h2>
+        <p class="desc">Update your basic user details for the study platform.</p>
+
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="fullName" placeholder="Enter your full name">
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email" placeholder="Enter your email">
+        </div>
+
+        <div class="form-group">
+          <label>Student ID / User ID</label>
+          <input type="text" id="studentId" placeholder="Enter your student ID">
+        </div>
+
+        <button class="btn" onclick="saveProfile()">Save Profile</button>
+        <div id="profileStatus" class="status-message success"></div>
+      </div>
+
+      <!-- STUDY PREFERENCES -->
+      <div class="settings-card">
+        <h2>Study Preferences</h2>
+        <p class="desc">Set your default options for quiz and notes generation.</p>
+
+        <div class="form-group">
+          <label>Default Quiz Difficulty</label>
+          <select id="defaultDifficulty">
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Default Number of Questions</label>
+          <select id="defaultQuestionCount">
+            <option value="5">5 Questions</option>
+            <option value="10">10 Questions</option>
+            <option value="15">15 Questions</option>
+            <option value="20">20 Questions</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Default Notes Style</label>
+          <select id="defaultNotesStyle">
+            <option value="Short Notes">Short Notes</option>
+            <option value="Detailed Notes">Detailed Notes</option>
+            <option value="Exam Revision">Exam Revision</option>
+            <option value="Bullet Points">Bullet Points</option>
+          </select>
+        </div>
+
+        <button class="btn" onclick="saveStudyPreferences()">Save Preferences</button>
+        <div id="studyStatus" class="status-message success"></div>
+      </div>
+
+      <!-- APPEARANCE SETTINGS -->
+      <div class="settings-card">
+        <h2>Appearance</h2>
+        <p class="desc">Customize simple display options for the interface.</p>
+
+        <div class="form-group">
+          <label>Theme</label>
+          <select id="theme">
+            <option value="Default Blue">Default Blue</option>
+            <option value="Light">Light</option>
+            <option value="Dark">Dark</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Font Size</label>
+          <select id="fontSize">
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+          </select>
+        </div>
+
+        <button class="btn" onclick="saveAppearance()">Save Appearance</button>
+        <div id="appearanceStatus" class="status-message success"></div>
+
+        <div class="info-box">
+          Current main theme keeps the same blue background and navbar style as your Quiz and Notes pages.
+        </div>
+      </div>
+
+      <!-- DATA MANAGEMENT -->
+      <div class="settings-card">
+        <h2>Data Management</h2>
+        <p class="desc">Manage saved notes, subjects, revision progress, and preferences stored in this browser.</p>
+
+        <div class="data-row">
+          <button class="secondary-btn" onclick="showStorageInfo()">Check Saved Data</button>
+          <button class="danger-btn" onclick="clearSavedNotesOnly()">Clear Saved Notes</button>
+          <button class="danger-btn" onclick="clearSubjectsAndProgress()">Clear Subjects & Progress</button>
+          <button class="danger-btn" onclick="resetAllData()">Reset All Data</button>
+        </div>
+
+        <div id="dataStatus" class="status-message success"></div>
+
+        <div class="info-box" id="storageInfo">
+          Click "Check Saved Data" to view current local storage status.
+        </div>
+      </div>
+
+      <!-- QUICK SUMMARY -->
+      <div class="settings-card full-width">
+        <h2>Current Settings Summary</h2>
+        <p class="desc">This shows the latest settings saved in your browser.</p>
+
+        <div class="info-box" id="summaryBox">
+          No settings loaded yet.
+        </div>
+
+        <button class="btn" onclick="loadSettings()">Refresh Summary</button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    // =========================
+    // NAVIGATION FUNCTIONS
+    // =========================
+
+    function toggleMenu() {
+      const menu = document.getElementById("menu");
+
+      if (menu) {
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+      }
+    }
+
+    function goHome() {
+      window.location.href = "dashboard.html";
+    }
+
+    function goWork() {
+      window.location.href = "work.html";
+    }
+
+    function goGenerateQuiz() {
+      window.location.href = "generatequiz.html";
+    }
+
+    function goGenerateNotes() {
+      window.location.href = "generatenotes.html";
+    }
+
+    function goProfile() {
+      window.location.href = "profile.html";
+    }
+
+    function goSettings() {
+      window.location.href = "settings.html";
+    }
+
+    function logout() {
+      const confirmLogout = confirm("Are you sure you want to logout?");
+
+      if (confirmLogout) {
+        window.location.href = "login1.html";
+      }
+    }
+
+    // Close profile menu when clicking outside
+    document.addEventListener("click", function(event) {
+      const profile = document.querySelector(".profile");
+      const menu = document.getElementById("menu");
+
+      if (profile && menu && !profile.contains(event.target)) {
+        menu.style.display = "none";
+      }
+    });
+
+    // =========================
+    // HELPER STATUS MESSAGE
+    // =========================
+
+    function showMessage(elementId, message, type = "success") {
+      const element = document.getElementById(elementId);
+
+      element.textContent = message;
+      element.className = "status-message " + type;
+      element.style.display = "block";
+
+      setTimeout(() => {
+        element.style.display = "none";
+      }, 2500);
+    }
+
+    // =========================
+    // PROFILE SETTINGS
+    // =========================
+
+    function saveProfile() {
+      const profileData = {
+        fullName: document.getElementById("fullName").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        studentId: document.getElementById("studentId").value.trim()
+      };
+
+      localStorage.setItem("profileSettings", JSON.stringify(profileData));
+
+      showMessage("profileStatus", "Profile saved successfully.", "success");
+      updateSummary();
+    }
+
+    function loadProfile() {
+      const savedProfile = JSON.parse(localStorage.getItem("profileSettings")) || {};
+
+      document.getElementById("fullName").value = savedProfile.fullName || "";
+      document.getElementById("email").value = savedProfile.email || "";
+      document.getElementById("studentId").value = savedProfile.studentId || "";
+    }
+
+    // =========================
+    // STUDY PREFERENCES
+    // =========================
+
+    function saveStudyPreferences() {
+      const studyPreferences = {
+        defaultDifficulty: document.getElementById("defaultDifficulty").value,
+        defaultQuestionCount: document.getElementById("defaultQuestionCount").value,
+        defaultNotesStyle: document.getElementById("defaultNotesStyle").value
+      };
+
+      localStorage.setItem("studyPreferences", JSON.stringify(studyPreferences));
+
+      showMessage("studyStatus", "Study preferences saved successfully.", "success");
+      updateSummary();
+    }
+
+    function loadStudyPreferences() {
+      const savedPreferences = JSON.parse(localStorage.getItem("studyPreferences")) || {};
+
+      document.getElementById("defaultDifficulty").value = savedPreferences.defaultDifficulty || "Easy";
+      document.getElementById("defaultQuestionCount").value = savedPreferences.defaultQuestionCount || "5";
+      document.getElementById("defaultNotesStyle").value = savedPreferences.defaultNotesStyle || "Short Notes";
+    }
+
+    // =========================
+    // APPEARANCE SETTINGS
+    // =========================
+
+    function saveAppearance() {
+      const appearanceSettings = {
+        theme: document.getElementById("theme").value,
+        fontSize: document.getElementById("fontSize").value
+      };
+
+      localStorage.setItem("appearanceSettings", JSON.stringify(appearanceSettings));
+
+      applyAppearance();
+      showMessage("appearanceStatus", "Appearance saved successfully.", "success");
+      updateSummary();
+    }
+
+    function loadAppearance() {
+      const savedAppearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
+
+      document.getElementById("theme").value = savedAppearance.theme || "Default Blue";
+      document.getElementById("fontSize").value = savedAppearance.fontSize || "Medium";
+
+      applyAppearance();
+    }
+
+    function applyAppearance() {
+      const theme = document.getElementById("theme").value;
+      const fontSize = document.getElementById("fontSize").value;
+
+      // Theme
+      if (theme === "Default Blue") {
+        document.body.style.background = "#8fb9d6";
+        document.body.style.color = "#1f2937";
+      } else if (theme === "Light") {
+        document.body.style.background = "#eaf8ff";
+        document.body.style.color = "#1f2937";
+      } else if (theme === "Dark") {
+         document.body.style.background = "#1e293b";
+  document.body.style.color = "#f8fafc";
+      }
+
+      // Font size
+      if (fontSize === "Small") {
+        document.body.style.fontSize = "14px";
+      } else if (fontSize === "Medium") {
+        document.body.style.fontSize = "16px";
+      } else if (fontSize === "Large") {
+        document.body.style.fontSize = "18px";
+      }
+    }
+
+    // =========================
+    // DATA MANAGEMENT
+    // =========================
+
+    function showStorageInfo() {
+      const subjects = JSON.parse(localStorage.getItem("subjects")) || [];
+      const profile = JSON.parse(localStorage.getItem("profileSettings")) || {};
+      const study = JSON.parse(localStorage.getItem("studyPreferences")) || {};
+      const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
+
+      let totalNotes = 0;
+
+      subjects.forEach(subject => {
+        if (subject.notesByTopic) {
+          totalNotes += Object.keys(subject.notesByTopic).length;
+        }
+      });
+
+      document.getElementById("storageInfo").innerHTML = `
+        <strong>Saved Data Status:</strong><br>
+        Subjects: ${subjects.length}<br>
+        Saved Notes: ${totalNotes}<br>
+        Profile Saved: ${Object.keys(profile).length > 0 ? "Yes" : "No"}<br>
+        Study Preferences Saved: ${Object.keys(study).length > 0 ? "Yes" : "No"}<br>
+        Appearance Settings Saved: ${Object.keys(appearance).length > 0 ? "Yes" : "No"}
+      `;
+
+      showMessage("dataStatus", "Saved data checked.", "success");
+    }
+
+    function clearSavedNotesOnly() {
+      const confirmClear = confirm("Are you sure you want to clear all saved notes? Subjects and progress will remain.");
+
+      if (!confirmClear) {
+        return;
+      }
+
+      let subjects = JSON.parse(localStorage.getItem("subjects")) || [];
+
+      subjects.forEach(subject => {
+        subject.notesByTopic = {};
+      });
+
+      localStorage.setItem("subjects", JSON.stringify(subjects));
+
+      showStorageInfo();
+      updateSummary();
+
+      showMessage("dataStatus", "All saved notes cleared.", "warning");
+    }
+
+    function clearSubjectsAndProgress() {
+      const confirmClear = confirm("Are you sure you want to clear all subjects and revision progress?");
+
+      if (!confirmClear) {
+        return;
+      }
+
+      localStorage.removeItem("subjects");
+
+      showStorageInfo();
+      updateSummary();
+
+      showMessage("dataStatus", "Subjects and progress cleared.", "warning");
+    }
+
+    function resetAllData() {
+      const confirmReset = confirm("This will delete profile settings, preferences, subjects, notes, and progress. Continue?");
+
+      if (!confirmReset) {
+        return;
+      }
+
+      localStorage.removeItem("profileSettings");
+      localStorage.removeItem("studyPreferences");
+      localStorage.removeItem("appearanceSettings");
+      localStorage.removeItem("subjects");
+
+      loadSettings();
+      showStorageInfo();
+
+      showMessage("dataStatus", "All app data has been reset.", "warning");
+    }
+
+    // =========================
+    // SUMMARY
+    // =========================
+
+    function updateSummary() {
+      const profile = JSON.parse(localStorage.getItem("profileSettings")) || {};
+      const study = JSON.parse(localStorage.getItem("studyPreferences")) || {};
+      const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
+      const subjects = JSON.parse(localStorage.getItem("subjects")) || [];
+
+      let totalNotes = 0;
+      let totalTopics = 0;
+
+      subjects.forEach(subject => {
+        if (subject.notesByTopic) {
+          totalNotes += Object.keys(subject.notesByTopic).length;
+        }
+
+        if (subject.topics) {
+          totalTopics += subject.topics.length;
+        }
+      });
+
+      document.getElementById("summaryBox").innerHTML = `
+        <strong>Profile</strong><br>
+        Name: ${profile.fullName || "Not set"}<br>
+        Email: ${profile.email || "Not set"}<br>
+        Student ID: ${profile.studentId || "Not set"}<br><br>
+
+        <strong>Study Preferences</strong><br>
+        Quiz Difficulty: ${study.defaultDifficulty || "Easy"}<br>
+        Question Count: ${study.defaultQuestionCount || "5"}<br>
+        Notes Style: ${study.defaultNotesStyle || "Short Notes"}<br><br>
+
+        <strong>Appearance</strong><br>
+        Theme: ${appearance.theme || "Default Blue"}<br>
+        Font Size: ${appearance.fontSize || "Medium"}<br><br>
+
+        <strong>Study Data</strong><br>
+        Subjects: ${subjects.length}<br>
+        Revision Topics: ${totalTopics}<br>
+        Saved Notes: ${totalNotes}
+      `;
+    }
+
+    function loadSettings() {
+      loadProfile();
+      loadStudyPreferences();
+      loadAppearance();
+      updateSummary();
+    }
+
+    // =========================
+    // INITIAL LOAD
+    // =========================
+
+    loadSettings();
+  </script>
+
+</body>
+</html>
