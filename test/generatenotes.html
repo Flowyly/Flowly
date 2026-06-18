@@ -615,16 +615,26 @@ function logout() { window.location.href = "login1.html"; }
 
 // ===== NEW ADDITION: CUSTOM QUIZ POPUP =====
 function showQuizPopup() {
+    sessionStorage.setItem("showQuizPopup", "true");
     document.getElementById("quizPopup").classList.add("show");
 }
 
 function closeQuizPopup() {
+    sessionStorage.removeItem("showQuizPopup");
     document.getElementById("quizPopup").classList.remove("show");
     loadNotesFromBackend();
 }
 
 function goToQuizFromPopup() {
+    sessionStorage.removeItem("showQuizPopup");
     window.location.href = "generatequiz.html";
+}
+function checkPendingQuizPopup() {
+    if (sessionStorage.getItem("showQuizPopup") === "true") {
+        setTimeout(() => {
+            document.getElementById("quizPopup").classList.add("show");
+        }, 300);
+    }
 }
 
 // ===== BACKEND + LOCAL PAGE STATE =====
@@ -1228,18 +1238,19 @@ async function generateNotes() {
 
         const data = await response.json();
 
-        if (data.success && data.notes) {
-            topic.notes = data.notes;
-            topic.fileName = file.name;
-            topic.updatedAt = new Date().toISOString();
-            notesArea.value = data.notes;
-            saveSubjects();
-renderPage();
+if (data.success && data.notes) {
+    topic.notes = data.notes;
+    topic.fileName = file.name;
+    topic.updatedAt = new Date().toISOString();
+    notesArea.value = data.notes;
 
-showQuizPopup();
-        } else {
-            notesArea.value = data.message || "AI generation failed.";
-        }
+    saveSubjects();
+    renderPage();
+
+    showQuizPopup();
+} else {
+    notesArea.value = data.message || "AI generation failed.";
+}
     } catch (error) {
         console.error(error);
         notesArea.value = "Error connecting to backend. Make sure Flask backend is running.";
@@ -1288,9 +1299,17 @@ function clearEditor() {
 }
 
 // ===== INITIAL LOAD =====
-renderPage();
-// NEW: Pull saved notes from backend.py /notes when the page opens.
-loadNotesFromBackend();
+async function initializePage() {
+    renderPage();
+
+    // Pull saved notes from backend.py /notes when the page opens.
+    await loadNotesFromBackend();
+
+    // Keep quiz popup visible even if Live Server refreshes the page.
+    checkPendingQuizPopup();
+}
+
+initializePage();
     </script>
 </body>
 </html>
