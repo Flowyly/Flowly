@@ -244,6 +244,12 @@ async function registerUser(event) {
   const data = await res.json();
 
   if (data.success) {
+
+    localStorage.setItem("profileSettings", JSON.stringify({
+  fullName: username,
+  email: email,
+  studentId: ""
+}));
     document.getElementById("message").style.color = "green";
     document.getElementById("message").innerText = "Registration successful!";
 

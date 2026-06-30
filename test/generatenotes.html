@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Study Notes</title>
-    
-    <!-- THIS IS STYLE -->
 
     <style>
 * {
@@ -22,138 +20,88 @@ body {
 }
 
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 16px 30px;
-  margin: 20px;
-
-  background: rgba(255, 255, 255, 0.75);
-
-  backdrop-filter: blur(12px);
-
-  border: 1px solid rgba(255, 255, 255, 0.4);
-
-  border-radius: 20px;
-
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.08);
-
-  transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 30px;
+    margin: 20px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
-/* LEFT NAV */
+
 .nav-left {
-  display: flex;
-  align-items: center;
-  gap: 18px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
 }
 
-/* NAV ITEMS */
 .nav-item {
-  position: relative;
-
-  padding: 10px 18px;
-
-  border-radius: 12px;
-
-  cursor: pointer;
-
-  font-weight: 500;
-  color: #334155;
-
-  transition:
-    background 0.25s ease,
-    color 0.25s ease,
-    transform 0.2s ease;
+    padding: 10px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #334155;
+    transition: 0.25s ease;
 }
 
-/* HOVER EFFECT */
 .nav-item:hover {
-  background: #dbeafe;
-
-  color: #2563eb;
-
-  transform: translateY(-2px);
+    background: #dbeafe;
+    color: #2563eb;
+    transform: translateY(-2px);
 }
 
-/* ACTIVE PAGE */
 .nav-item.active {
-  background: linear-gradient(
-    135deg,
-    #3b82f6,
-    #2563eb
-  );
-
-  color: white;
-
-  font-weight: 600;
-
-  box-shadow:
-    0 4px 12px rgba(37, 99, 235, 0.35);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
 }
 
-/* PROFILE */
 .profile {
-  width: 42px;
-  height: 42px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: #eff6ff;
-
-  font-size: 20px;
-
-  cursor: pointer;
-
-  transition:
-    background 0.25s ease,
-    transform 0.2s ease;
+    position: relative;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eff6ff;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.25s ease;
 }
 
 .profile:hover {
-  background: #dbeafe;
-
-  transform: scale(1.08);
+    background: #dbeafe;
+    transform: scale(1.08);
 }
 
-  /* PROFILE */
-  .profile {
-    position: relative;
-    cursor: pointer;
-    font-size: 15px;
-  }
-
-  .profile-menu {
-    font: arial;
+.profile-menu {
     border: 2px solid black;
     display: none;
     position: absolute;
     right: 0;
     top: 35px;
-    background: rgb(255, 255, 255);
+    background: white;
     border-radius: 19px;
     width: 180px;
     box-shadow: 7px 13px 15px -1px rgba(0, 0, 0, 0.15);
-    
-  }
+    z-index: 10;
+}
 
-  .profile-menu div {
+.profile-menu div {
     padding: 12px;
     cursor: pointer;
-    border-radius: 19px;
-  }
+    border-radius: 17px;
+}
 
-  .profile-menu div:hover {
+.profile-menu div:hover {
     background: #6fa0d0;
     color: white;
-    border-radius: 19px;
-    border: 2px solid black;
-  }
+}
 
 .page-container {
     width: 86%;
@@ -171,7 +119,7 @@ body {
 }
 
 .hero p {
-    color: #6b7280;
+    color: #475569;
 }
 
 .workspace {
@@ -182,74 +130,21 @@ body {
 }
 
 .sidebar,
-.upload-card,
-.notes-card,
-.progress-card {
+.card {
     background-color: white;
     border: 2px dashed #a7d8ff;
     border-radius: 18px;
     box-shadow: 0 8px 22px rgba(0,0,0,0.04);
 }
 
-.sidebar {
+.sidebar,
+.card {
     padding: 24px;
-    height: fit-content;
 }
 
-.sidebar h2 {
-    margin-bottom: 18px;
-}
-
-.subject-card {
-    background-color: #f8fbff;
-    border: 1px solid #e5f3ff;
-    border-radius: 14px;
-    padding: 16px;
+.sidebar h2,
+.card h2 {
     margin-bottom: 16px;
-    transition: 0.3s ease;
-    cursor: pointer;
-}
-
-.subject-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
-}
-
-.active-subject {
-    background-color: #eaf8ff;
-    border-color: #72bfd7;
-}
-
-.subject-top {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.subject-top span {
-    color: #2563eb;
-    font-weight: bold;
-}
-
-.subject-card p {
-    margin-top: 10px;
-    color: #6b7280;
-    font-size: 13px;
-}
-
-.mini-progress {
-    width: 100%;
-    height: 8px;
-    background-color: #dbeafe;
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-.mini-bar {
-    height: 100%;
-    width: 0%;
-    background-color: #3b82f6;
-    transition: width 0.3s ease;
 }
 
 .main-panel {
@@ -258,26 +153,14 @@ body {
     gap: 24px;
 }
 
-.upload-card,
-.notes-card,
-.progress-card {
-    padding: 28px;
-}
-
-.upload-card h2,
-.notes-card h2,
-.progress-card h2 {
-    margin-bottom: 20px;
-}
-
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 18px;
+    gap: 16px;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .form-group label {
@@ -296,71 +179,139 @@ select {
     background-color: #f8fbff;
 }
 
+button {
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.primary-btn {
+    background-color: #2563eb;
+    color: white;
+    padding: 12px 18px;
+}
+
+.primary-btn:hover {
+    background-color: #1d4ed8;
+}
+
+.secondary-btn {
+    background-color: #e0f2fe;
+    color: #2563eb;
+    padding: 10px 14px;
+}
+
+.secondary-btn:hover {
+    background-color: #c7eafe;
+}
+
+.danger-btn {
+    background-color: #ef4444;
+    color: white;
+    padding: 10px 14px;
+}
+
+.danger-btn:hover {
+    background-color: #dc2626;
+}
+
+.subject-card,
+.topic-card {
+    background-color: #f8fbff;
+    border: 1px solid #e5f3ff;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.subject-card:hover,
+.topic-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.active-card {
+    background-color: #eaf8ff;
+    border-color: #72bfd7;
+}
+
+.subject-card h3,
+.topic-card h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+.muted {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.path-box {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 18px;
+    color: #1e40af;
+    font-weight: bold;
+}
+
+.add-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.add-row input {
+    flex: 1;
+}
+
 .upload-box {
     border: 2px dashed #9ddcff;
     background-color: #f8fcff;
     border-radius: 16px;
-    padding: 40px;
+    padding: 34px;
     text-align: center;
     transition: 0.3s ease;
-    margin-bottom: 24px;
-}
-.upload-reminder {
-    margin-top: 6px;
     margin-bottom: 18px;
-    color: #2563eb;
-    font-size: 14px;
-    font-weight: 600;
 }
+
 .upload-box:hover {
     background-color: #eef8ff;
     border-color: #72bfd7;
-}
-
-.upload-icon {
-    font-size: 45px;
-    margin-bottom: 15px;
-}
-
-.upload-box h3 {
-    margin-bottom: 8px;
-}
-
-.upload-box p {
-    color: #6b7280;
-    margin-bottom: 20px;
 }
 
 .upload-box input {
     display: none;
 }
 
-.upload-btn,
-.generate-btn {
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    padding: 13px 22px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
+.upload-icon {
+    font-size: 42px;
+    margin-bottom: 12px;
 }
 
-.upload-btn:hover,
-.generate-btn:hover {
-    background-color: #1d4ed8;
+.upload-reminder {
+    margin: 8px 0 16px;
+    color: #2563eb;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.file-name-display {
+    margin-top: 12px;
+    color: #475569;
+    font-size: 14px;
 }
 
 .notes-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
     margin-bottom: 18px;
-}
-
-.notes-header p {
-    color: #6b7280;
-    font-size: 14px;
 }
 
 .status-badge {
@@ -370,6 +321,7 @@ select {
     border-radius: 20px;
     font-weight: bold;
     font-size: 13px;
+    white-space: nowrap;
 }
 
 .topic-list {
@@ -378,26 +330,23 @@ select {
     gap: 14px;
 }
 
-.topic-list label {
-    background-color: #f8fbff;
-    border: 1px solid #e5f3ff;
-    border-radius: 12px;
-    padding: 14px;
-    cursor: pointer;
-    font-size: 14px;
+.topic-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
 }
 
-.topic-list input {
-    margin-right: 8px;
-}
-
-.hidden {
-    display: none;
+.subject-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
 }
 
 textarea {
     width: 100%;
-    height: 340px;
+    min-height: 340px;
     resize: vertical;
     padding: 18px;
     border-radius: 14px;
@@ -412,85 +361,63 @@ textarea {
     display: flex;
     gap: 12px;
     margin-top: 18px;
+    flex-wrap: wrap;
 }
 
-.button-row button {
-    background-color: #e0f2fe;
-    color: #2563eb;
-    border: none;
-    padding: 11px 18px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
+.empty-message {
+    color: #6b7280;
+    font-size: 14px;
+    background: #f8fbff;
+    border: 1px solid #e5f3ff;
+    border-radius: 12px;
+    padding: 14px;
 }
 
-.button-row button:hover {
-    background-color: #c7eafe;
-}
-
-.clear-btn {
-    background-color: #f3f4f6 !important;
-    color: #374151 !important;
-}
-
-
-/* ===== CUSTOM ACTION BUTTONS FOR NOTES PAGE ===== */
-
-.subject-add button,
-.checklist-add button,
-.subject-actions button,
-.topic-item button {
-    background-color: #2563eb;
+.quiz-cta {
+    display: none;
+    margin-top: 18px;
+    padding: 18px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
     color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 8px;
-    transition: 0.2s ease;
-}
-
-.subject-add button:hover,
-.checklist-add button:hover,
-.subject-actions button:hover,
-.topic-item button:hover {
-    background-color: #1d4ed8;
-    transform: translateY(-1px);
-}
-
-.subject-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-}
-
-.topic-item {
-    display: flex;
+    box-shadow: 0 12px 28px rgba(37, 99, 235, 0.25);
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
-.topic-item span {
-    flex: 1;
+.quiz-cta.show {
+    display: flex;
 }
 
-.subject-actions button:last-child,
-.topic-item button:last-child {
-    background-color: #ef4444;
+.quiz-cta h3 {
+    margin-bottom: 6px;
+    font-size: 18px;
 }
 
-.subject-actions button:last-child:hover,
-.topic-item button:last-child:hover {
-    background-color: #dc2626;
+.quiz-cta p {
+    color: #e0f2fe;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.quiz-cta button {
+    background: white;
+    color: #2563eb;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-weight: bold;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
+}
+
+.quiz-cta button:hover {
+    background: #eff6ff;
+    transform: translateY(-2px);
 }
 
 @media (max-width: 900px) {
-
-    .workspace {
-        grid-template-columns: 1fr;
-    }
-
+    .workspace,
     .form-grid,
     .topic-list {
         grid-template-columns: 1fr;
@@ -500,21 +427,21 @@ textarea {
         width: 92%;
     }
 
-    .nav-links {
-        gap: 22px;
+    .nav-left {
+        gap: 8px;
+        flex-wrap: wrap;
     }
 }
-</style>
+    </style>
 </head>
 
 <body>
-
     <div class="navbar">
         <div class="nav-left">
             <div class="nav-item" onclick="goHome()">Home</div>
             <div class="nav-item" onclick="goWork()">Work</div>
-            <div class="nav-item" onclick="goGenerateQuiz()"> Quiz</div>
-            <div class="nav-item active" onclick="goGenerateNotes()"> Notes</div>
+            <div class="nav-item" onclick="goGenerateQuiz()">Quiz</div>
+            <div class="nav-item active" onclick="goGenerateNotes()">Notes</div>
         </div>
 
         <div class="profile" onclick="toggleMenu()">
@@ -528,110 +455,119 @@ textarea {
     </div>
 
     <main class="page-container">
-
         <section class="hero">
             <h1>AI Study Notes</h1>
-            <p>Upload study material, generate editable notes, and track revision progress.</p>
+            <p>Choose a subject, choose a topic, upload a PDF, then save notes under that topic.</p>
         </section>
 
         <section class="workspace">
-
             <aside class="sidebar">
                 <h2>Subjects</h2>
 
-                <div class="subject-add">
-                    <input type="text" id="newSubjectInput" placeholder="Add new subject">
-                    <button type="button" onclick="addSubject()">Add</button>
+                <!-- NEW: Subject creation is separated clearly from topic creation. -->
+                <div class="add-row">
+                    <input type="text" id="newSubjectInput" placeholder="Type new subject">
+                    <button type="button" class="primary-btn" onclick="addSubject()">Add</button>
                 </div>
 
+                <!-- NEW: Subject list shows exactly which subject is active. -->
                 <div id="subjectList"></div>
             </aside>
 
             <section class="main-panel">
+                <div class="card">
+                    <h2>Step 1: Choose Subject and Topic</h2>
 
-                <div class="upload-card">
-                    <h2>Generate Notes</h2>
+                    <!-- NEW: Current destination tells user where generated notes will be stored. -->
+                    <div class="path-box" id="savePath">Saving to: No subject selected</div>
 
                     <div class="form-grid">
-    <div class="form-group">
-        <label>Subject</label>
-        <select id="subjectSelect">
-            <option value="">No subject added yet</option>
-        </select>
-    </div>
+                        <div class="form-group">
+                            <label>Selected Subject</label>
+                            <select id="subjectSelect" onchange="changeSubject()">
+                                <option value="">No subject added yet</option>
+                            </select>
+                        </div>
 
-    <div class="form-group">
-        <label>Chapter / Topic</label>
-        <input type="text" id="topicInput" placeholder="Example: Secure Coding">
+                        <div class="form-group">
+                            <label>Selected Topic</label>
+                            <select id="topicSelect" onchange="changeTopic()">
+                                <option value="">Select or create a topic</option>
+                            </select>
+                        </div>
+                    </div>
 
-        <label style="margin-top: 12px;">Saved Notes</label>
-        <select id="savedNotesSelect" onchange="loadSelectedSavedNote()">
-            <option value="">No saved notes yet</option>
-        </select>
-    </div>
-</div>
+                    <!-- NEW: Topic creation is tied to the selected subject. -->
+                    <div class="add-row">
+                        <input type="text" id="newTopicInput" placeholder="Type new topic, e.g. Secure Coding">
+                        <button type="button" class="primary-btn" onclick="addTopic()">Add Topic</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Step 2: Upload PDF and Generate Notes</h2>
 
                     <div class="upload-box">
-                        <div class="upload-icon">📄</div>
+                        <div class="upload-icon">PDF</div>
                         <h3>Upload Study Material</h3>
-                        <p>Drag & drop your files here or click below</p>
-                        <p class="upload-reminder">Please upload PDF files only.</p>
+                        <p class="muted">Only PDF files are accepted.</p>
+                        <p class="upload-reminder">Notes will be stored under the selected subject and topic.</p>
 
-                        <input type="file" id="fileUpload" accept=".pdf" onchange="showSelectedFile()">
+                        <input type="file" id="fileUpload" accept=".pdf,application/pdf" onchange="showSelectedFile()">
 
-                        <button type="button" class="upload-btn" onclick="document.getElementById('fileUpload').click()">
-                            Choose File
+                        <button type="button" class="primary-btn" onclick="document.getElementById('fileUpload').click()">
+                            Choose PDF
                         </button>
 
                         <p id="fileNameDisplay" class="file-name-display">No file selected</p>
                     </div>
 
-                    <button type="button" class="generate-btn" onclick="generateNotes()">
-                     Generate Notes
+                    <button type="button" class="primary-btn" id="generateBtn" onclick="generateNotes()">
+                        Generate Notes
                     </button>
                 </div>
 
-                <div class="progress-card">
+                <div class="card">
                     <div class="notes-header">
                         <div>
-                            <h2>Revision Checklist</h2>
-                            <p>Tick the topics you have revised. Progress will update automatically.</p>
+                            <h2>Saved Topics and Notes</h2>
+                            <p class="muted">These are the topics inside the selected subject. Click View to open notes.</p>
                         </div>
-
-                        <span class="status-badge" id="currentProgress">0%</span>
+                        <span class="status-badge" id="topicCount">0 Topics</span>
                     </div>
 
-                    <div class="checklist-add">
-                        <input type="text" id="newTopicInput" placeholder="Add revision topic">
-                        <button type="button" onclick="addTopic()">Add Topic</button>
-                    </div>
-
+                    <!-- NEW: This is the clear previous notes display. -->
                     <div class="topic-list" id="topicList"></div>
                 </div>
 
-                <div class="notes-card">
+                <div class="card">
                     <div class="notes-header">
                         <div>
-                            <h2>Generated Notes</h2>
-                            <p>You can edit the notes before saving.</p>
+                            <h2>Notes Editor</h2>
+                            <p class="muted">Generated notes appear here. You can edit them before saving.</p>
                         </div>
-
-                        <span class="status-badge">Editable</span>
+                        <span class="status-badge" id="editorStatus">No Topic Selected</span>
                     </div>
 
-                    <textarea id="notesArea" placeholder="AI-generated notes will appear here..."></textarea>
+                    <textarea id="notesArea" placeholder="Generated notes will appear here..."></textarea>
 
                     <div class="button-row">
-                        <button type="button" onclick="saveNotes()">Save Notes</button>
-                        <button type="button" onclick="copyNotes()">Copy</button>
-                        <button type="button" class="clear-btn" onclick="clearNotes()">Clear</button>
+                        <button type="button" class="primary-btn" onclick="saveNotesToCurrentTopic()">Save to Selected Topic</button>
+                        <button type="button" class="secondary-btn" onclick="copyNotes()">Copy</button>
+                        <button type="button" class="secondary-btn" onclick="clearEditor()">Clear Editor</button>
+                    </div>
+
+                    <div class="quiz-cta" id="quizCta">
+                        <div>
+                            <h3>Want to try a quiz?</h3>
+                            <p>Your notes are saved. Turn them into a quick quiz to test your understanding.</p>
+                        </div>
+
+                        <button type="button" onclick="startQuizFromNotes()">Start Quiz</button>
                     </div>
                 </div>
-
             </section>
-
         </section>
-
     </main>
 
     <script>
@@ -657,56 +593,235 @@ textarea {
     else if (fontSize === "Large") document.body.style.fontSize = "18px";
 })();
 
-// ===== FRIEND NAVIGATION CODE =====
-
+// ===== NAVIGATION =====
 function toggleMenu() {
-    let menu = document.getElementById("menu");
+    const menu = document.getElementById("menu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
 
-    if (menu) {
-        menu.style.display =
-            menu.style.display === "block" ? "none" : "block";
+function goHome() { window.location.href = "dashboard.html"; }
+function goWork() { window.location.href = "work.html"; }
+function goGenerateQuiz() { window.location.href = "generatequiz.html"; }
+function goGenerateNotes() { window.location.href = "generatenotes.html"; }
+function goProfile() { window.location.href = "profile.html"; }
+function goSettings() { window.location.href = "settings.html"; }
+function logout() { window.location.href = "login1.html"; }
+
+// ===== QUIZ CTA BUTTON =====
+function showQuizCta() {
+    const quizCta = document.getElementById("quizCta");
+    if (quizCta) {
+        quizCta.classList.add("show");
     }
 }
 
-function goHome() {
-    window.location.href = "dashboard.html";
-}
-
-function goWork() {
-    window.location.href = "work.html";
-}
-
-function goGenerateQuiz() {
+function startQuizFromNotes() {
     window.location.href = "generatequiz.html";
 }
 
-function goGenerateNotes() {
-    window.location.href = "generatenotes.html";
+// ===== BACKEND + LOCAL PAGE STATE =====
+// NEW: This page connects to Flask backend.py.
+const API_BASE_URL = "http://127.0.0.1:5000";
+
+// NEW: Browser storage is used for selected subject/topic and UI state.
+// Generated notes are also loaded back from the backend /notes route.
+let subjects = loadSubjects();
+let selectedSubjectId = localStorage.getItem("selectedSubjectId") || null;
+let selectedTopicId = localStorage.getItem("selectedTopicId") || null;
+
+function createId() {
+    return Date.now().toString() + Math.random().toString(16).slice(2);
 }
 
-function goProfile() {
-    window.location.href = "profile.html";
+function loadSubjects() {
+    const saved = JSON.parse(localStorage.getItem("subjects")) || [];
+
+    // NEW: Migration support for your older notesByTopic structure.
+    return saved.map(subject => {
+        if (!subject.id) subject.id = createId();
+        if (!Array.isArray(subject.topics)) subject.topics = [];
+
+        subject.topics = subject.topics.map(topic => {
+            if (typeof topic === "string") {
+                return { id: createId(), title: topic, notes: "", fileName: "", updatedAt: "", done: false };
+            }
+
+            return {
+                id: topic.id || createId(),
+                title: topic.title || topic.text || "Untitled Topic",
+                notes: topic.notes || "",
+                fileName: topic.fileName || "",
+                updatedAt: topic.updatedAt || "",
+                done: Boolean(topic.done)
+            };
+        });
+
+        if (subject.notesByTopic) {
+            Object.keys(subject.notesByTopic).forEach(topicTitle => {
+                const existingTopic = subject.topics.find(topic => topic.title === topicTitle);
+
+                if (existingTopic) {
+                    existingTopic.notes = subject.notesByTopic[topicTitle];
+                } else {
+                    subject.topics.push({
+                        id: createId(),
+                        title: topicTitle,
+                        notes: subject.notesByTopic[topicTitle],
+                        fileName: "",
+                        updatedAt: "",
+                        done: false
+                    });
+                }
+            });
+
+            delete subject.notesByTopic;
+        }
+
+        return {
+            id: subject.id,
+            name: subject.name || "Untitled Subject",
+            topics: subject.topics,
+            progress: subject.progress || 0
+        };
+    });
 }
-
-function goSettings() {
-    window.location.href = "settings.html";
-}
-
-function logout() {
-    window.location.href = "login1.html";
-}
-
-
-// ===== SUBJECT + CHECKLIST DATA =====
-
-let subjects = JSON.parse(localStorage.getItem("subjects")) || [];
-let selectedSubjectIndex = null;
 
 function saveSubjects() {
     localStorage.setItem("subjects", JSON.stringify(subjects));
+    localStorage.setItem("selectedSubjectId", selectedSubjectId || "");
+    localStorage.setItem("selectedTopicId", selectedTopicId || "");
 }
 
-// ===== SUBJECT FUNCTIONS =====
+// NEW: Load saved notes from Flask SQLite database and group them as Subject > Topic.
+async function loadNotesFromBackend() {
+    try {
+        const response = await fetch(API_BASE_URL + "/notes");
+        const backendNotes = await response.json();
+
+        if (!Array.isArray(backendNotes)) {
+            return;
+        }
+
+        backendNotes.forEach(note => {
+            const subjectName = (note.subject || "Untitled Subject").trim();
+            const topicTitle = (note.topic || "Untitled Topic").trim();
+
+            let subject = subjects.find(item => item.name.toLowerCase() === subjectName.toLowerCase());
+
+            if (!subject) {
+                subject = {
+                    id: createId(),
+                    name: subjectName,
+                    topics: [],
+                    progress: 0
+                };
+                subjects.push(subject);
+            }
+
+            let topic = subject.topics.find(item => item.title.toLowerCase() === topicTitle.toLowerCase());
+
+            if (!topic) {
+                topic = {
+                    id: createId(),
+                    title: topicTitle,
+                    notes: "",
+                    fileName: "Saved in database",
+                    updatedAt: "",
+                    done: false,
+                    backendId: note.id
+                };
+                subject.topics.push(topic);
+            }
+
+            // NEW: /notes returns newest first, so the first matching note becomes the visible latest note.
+            if (!topic.backendId || topic.backendId === note.id || !topic.notes) {
+                topic.backendId = note.id;
+                topic.notes = note.content || "";
+                topic.fileName = "Saved in database";
+            }
+        });
+
+        if (!selectedSubjectId && subjects.length > 0) {
+            selectedSubjectId = subjects[0].id;
+        }
+
+        ensureValidSelection();
+        saveSubjects();
+        renderPage();
+    } catch (error) {
+        console.error("LOAD NOTES ERROR:", error);
+    }
+}
+
+// NEW: Save edited notes to backend if /save_note route exists.
+// If the route is not added yet, the page still saves notes locally.
+async function saveNoteToBackend(subjectName, topicTitle, content) {
+    try {
+        const response = await fetch(API_BASE_URL + "/save_note", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                subject: subjectName,
+                topic: topicTitle,
+                content: content
+            })
+        });
+
+        return await response.json();
+    } catch (error) {
+        console.error("SAVE NOTE TO BACKEND ERROR:", error);
+        return {
+            success: false,
+            message: "Saved locally only. Backend /save_note route is not available."
+        };
+    }
+}
+
+function getSelectedSubject() {
+    return subjects.find(subject => subject.id === selectedSubjectId) || null;
+}
+
+function getSelectedTopic() {
+    const subject = getSelectedSubject();
+    if (!subject) return null;
+    return subject.topics.find(topic => topic.id === selectedTopicId) || null;
+}
+
+// ===== RENDER PAGE =====
+function renderPage() {
+    ensureValidSelection();
+    renderSubjects();
+    renderTopicDropdown();
+    renderTopicCards();
+    updateSavePath();
+    updateEditorStatus();
+    saveSubjects();
+}
+
+function ensureValidSelection() {
+    if (subjects.length === 0) {
+        selectedSubjectId = null;
+        selectedTopicId = null;
+        return;
+    }
+
+    if (!getSelectedSubject()) {
+        selectedSubjectId = subjects[0].id;
+    }
+
+    const subject = getSelectedSubject();
+
+    if (!subject || subject.topics.length === 0) {
+        selectedTopicId = null;
+        return;
+    }
+
+    if (!getSelectedTopic()) {
+        selectedTopicId = subject.topics[0].id;
+    }
+}
 
 function renderSubjects() {
     const subjectList = document.getElementById("subjectList");
@@ -716,459 +831,464 @@ function renderSubjects() {
     subjectSelect.innerHTML = "";
 
     if (subjects.length === 0) {
-        subjectList.innerHTML = "<p class='empty-message'>No subject added yet.</p>";
+        subjectList.innerHTML = "<p class='empty-message'>No subject yet. Add one first.</p>";
         subjectSelect.innerHTML = "<option value=''>No subject added yet</option>";
-        selectedSubjectIndex = null;
-        renderTopics();
         return;
     }
 
-    subjects.forEach((subject, index) => {
-        const completed = subject.topics.filter(topic => topic.done).length;
-        const total = subject.topics.length;
-        const progress = total === 0 ? 0 : Math.round((completed / total) * 100);
-
-        subject.progress = progress;
+    subjects.forEach(subject => {
+        const totalTopics = subject.topics.length;
+        const completedTopics = subject.topics.filter(topic => topic.done).length;
+        subject.progress = totalTopics === 0 ? 0 : Math.round((completedTopics / totalTopics) * 100);
 
         const card = document.createElement("div");
         card.className = "subject-card";
+        if (subject.id === selectedSubjectId) card.classList.add("active-card");
 
-        if (index === selectedSubjectIndex) {
-            card.classList.add("active-subject");
-        }
+        const title = document.createElement("h3");
+        title.textContent = subject.name;
 
-        card.innerHTML = `
-            <div class="subject-top">
-                <h3>${subject.name}</h3>
-                <span>${progress}%</span>
-            </div>
+        const meta = document.createElement("p");
+        meta.className = "muted";
+        meta.textContent = totalTopics + " topic(s), " + subject.progress + "% revised";
 
-            <div class="mini-progress">
-                <div class="mini-bar" style="width: ${progress}%"></div>
-            </div>
+        const actions = document.createElement("div");
+        actions.className = "subject-actions";
 
-            <p>${subject.description || "No description added"}</p>
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "danger-btn";
+        deleteButton.textContent = "Delete";
+        deleteButton.addEventListener("click", event => {
+            event.stopPropagation();
+            deleteSubject(subject.id);
+        });
 
-            <div class="subject-actions">
-                <button type="button" onclick="editSubject(event, ${index})">Edit</button>
-                <button type="button" onclick="deleteSubject(event, ${index})">Delete</button>
-            </div>
-        `;
+        actions.appendChild(deleteButton);
 
-       card.addEventListener("click", () => {
-    selectedSubjectIndex = index;
-    subjectSelect.value = index;
-    renderSubjects();
-    renderTopics();
-    renderSavedNotesList();
-    loadNotesByTopic();
-});
+        card.appendChild(title);
+        card.appendChild(meta);
+        card.appendChild(actions);
+        card.addEventListener("click", () => {
+            selectedSubjectId = subject.id;
+            selectedTopicId = subject.topics[0] ? subject.topics[0].id : null;
+            document.getElementById("notesArea").value = "";
+            renderPage();
+        });
 
         subjectList.appendChild(card);
 
         const option = document.createElement("option");
-        option.value = index;
+        option.value = subject.id;
         option.textContent = subject.name;
         subjectSelect.appendChild(option);
     });
 
-    if (selectedSubjectIndex === null && subjects.length > 0) {
-        selectedSubjectIndex = 0;
-    }
-
-    subjectSelect.value = selectedSubjectIndex;
-    saveSubjects();
+    subjectSelect.value = selectedSubjectId || "";
 }
 
+function renderTopicDropdown() {
+    const topicSelect = document.getElementById("topicSelect");
+    const subject = getSelectedSubject();
+
+    topicSelect.innerHTML = "";
+
+    if (!subject) {
+        topicSelect.innerHTML = "<option value=''>Select subject first</option>";
+        return;
+    }
+
+    if (subject.topics.length === 0) {
+        topicSelect.innerHTML = "<option value=''>No topic yet</option>";
+        return;
+    }
+
+    subject.topics.forEach(topic => {
+        const option = document.createElement("option");
+        option.value = topic.id;
+        option.textContent = topic.title;
+        topicSelect.appendChild(option);
+    });
+
+    topicSelect.value = selectedTopicId || "";
+}
+
+function renderTopicCards() {
+    const topicList = document.getElementById("topicList");
+    const topicCount = document.getElementById("topicCount");
+    const subject = getSelectedSubject();
+
+    topicList.innerHTML = "";
+
+    if (!subject) {
+        topicCount.textContent = "0 Topics";
+        topicList.innerHTML = "<p class='empty-message'>Select or add a subject first.</p>";
+        return;
+    }
+
+    topicCount.textContent = subject.topics.length + (subject.topics.length === 1 ? " Topic" : " Topics");
+
+    if (subject.topics.length === 0) {
+        topicList.innerHTML = "<p class='empty-message'>No topic yet. Add a topic above before generating notes.</p>";
+        return;
+    }
+
+    subject.topics.forEach(topic => {
+        const card = document.createElement("div");
+        card.className = "topic-card";
+        if (topic.id === selectedTopicId) card.classList.add("active-card");
+
+        const title = document.createElement("h3");
+        title.textContent = topic.title;
+
+        const meta = document.createElement("p");
+        meta.className = "muted";
+        meta.textContent = topic.notes
+            ? "Saved notes from " + (topic.fileName || "PDF") + formatUpdatedTime(topic.updatedAt)
+            : "No notes generated yet";
+
+        const actions = document.createElement("div");
+        actions.className = "topic-actions";
+
+        const viewButton = document.createElement("button");
+        viewButton.type = "button";
+        viewButton.className = "secondary-btn";
+        viewButton.textContent = "View";
+        viewButton.addEventListener("click", () => openTopic(topic.id));
+
+        const doneButton = document.createElement("button");
+        doneButton.type = "button";
+        doneButton.className = "secondary-btn";
+        doneButton.textContent = topic.done ? "Revised" : "Mark Revised";
+        doneButton.addEventListener("click", () => toggleTopicDone(topic.id));
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "danger-btn";
+        deleteButton.textContent = "Delete";
+        deleteButton.addEventListener("click", () => deleteTopic(topic.id));
+
+        actions.appendChild(viewButton);
+        actions.appendChild(doneButton);
+        actions.appendChild(deleteButton);
+
+        card.appendChild(title);
+        card.appendChild(meta);
+        card.appendChild(actions);
+
+        topicList.appendChild(card);
+    });
+}
+
+function updateSavePath() {
+    const savePath = document.getElementById("savePath");
+    const subject = getSelectedSubject();
+    const topic = getSelectedTopic();
+
+    if (!subject) {
+        savePath.textContent = "Saving to: No subject selected";
+    } else if (!topic) {
+        savePath.textContent = "Saving to: " + subject.name + " > No topic selected";
+    } else {
+        savePath.textContent = "Saving to: " + subject.name + " > " + topic.title;
+    }
+}
+
+function updateEditorStatus() {
+    const editorStatus = document.getElementById("editorStatus");
+    const topic = getSelectedTopic();
+
+    if (!topic) {
+        editorStatus.textContent = "No Topic Selected";
+    } else if (topic.notes) {
+        editorStatus.textContent = "Saved";
+    } else {
+        editorStatus.textContent = "Empty Topic";
+    }
+}
+
+function formatUpdatedTime(updatedAt) {
+    if (!updatedAt) return "";
+    return " | Updated: " + new Date(updatedAt).toLocaleString();
+}
+
+// ===== SUBJECT AND TOPIC ACTIONS =====
 function addSubject() {
     const input = document.getElementById("newSubjectInput");
     const subjectName = input.value.trim();
 
-    if (subjectName === "") {
-        alert("Please enter a subject name.");
+    if (!subjectName) {
+        alert("Please type a subject name.");
         return;
     }
 
-    subjects.push({
-    name: subjectName,
-    description: "",
-    topics: [],
-    notesByTopic: {},
-    progress: 0
-});
+    const existingSubject = subjects.find(subject => subject.name.toLowerCase() === subjectName.toLowerCase());
 
-    selectedSubjectIndex = subjects.length - 1;
-    input.value = "";
-
-   saveSubjects();
-renderSubjects();
-renderTopics();
-renderSavedNotesList();
-}
-
-function editSubject(event, index) {
-    event.stopPropagation();
-
-    const newName = prompt("Edit subject name:", subjects[index].name);
-
-    if (newName && newName.trim() !== "") {
-        subjects[index].name = newName.trim();
-        saveSubjects();
-        renderSubjects();
-    }
-}
-
-function deleteSubject(event, index) {
-    event.stopPropagation();
-
-    if (confirm("Delete this subject?")) {
-        subjects.splice(index, 1);
-
-        if (subjects.length === 0) {
-            selectedSubjectIndex = null;
-        } else {
-            selectedSubjectIndex = 0;
-        }
-
-       saveSubjects();
-renderSubjects();
-renderTopics();
-renderSavedNotesList();
-    }
-}
-
-document.getElementById("subjectSelect").addEventListener("change", function () {
-    if (this.value === "") {
-        selectedSubjectIndex = null;
+    if (existingSubject) {
+        selectedSubjectId = existingSubject.id;
     } else {
-        selectedSubjectIndex = Number(this.value);
+        const newSubject = {
+            id: createId(),
+            name: subjectName,
+            topics: [],
+            progress: 0
+        };
+
+        subjects.push(newSubject);
+        selectedSubjectId = newSubject.id;
     }
 
-    renderSubjects();
-    renderTopics();
-    renderSavedNotesList();
-    loadNotesByTopic();
-});
+    selectedTopicId = null;
+    input.value = "";
+    document.getElementById("notesArea").value = "";
+    renderPage();
+}
 
+function changeSubject() {
+    selectedSubjectId = document.getElementById("subjectSelect").value;
+    const subject = getSelectedSubject();
+    selectedTopicId = subject && subject.topics[0] ? subject.topics[0].id : null;
+    document.getElementById("notesArea").value = "";
+    renderPage();
+}
 
-// ===== TOPIC / REVISION CHECKLIST FUNCTIONS =====
+function deleteSubject(subjectId) {
+    const subject = subjects.find(item => item.id === subjectId);
 
-function renderTopics() {
-    const topicList = document.getElementById("topicList");
-    const currentProgress = document.getElementById("currentProgress");
-
-    topicList.innerHTML = "";
-
-    if (selectedSubjectIndex === null || !subjects[selectedSubjectIndex]) {
-        topicList.innerHTML = "<p class='empty-message'>Select or add a subject first.</p>";
-        currentProgress.textContent = "0%";
+    if (!subject) {
         return;
     }
 
-    const selectedSubject = subjects[selectedSubjectIndex];
-
-    if (selectedSubject.topics.length === 0) {
-        topicList.innerHTML = "<p class='empty-message'>No revision topic added yet.</p>";
-        currentProgress.textContent = "0%";
+    if (!confirm("Delete this subject and all topics under it: " + subject.name + "?")) {
         return;
     }
 
-    selectedSubject.topics.forEach((topic, index) => {
-        const label = document.createElement("label");
-        label.className = "topic-item";
+    subjects = subjects.filter(item => item.id !== subjectId);
 
-        label.innerHTML = `
-            <input type="checkbox" ${topic.done ? "checked" : ""} onchange="toggleTopic(${index})">
-            <span>${topic.text}</span>
-            <button type="button" onclick="editTopic(event, ${index})">Edit</button>
-            <button type="button" onclick="deleteTopic(event, ${index})">Delete</button>
-        `;
+    if (selectedSubjectId === subjectId) {
+        selectedSubjectId = subjects[0] ? subjects[0].id : null;
+        const newSubject = getSelectedSubject();
+        selectedTopicId = newSubject && newSubject.topics[0] ? newSubject.topics[0].id : null;
+        document.getElementById("notesArea").value = "";
+    }
 
-        topicList.appendChild(label);
-    });
-
-    updateProgress();
+    renderPage();
 }
 
 function addTopic() {
-    if (selectedSubjectIndex === null || !subjects[selectedSubjectIndex]) {
+    const subject = getSelectedSubject();
+    const input = document.getElementById("newTopicInput");
+    const topicTitle = input.value.trim();
+
+    if (!subject) {
         alert("Please add or select a subject first.");
         return;
     }
 
-    const input = document.getElementById("newTopicInput");
-    const topicText = input.value.trim();
-
-    if (topicText === "") {
-        alert("Please enter a revision topic.");
+    if (!topicTitle) {
+        alert("Please type a topic name.");
         return;
     }
 
-    subjects[selectedSubjectIndex].topics.push({
-        text: topicText,
-        done: false
-    });
+    const existingTopic = subject.topics.find(topic => topic.title.toLowerCase() === topicTitle.toLowerCase());
+
+    if (existingTopic) {
+        selectedTopicId = existingTopic.id;
+    } else {
+        const newTopic = {
+            id: createId(),
+            title: topicTitle,
+            notes: "",
+            fileName: "",
+            updatedAt: "",
+            done: false
+        };
+
+        subject.topics.push(newTopic);
+        selectedTopicId = newTopic.id;
+    }
 
     input.value = "";
-
-    saveSubjects();
-    renderTopics();
-    renderSubjects();
+    document.getElementById("notesArea").value = getSelectedTopic().notes || "";
+    renderPage();
 }
 
-function toggleTopic(index) {
-    subjects[selectedSubjectIndex].topics[index].done =
-        !subjects[selectedSubjectIndex].topics[index].done;
-
-    saveSubjects();
-    renderTopics();
-    renderSubjects();
+function changeTopic() {
+    selectedTopicId = document.getElementById("topicSelect").value;
+    const topic = getSelectedTopic();
+    document.getElementById("notesArea").value = topic ? topic.notes : "";
+    renderPage();
 }
 
-function editTopic(event, index) {
-    event.preventDefault();
-
-    const currentText = subjects[selectedSubjectIndex].topics[index].text;
-    const newText = prompt("Edit revision topic:", currentText);
-
-    if (newText && newText.trim() !== "") {
-        subjects[selectedSubjectIndex].topics[index].text = newText.trim();
-        saveSubjects();
-        renderTopics();
-    }
+function openTopic(topicId) {
+    selectedTopicId = topicId;
+    const topic = getSelectedTopic();
+    document.getElementById("notesArea").value = topic ? topic.notes : "";
+    renderPage();
+    document.getElementById("notesArea").scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
-function deleteTopic(event, index) {
-    event.preventDefault();
+function toggleTopicDone(topicId) {
+    const subject = getSelectedSubject();
+    if (!subject) return;
 
-    subjects[selectedSubjectIndex].topics.splice(index, 1);
+    const topic = subject.topics.find(item => item.id === topicId);
+    if (!topic) return;
 
-    saveSubjects();
-    renderTopics();
-    renderSubjects();
+    topic.done = !topic.done;
+    renderPage();
 }
 
-function updateProgress() {
-    if (selectedSubjectIndex === null || !subjects[selectedSubjectIndex]) {
-        document.getElementById("currentProgress").textContent = "0%";
+function deleteTopic(topicId) {
+    const subject = getSelectedSubject();
+    if (!subject) return;
+
+    const topic = subject.topics.find(item => item.id === topicId);
+    if (!topic) return;
+
+    if (!confirm("Delete this topic and its notes: " + topic.title + "?")) {
         return;
     }
 
-    const topics = subjects[selectedSubjectIndex].topics;
-    const completed = topics.filter(topic => topic.done).length;
-    const total = topics.length;
-
-    const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
-
-    subjects[selectedSubjectIndex].progress = percentage;
-    document.getElementById("currentProgress").textContent = percentage + "%";
-
-    saveSubjects();
+    subject.topics = subject.topics.filter(item => item.id !== topicId);
+    selectedTopicId = subject.topics[0] ? subject.topics[0].id : null;
+    document.getElementById("notesArea").value = "";
+    renderPage();
 }
 
+// ===== PDF UPLOAD AND NOTES GENERATION =====
+function showSelectedFile() {
+    const fileInput = document.getElementById("fileUpload");
+    const fileNameDisplay = document.getElementById("fileNameDisplay");
 
-// ===== GENERATE NOTES =====
+    if (fileInput.files.length > 0) {
+        fileNameDisplay.textContent = "Selected PDF: " + fileInput.files[0].name;
+    } else {
+        fileNameDisplay.textContent = "No file selected";
+    }
+}
+
+function isPdfFile(file) {
+    return file && (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"));
+}
 
 async function generateNotes() {
+    const subject = getSelectedSubject();
+    const topic = getSelectedTopic();
     const notesArea = document.getElementById("notesArea");
-    const topicInput = document.getElementById("topicInput");
     const fileInput = document.getElementById("fileUpload");
-    const generateBtn = document.querySelector(".generate-btn");
+    const generateBtn = document.getElementById("generateBtn");
 
-    if (selectedSubjectIndex === null || !subjects[selectedSubjectIndex]) {
+    if (!subject) {
         alert("Please add or select a subject first.");
+        return;
+    }
+
+    if (!topic) {
+        alert("Please add or select a topic first.");
         return;
     }
 
     if (fileInput.files.length === 0) {
-        alert("Please choose a study material file first.");
+        alert("Please choose a PDF file first.");
         return;
     }
 
-    const subjectName = subjects[selectedSubjectIndex].name;
-    const topic = topicInput.value.trim();
     const file = fileInput.files[0];
 
+    if (!isPdfFile(file)) {
+        alert("Please upload PDF files only.");
+        fileInput.value = "";
+        showSelectedFile();
+        return;
+    }
+
     const formData = new FormData();
-    formData.append("subject", subjectName);
-    formData.append("topic", topic);
+    formData.append("subject", subject.name);
+    formData.append("topic", topic.title);
     formData.append("file", file);
 
-    // ✅ Loading state
-    notesArea.value = "⏳ Generating notes...";
+    notesArea.value = "Generating notes...";
     generateBtn.disabled = true;
+    generateBtn.textContent = "Generating...";
 
     try {
-        const response = await fetch("http://127.0.0.1:5000/generate_notes_from_file", {
+        const response = await fetch(API_BASE_URL + "/generate_notes_from_file", {
             method: "POST",
             body: formData
         });
 
         const data = await response.json();
 
-        generateBtn.disabled = false;
-
-        if (data.success && data.notes) {
-            notesArea.value = data.notes;
-
-            // ✅ Auto-save topic input if topic was provided
-            if (topic && subjects[selectedSubjectIndex]) {
-                if (!subjects[selectedSubjectIndex].notesByTopic) {
-                    subjects[selectedSubjectIndex].notesByTopic = {};
-                }
-                subjects[selectedSubjectIndex].notesByTopic[topic] = data.notes;
-                saveSubjects();
-                renderSavedNotesList();
-            }
-
-        } else {
-            notesArea.value = data.message || "AI generation failed.";
-        }
-
-    } catch (error) {
-        console.error(error);
-        generateBtn.disabled = false;
-        notesArea.value = "Error connecting to backend. Make sure Flask backend is running.";
-    }
-}
-function showSelectedFile() {
-    const fileInput = document.getElementById("fileUpload");
-    const fileNameDisplay = document.getElementById("fileNameDisplay");
-
-    if (fileInput.files.length > 0) {
-        fileNameDisplay.textContent = "Selected file: " + fileInput.files[0].name;
-    } else {
-        fileNameDisplay.textContent = "No file selected";
-    }
-}
-// ===== SAVE / COPY / CLEAR =====
-
-// ===== SAVE / COPY / CLEAR =====
-
-function saveNotes() {
-    const notesArea = document.getElementById("notesArea");
-    const topicInput = document.getElementById("topicInput");
-
-    if (selectedSubjectIndex === null || !subjects[selectedSubjectIndex]) {
-        alert("Please add or select a subject first.");
-        return;
-    }
-
-    const topic = topicInput.value.trim();
-
-    if (topic === "") {
-        alert("Please enter a chapter/topic before saving notes.");
-        return;
-    }
-
-    if (!subjects[selectedSubjectIndex].notesByTopic) {
-        subjects[selectedSubjectIndex].notesByTopic = {};
-    }
-
-    subjects[selectedSubjectIndex].notesByTopic[topic] = notesArea.value;
+if (data.success && data.notes) {
+    topic.notes = data.notes;
+    topic.fileName = file.name;
+    topic.updatedAt = new Date().toISOString();
+    notesArea.value = data.notes;
 
     saveSubjects();
-    renderSavedNotesList();
+    renderPage();
+} else {
+    notesArea.value = data.message || "AI generation failed.";
+}
+    } catch (error) {
+        console.error(error);
+        notesArea.value = "Error connecting to backend. Make sure Flask backend is running.";
+    } finally {
+        generateBtn.disabled = false;
+        generateBtn.textContent = "Generate Notes";
+    }
+}
 
-    alert("Notes saved successfully for topic: " + topic);
+// ===== NOTES EDITOR =====
+async function saveNotesToCurrentTopic() {
+    const subject = getSelectedSubject();
+    const topic = getSelectedTopic();
+    const notesArea = document.getElementById("notesArea");
+
+    if (!subject || !topic) {
+        alert("Please select a topic first.");
+        return;
+    }
+
+    topic.notes = notesArea.value;
+    topic.updatedAt = new Date().toISOString();
+    saveSubjects();
+    renderPage();
+
+    // NEW: Save edited notes into backend database when backend.py has /save_note route.
+    const backendResult = await saveNoteToBackend(subject.name, topic.title, notesArea.value);
+
+    if (backendResult.success) {
+        await loadNotesFromBackend();
+        showQuizCta();
+        alert("Notes saved to database under: " + subject.name + " > " + topic.title);
+    } else {
+        showQuizCta();
+        alert("Notes saved locally under: " + subject.name + " > " + topic.title);
+    }
 }
 
 function copyNotes() {
     const notesArea = document.getElementById("notesArea");
-
     notesArea.select();
     document.execCommand("copy");
-
     alert("Notes copied.");
 }
 
-function clearNotes() {
+function clearEditor() {
     document.getElementById("notesArea").value = "";
 }
-// ===== LOAD NOTES =====
 
-function loadNotesByTopic() {
-    const notesArea = document.getElementById("notesArea");
-    const topicInput = document.getElementById("topicInput");
-
-    if (selectedSubjectIndex === null || !subjects[selectedSubjectIndex]) {
-        return;
-    }
-
-    const topic = topicInput.value.trim();
-
-    if (topic === "") {
-        notesArea.value = "";
-        return;
-    }
-
-    const selectedSubject = subjects[selectedSubjectIndex];
-
-    if (selectedSubject.notesByTopic && selectedSubject.notesByTopic[topic]) {
-        notesArea.value = selectedSubject.notesByTopic[topic];
-    } else {
-        notesArea.value = "";
-    }
-}
-function renderSavedNotesList() {
-    const savedNotesSelect = document.getElementById("savedNotesSelect");
-
-    savedNotesSelect.innerHTML = "";
-
-    if (selectedSubjectIndex === null || !subjects[selectedSubjectIndex]) {
-        savedNotesSelect.innerHTML = "<option value=''>No subject selected</option>";
-        return;
-    }
-
-    const selectedSubject = subjects[selectedSubjectIndex];
-
-    if (!selectedSubject.notesByTopic) {
-        selectedSubject.notesByTopic = {};
-    }
-
-    const savedTopics = Object.keys(selectedSubject.notesByTopic);
-
-    if (savedTopics.length === 0) {
-        savedNotesSelect.innerHTML = "<option value=''>No saved notes yet</option>";
-        return;
-    }
-
-    savedNotesSelect.innerHTML = "<option value=''>Select saved notes</option>";
-
-    savedTopics.forEach(topic => {
-        const option = document.createElement("option");
-        option.value = topic;
-        option.textContent = topic;
-        savedNotesSelect.appendChild(option);
-    });
-}
-
-function loadSelectedSavedNote() {
-    const savedNotesSelect = document.getElementById("savedNotesSelect");
-    const topicInput = document.getElementById("topicInput");
-    const notesArea = document.getElementById("notesArea");
-
-    const selectedTopic = savedNotesSelect.value;
-
-    if (selectedTopic === "") {
-        return;
-    }
-
-    topicInput.value = selectedTopic;
-
-    const selectedSubject = subjects[selectedSubjectIndex];
-
-    if (selectedSubject.notesByTopic && selectedSubject.notesByTopic[selectedTopic]) {
-        notesArea.value = selectedSubject.notesByTopic[selectedTopic];
-    }
-}
-// ===== EVENT LISTENERS =====
-document.getElementById("topicInput").addEventListener("change", loadNotesByTopic);
 // ===== INITIAL LOAD =====
+async function initializePage() {
+    renderPage();
 
-renderSubjects();
-renderTopics();
-renderSavedNotesList();
-</script>
+    // Pull saved notes from backend.py /notes when the page opens.
+    await loadNotesFromBackend();
+}
+
+initializePage();
+    </script>
 </body>
 </html>

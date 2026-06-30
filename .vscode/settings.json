@@ -1,3 +1,12 @@
 {
-    "python-envs.defaultEnvManager": "ms-python.python:system"
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "liveServer.settings.ignoreFiles": [
+        "**/*.db",
+        "**/*.db-*",
+        "**/*.sqlite",
+        "**/*.sqlite-*",
+        "**/__pycache__/**",
+        "**/*.pyc",
+        "**/.env"
+    ]
 }
