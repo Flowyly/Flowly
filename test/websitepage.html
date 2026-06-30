@@ -5,15 +5,19 @@
   <style>
 body {
   margin: 0;
+  min-height: 100vh;
   font-family: Arial, sans-serif;
+
   background: linear-gradient(
     135deg,
     #dbe4f0,
     #cbdcf5,
     #d6e6f5
   );
+
   color: #1e293b;
   text-align: center;
+  overflow-x: hidden;
 }
 
 /* BACKGROUND SHAPES */
@@ -113,9 +117,24 @@ body {
 
 /* FOOTER */
 .footer {
-  margin-top: 100px;
+  margin-top: 40px;
   padding: 20px;
   color: #64748b;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+/* TITLE*/
+.brand-title {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 64px;
+  font-weight: 800;
+  letter-spacing: 5px;
+  margin-bottom: 18px;
+
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 </style>
 </head>
@@ -138,6 +157,7 @@ body {
 
 <!-- Hero Section -->
 <div class="hero">
+  <h2 class="brand-title">FLOWLY</h2>
   <h1>Be Smart.<br><span>Track your progress.</span></h1>
 
   <p>
@@ -164,8 +184,8 @@ body {
     const fontSize = appearance.fontSize || "Medium";
 
     if (theme === "Default Blue") {
-        document.body.style.background = "linear-gradient(135deg, #f8fbff, #eaf6ff, #dbeafe)";
-        document.body.style.color = "#1f2937";
+    document.body.style.background = "linear-gradient(135deg, #dbe4f0, #cbdcf5, #d6e6f5)";
+    document.body.style.color = "#1f2937";
     } else if (theme === "Light") {
         document.body.style.background = "#f8fbff";
         document.body.style.color = "#1f2937";
@@ -173,17 +193,6 @@ body {
         document.body.style.background = "#1e293b";
         document.body.style.color = "#f8fafc";
     }
-=======
-    document.body.style.background = "#8fb9d6";
-    document.body.style.color = "";  // reset to default
-  } else if (theme === "Light") {
-    document.body.style.background = "#eaf8ff";
-    document.body.style.color = "";  // reset to default
-  } else if (theme === "Dark") {
-    document.body.style.background = "#1e293b";
-    document.body.style.color = "";  // reset to default — cards stay dark text
-  }
->>>>>>> 64cd21e (Update Flowly features and pages)
 
     if (fontSize === "Small") {
         document.body.style.fontSize = "14px";

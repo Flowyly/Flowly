@@ -161,6 +161,7 @@
   .grid {
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
   }
 
   .card {
@@ -263,38 +264,49 @@
 
     <!-- TO DO -->
     <div class="card">
-  <h3>To Do</h3>
-  <div id="todoList"></div>
-</div>
+      <h3>To Do</h3>
+      <div id="todoList"></div>
+    </div>
 
-<!-- REMINDER -->
-<div class="card">
-  <h3>Reminder</h3>
-  <div id="reminderList"></div>
-</div>
+    <!-- REMINDER -->
+    <div class="card">
+      <h3>Reminder</h3>
+      <div id="reminderList"></div>
+    </div>
 
     <!-- CALENDAR -->
     <div class="card calendar-card">
       <h3>Calendar</h3>
 
-    <div class="calendar-header">
-      <button onclick="prevMonth()">◀</button>
-      <span id="monthYear"></span>
-      <button onclick="nextMonth()">▶</button>
+      <div class="calendar-header">
+        <button onclick="prevMonth()">◀</button>
+        <span id="monthYear"></span>
+        <button onclick="nextMonth()">▶</button>
+      </div>
+
+      <div class="weekdays">
+        <div>Sun</div>
+        <div>Mon</div>
+        <div>Tue</div>
+        <div>Wed</div>
+        <div>Thu</div>
+        <div>Fri</div>
+        <div>Sat</div>
+      </div>
+
+      <div id="calendar" class="calendar"></div>
     </div>
 
-    <div class="weekdays">
-      <div>Sun</div>
-      <div>Mon</div>
-      <div>Tue</div>
-      <div>Wed</div>
-      <div>Thu</div>
-      <div>Fri</div>
-      <div>Sat</div>
-    </div>
+    <!-- QUIZ PERFORMANCE -->
+    <div class="card">
+      <h3>Quiz Performance</h3>
 
-    <div id="calendar" class="calendar"></div>
-</div>
+      <h2 id="scoreDisplay">No Quiz Taken</h2>
+
+      <p id="motivationText">
+        Complete a quiz to see your performance.
+      </p>
+    </div>
 
   </div>
 </div>
@@ -309,13 +321,13 @@
     if (theme === "Default Blue") {
     document.body.style.background = "#8fb9d6";
     document.body.style.color = "";  // reset to default
-  } else if (theme === "Light") {
+} else if (theme === "Light") {
     document.body.style.background = "#eaf8ff";
     document.body.style.color = "";  // reset to default
-  } else if (theme === "Dark") {
+} else if (theme === "Dark") {
     document.body.style.background = "#1e293b";
     document.body.style.color = "";  // reset to default — cards stay dark text
-  }
+}
 
     if (fontSize === "Small") document.body.style.fontSize = "14px";
     else if (fontSize === "Medium") document.body.style.fontSize = "16px";
@@ -457,9 +469,55 @@ function prevMonth() {
   renderCalendar();
 }
 
+function loadQuizScore() {
+
+  const score =
+    localStorage.getItem("quizScore");
+
+  if (!score) {
+    return;
+  }
+
+  document.getElementById(
+    "scoreDisplay"
+  ).innerText = score + "%";
+
+  let quote = "";
+
+  if (score >= 90) {
+    quote =
+      "Excellent work! Keep pushing forward.";
+  }
+
+  else if (score >= 75) {
+    quote =
+      "Great job! Your understanding is improving.";
+  }
+
+  else if (score >= 60) {
+    quote =
+      "Good effort. A little more revision will help.";
+  }
+
+  else if (score >= 40) {
+    quote =
+      "Keep practicing. Progress comes with consistency.";
+  }
+
+  else {
+    quote =
+      "Don't give up. Every quiz helps you learn.";
+  }
+
+  document.getElementById(
+    "motivationText"
+  ).innerText = quote;
+}
+
 loadAlerts();
 loadUpcoming();
 renderCalendar();
+loadQuizScore();
 
 setInterval(() => {
   loadAlerts();

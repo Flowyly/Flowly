@@ -213,15 +213,15 @@ button:hover {
     const fontSize = appearance.fontSize || "Medium";
 
     if (theme === "Default Blue") {
-    document.body.style.background = "#8fb9d6";
-    document.body.style.color = "";  // reset to default
-  } else if (theme === "Light") {
-    document.body.style.background = "#eaf8ff";
-    document.body.style.color = "";  // reset to default
-  } else if (theme === "Dark") {
-    document.body.style.background = "#1e293b";
-    document.body.style.color = "";  // reset to default — cards stay dark text
-  }
+        document.body.style.background = "#8fb9d6";
+        document.body.style.color = "#1f2937";
+    } else if (theme === "Light") {
+        document.body.style.background = "#eaf8ff";
+        document.body.style.color = "#1f2937";
+    } else if (theme === "Dark") {
+        document.body.style.background = "#1e293b";
+        document.body.style.color = "#f8fafc";
+    }
 
     if (fontSize === "Small") document.body.style.fontSize = "14px";
     else if (fontSize === "Medium") document.body.style.fontSize = "16px";
@@ -244,6 +244,12 @@ async function registerUser(event) {
   const data = await res.json();
 
   if (data.success) {
+
+    localStorage.setItem("profileSettings", JSON.stringify({
+  fullName: username,
+  email: email,
+  studentId: ""
+}));
     document.getElementById("message").style.color = "green";
     document.getElementById("message").innerText = "Registration successful!";
 

@@ -16,7 +16,7 @@ with app.app_context():
         admin = User(
             username=admin_username,
             email=admin_email,
-            password=generate_password_hash(admin_password),
+            password=admin_password,
             is_admin=1  # 👈 This is what makes them admin
         )
         db.session.add(admin)
