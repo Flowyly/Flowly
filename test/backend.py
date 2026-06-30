@@ -911,7 +911,47 @@ def get_notes():
         }
         for n in notes
     ]), 200
+# ==============================
+# SAVE MANUAL EDITS INTO SQLITE
+# ==============================
 
+@app.route("/save_note", methods=["POST"])
+def save_note():
+    try:
+        data = request.get_json()
+
+        subject = data.get("subject", "").strip()
+        topic = data.get("topic", "").strip()
+        content = data.get("content", "").strip()
+
+        if not subject or not topic or not content:
+            return jsonify({
+                "success": False,
+                "message": "Missing subject, topic, or content"
+            }), 400
+
+        new_note = Notes(
+            subject=subject,
+            topic=topic,
+            content=content
+        )
+
+        db.session.add(new_note)
+        db.session.commit()
+
+        return jsonify({
+            "success": True,
+            "message": "Note saved successfully"
+        }), 200
+
+    except Exception as e:
+        print("SAVE NOTE ERROR:", e)
+        traceback.print_exc()
+
+        return jsonify({
+            "success": False,
+            "message": str(e)
+        }), 500
 
 # ==============================
 # QUIZ TEXT PARSER
