@@ -367,14 +367,34 @@
   <!-- QUIZ -->
   <div class="quiz-section" id="quizSection"></div>
 
-  <!-- SUBMIT -->
   <div style="text-align:center;">
-    
+
+    <button
+      id="submitQuizBtn"
+      class="submit-btn"
+      onclick="submitQuiz()">
+
+      Submit Quiz
+
+    </button>
+
+    <div
+      id="resultBox"
+      style="
+        margin-top:20px;
+        font-size:20px;
+        font-weight:bold;
+      ">
+    </div>
+
   </div>
 
 </div>
 
 <script>
+
+let currentQuiz = [];
+
 // ===== APPLY SAVED THEME =====
 (function() {
     const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
@@ -440,7 +460,6 @@ function showFileName() {
     document.getElementById("fileName").innerText =
       "Uploaded: " + file.name;
 
-    // ✅ SAVE HERE (correct place)
     localStorage.setItem("lastFileName", file.name);
   }
 }
@@ -450,6 +469,18 @@ async function generateQuiz(event) {
 
   document.getElementById("generateBtn").disabled = true;
   document.getElementById("loading").style.display = "block";
+
+  // reset any previous quiz/results before generating a new one
+  document.getElementById("quizSection").innerHTML = "";
+  document.getElementById("quizSection").dataset.locked = "false";
+  document.getElementById("submitQuizBtn").style.display = "none";
+  document.getElementById("submitQuizBtn").disabled = false;
+  document.getElementById("resultBox").innerHTML = "";
+
+  // clear any previously saved quiz state since we're generating a new one
+  localStorage.removeItem("currentQuiz");
+  localStorage.removeItem("quizAnswers");
+  localStorage.removeItem("quizSubmitted");
 
   let file = document.getElementById("pdfFile").files[0];
 
@@ -465,6 +496,7 @@ async function generateQuiz(event) {
     formData.append("pdf", file);
     formData.append("difficulty", document.getElementById("difficulty").value);
     formData.append("questionCount", document.getElementById("questionCount").value);
+    formData.append("email", localStorage.getItem("userEmail") || ""); // tag this quiz with the logged-in user for the admin panel
 
     localStorage.setItem("lastDifficulty", document.getElementById("difficulty").value);
     localStorage.setItem("lastCount", document.getElementById("questionCount").value);
@@ -480,6 +512,11 @@ async function generateQuiz(event) {
     document.getElementById("generateBtn").disabled = false;
 
     if (data.success) {
+      currentQuiz = data.quiz;
+
+      // NEW: persist the generated quiz so it survives navigating away and back
+      localStorage.setItem("currentQuiz", JSON.stringify(data.quiz));
+
       displayQuizFromAI(data.quiz);
     } else {
       console.log("BACKEND ERROR:", data.message);
@@ -494,28 +531,165 @@ async function generateQuiz(event) {
   }
 }
 
-function displayQuizFromAI(quizText) {
+// NEW: called whenever the user picks an option, so the choice survives a reload
+function saveAnswer(index, value) {
+  const answers = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
+  answers[index] = value;
+  localStorage.setItem("quizAnswers", JSON.stringify(answers));
+}
+
+function displayQuizFromAI(quiz) {
+
   const quizSection = document.getElementById("quizSection");
 
-  // ✅ Guard - don't re-render if quiz already showing
+  // guard against double-render
   if (quizSection.dataset.locked === "true") return;
   quizSection.dataset.locked = "true";
 
   quizSection.innerHTML = "";
 
-  const questions = quizText.split(/(?=Q\d+\.)/g);
+  quiz.forEach((q, index) => {
 
-  if (!questions || questions.length === 0) {
-    quizSection.innerHTML = "<p>Failed to parse quiz</p>";
-    return;
-  }
-
-  questions.forEach(q => {
     const card = document.createElement("div");
+
     card.className = "question-card";
-    card.innerHTML = `<pre style="white-space: pre-wrap;">${q}</pre>`;
+
+    card.innerHTML = `
+      <h3>
+        Question ${index + 1}
+      </h3>
+
+      <p>${q.question}</p>
+
+      <div class="option">
+        <label>
+          <input
+            type="radio"
+            name="q${index}"
+            value="${q.options[0]}"
+            onchange="saveAnswer(${index}, this.value)"
+          >
+          ${q.options[0]}
+        </label>
+      </div>
+
+      <div class="option">
+        <label>
+          <input
+            type="radio"
+            name="q${index}"
+            value="${q.options[1]}"
+            onchange="saveAnswer(${index}, this.value)"
+          >
+          ${q.options[1]}
+        </label>
+      </div>
+
+      <div class="option">
+        <label>
+          <input
+            type="radio"
+            name="q${index}"
+            value="${q.options[2]}"
+            onchange="saveAnswer(${index}, this.value)"
+          >
+          ${q.options[2]}
+        </label>
+      </div>
+
+      <div class="option">
+        <label>
+          <input
+            type="radio"
+            name="q${index}"
+            value="${q.options[3]}"
+            onchange="saveAnswer(${index}, this.value)"
+          >
+          ${q.options[3]}
+        </label>
+      </div>
+
+      <div
+        id="answer${index}"
+        style="
+          display:none;
+          margin-top:15px;
+          color:green;
+          font-weight:bold;
+        ">
+      </div>
+    `;
+
     quizSection.appendChild(card);
   });
+
+  document.getElementById(
+    "submitQuizBtn"
+  ).style.display = "inline-block";
+}
+
+// NEW: re-checks radio buttons based on answers saved in localStorage
+function restoreSavedAnswers() {
+  const savedAnswers = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
+
+  Object.keys(savedAnswers).forEach(index => {
+    const radios = document.querySelectorAll(`input[name="q${index}"]`);
+    radios.forEach(radio => {
+      if (radio.value === savedAnswers[index]) {
+        radio.checked = true;
+      }
+    });
+  });
+}
+
+function submitQuiz() {
+
+  let score = 0;
+
+  currentQuiz.forEach((q, index) => {
+
+    const selected = document.querySelector(
+      `input[name="q${index}"]:checked`
+    );
+
+    if (
+      selected &&
+      selected.value === q.answer
+    ) {
+      score++;
+    }
+
+    const answerBox =
+      document.getElementById(
+        `answer${index}`
+      );
+
+    answerBox.style.display = "block";
+
+    answerBox.innerHTML =
+      `Correct Answer: ${q.answer}`;
+  });
+
+  const percentage = Math.round(
+    (score / currentQuiz.length) * 100
+  );
+
+  localStorage.setItem(
+    "quizScore",
+    percentage
+  );
+
+  // NEW: remember that this quiz was already submitted, so reopening the page shows the result again
+  localStorage.setItem("quizSubmitted", "true");
+
+  document.getElementById(
+    "resultBox"
+  ).innerHTML =
+    `🎉 Score: ${score}/${currentQuiz.length} (${percentage}%)`;
+
+  document.getElementById(
+    "submitQuizBtn"
+  ).disabled = true;
 }
 
 window.onload = function () {
@@ -528,6 +702,26 @@ window.onload = function () {
   if (count) document.getElementById("questionCount").value = count;
   if (fileName)
     document.getElementById("fileName").innerText = "Uploaded: " + fileName;
+
+  // NEW: restore a previously generated quiz, including answers and submitted state
+  const savedQuiz = localStorage.getItem("currentQuiz");
+
+  if (savedQuiz) {
+    try {
+      currentQuiz = JSON.parse(savedQuiz);
+      displayQuizFromAI(currentQuiz);
+      restoreSavedAnswers();
+
+      if (localStorage.getItem("quizSubmitted") === "true") {
+        submitQuiz();
+      }
+    } catch (err) {
+      console.error("Failed to restore saved quiz:", err);
+      localStorage.removeItem("currentQuiz");
+      localStorage.removeItem("quizAnswers");
+      localStorage.removeItem("quizSubmitted");
+    }
+  }
 
   // Attach button listener here (not in DOMContentLoaded)
   document.getElementById("generateBtn").addEventListener("click", function (event) {

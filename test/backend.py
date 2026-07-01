@@ -6,10 +6,10 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import smtplib
+import re
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from groq import Groq
-from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 import fitz
 import traceback
@@ -70,6 +70,7 @@ class User(db.Model):
     username = db.Column(db.String(100))
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(200))
+    is_admin = db.Column(db.Integer, default=0)
 
 
 class Notes(db.Model):
@@ -77,13 +78,15 @@ class Notes(db.Model):
     subject = db.Column(db.String(100))
     topic = db.Column(db.String(200))
     content = db.Column(db.Text)
+    created_by = db.Column(db.String(100))  # email of the user who generated this note
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
 class Quiz(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200))
-    content = db.Column(db.Text)
+    content = db.Column(db.Text)  # raw AI text, kept for the admin panel
+    created_by = db.Column(db.String(100))  # email of the user who generated this quiz
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
@@ -125,6 +128,72 @@ def home():
 
 
 # ==============================
+# ADMIN - GET ALL USERS
+# ==============================
+@app.route("/admin/users", methods=["GET"])
+def admin_get_users():
+    users = User.query.all()
+    return jsonify([
+        {
+            "id": u.id,
+            "username": u.username,
+            "email": u.email,
+            "password": u.password,
+            "is_admin": u.is_admin
+        }
+        for u in users
+    ]), 200
+
+
+# ==============================
+# ADMIN - DELETE USER
+# ==============================
+@app.route("/admin/delete_user/<int:id>", methods=["DELETE"])
+def admin_delete_user(id):
+    user = User.query.get(id)
+
+    if not user:
+        return jsonify({"success": False, "message": "User not found"}), 404
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({"success": True, "message": "User deleted"}), 200
+
+
+# ==============================
+# ADMIN - DELETE NOTE
+# ==============================
+@app.route("/admin/delete_note/<int:id>", methods=["DELETE"])
+def admin_delete_note(id):
+    note = Notes.query.get(id)
+
+    if not note:
+        return jsonify({"success": False, "message": "Note not found"}), 404
+
+    db.session.delete(note)
+    db.session.commit()
+
+    return jsonify({"success": True, "message": "Note deleted"}), 200
+
+
+# ==============================
+# ADMIN - DELETE QUIZ
+# ==============================
+@app.route("/admin/delete_quiz/<int:id>", methods=["DELETE"])
+def admin_delete_quiz(id):
+    quiz = Quiz.query.get(id)
+
+    if not quiz:
+        return jsonify({"success": False, "message": "Quiz not found"}), 404
+
+    db.session.delete(quiz)
+    db.session.commit()
+
+    return jsonify({"success": True, "message": "Quiz deleted"}), 200
+
+
+# ==============================
 # REGISTER ROUTE
 # ==============================
 @app.route("/register", methods=["POST"])
@@ -159,7 +228,7 @@ def register():
         new_user = User(
             username=username,
             email=email,
-            password=generate_password_hash(password)
+            password=password
         )
 
         db.session.add(new_user)
@@ -211,10 +280,13 @@ def login():
                 "message": "User not found"
             }), 404
 
-        if check_password_hash(user.password, password):
+        if user.password == password:
             return jsonify({
                 "success": True,
-                "message": "Login successful"
+                "message": "Login successful",
+                "is_admin": user.is_admin,
+                "username": user.username,
+                "email": user.email
             }), 200
 
         return jsonify({
@@ -313,13 +385,13 @@ def change_password():
                 "message": "User not found"
             }), 404
 
-        if not check_password_hash(user.password, current_password):
+        if user.password != current_password:
             return jsonify({
                 "success": False,
                 "message": "Current password incorrect"
             }), 400
 
-        user.password = generate_password_hash(new_password)
+        user.password = new_password
         db.session.commit()
 
         return jsonify({
@@ -442,7 +514,7 @@ def reset_password():
                 "message": "User not found"
             }), 404
 
-        user.password = generate_password_hash(new_password)
+        user.password = new_password
         db.session.commit()
 
         return jsonify({
@@ -744,6 +816,7 @@ def generate_notes_from_file():
         pdf = request.files["file"]
         subject = request.form.get("subject", "")
         topic = request.form.get("topic", "")
+        email = request.form.get("email", "")  # who is generating this note
 
         text = ""
 
@@ -799,7 +872,8 @@ Material:
         new_note = Notes(
             subject=subject,
             topic=topic,
-            content=notes
+            content=notes,
+            created_by=email
         )
 
         db.session.add(new_note)
@@ -832,7 +906,8 @@ def get_notes():
             "id": n.id,
             "subject": n.subject,
             "topic": n.topic,
-            "content": n.content
+            "content": n.content,
+            "created_by": n.created_by or "Unknown"
         }
         for n in notes
     ]), 200
@@ -879,6 +954,60 @@ def save_note():
         }), 500
 
 # ==============================
+# QUIZ TEXT PARSER
+# ==============================
+def parse_quiz_text(raw_text):
+    """
+    Parses the AI's raw quiz text (format below) into a list of
+    {question, options, answer} dicts for the frontend.
+
+    Q1. Question text?
+    A. option 1
+    B. option 2
+    C. option 3
+    D. option 4
+    Answer: B
+    """
+    questions = []
+
+    # Split into chunks starting at each "Q<number>."
+    blocks = re.split(r"(?=Q\d+\.)", raw_text.strip())
+
+    for block in blocks:
+        block = block.strip()
+        if not block:
+            continue
+
+        # Question text: everything after "Q1." up to the first option line
+        q_match = re.search(r"Q\d+\.\s*(.+?)\s*(?=\n[A-D]\.)", block, re.DOTALL)
+        if not q_match:
+            continue
+        question_text = q_match.group(1).strip().replace("\n", " ")
+
+        # Options A-D
+        option_matches = re.findall(r"^[A-D]\.\s*(.+)$", block, re.MULTILINE)
+        if len(option_matches) < 4:
+            continue
+        options = [opt.strip() for opt in option_matches[:4]]
+
+        # Answer letter -> map to actual option text
+        answer_match = re.search(r"Answer:\s*([A-D])", block)
+        if not answer_match:
+            continue
+        answer_letter = answer_match.group(1).strip().upper()
+        letter_index = {"A": 0, "B": 1, "C": 2, "D": 3}[answer_letter]
+        answer_text = options[letter_index]
+
+        questions.append({
+            "question": question_text,
+            "options": options,
+            "answer": answer_text
+        })
+
+    return questions
+
+
+# ==============================
 # GENERATE QUIZ FROM PDF
 # ==============================
 @app.route("/generate_quiz", methods=["POST"])
@@ -894,6 +1023,7 @@ def generate_quiz():
 
         difficulty = request.form.get("difficulty", "Medium")
         question_count = request.form.get("questionCount", "10")
+        email = request.form.get("email", "")  # who is generating this quiz
 
         text = ""
 
@@ -952,19 +1082,30 @@ Notes:
             ]
         )
 
-        quiz = response.choices[0].message.content
+        raw_quiz_text = response.choices[0].message.content
 
+        # Save the raw text for the admin panel / records
         new_quiz = Quiz(
             title=f"{difficulty} Quiz",
-            content=quiz
+            content=raw_quiz_text,
+            created_by=email
         )
 
         db.session.add(new_quiz)
         db.session.commit()
 
+        # Parse into structured JSON for the frontend's interactive quiz UI
+        structured_quiz = parse_quiz_text(raw_quiz_text)
+
+        if not structured_quiz:
+            return jsonify({
+                "success": False,
+                "message": "Quiz generated but could not be parsed. Try again."
+            }), 500
+
         return jsonify({
             "success": True,
-            "quiz": quiz
+            "quiz": structured_quiz
         }), 200
 
     except Exception as e:
@@ -988,7 +1129,8 @@ def get_quizzes():
         {
             "id": q.id,
             "title": q.title,
-            "content": q.content
+            "content": q.content,
+            "created_by": q.created_by or "Unknown"
         }
         for q in quizzes
     ]), 200

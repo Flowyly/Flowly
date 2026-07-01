@@ -1052,7 +1052,7 @@ function renderSubjects() {
             if (event.target.closest("button")) return;
             selectedSubjectId = subject.id;
             selectedTopicId = subject.topics[0] ? subject.topics[0].id : null;
-            document.getElementById("notesArea").value = "";
+            document.getElementById("notesArea").value = getSelectedTopic() ? getSelectedTopic().notes : "";
             renderPage();
         });
 
@@ -1180,7 +1180,7 @@ function changeSubject() {
     selectedSubjectId = document.getElementById("subjectSelect").value;
     const subject = getSelectedSubject();
     selectedTopicId = subject && subject.topics[0] ? subject.topics[0].id : null;
-    document.getElementById("notesArea").value = "";
+    document.getElementById("notesArea").value = getSelectedTopic() ? getSelectedTopic().notes : "";
     renderPage();
 }
 
@@ -1248,7 +1248,7 @@ function deleteTopic(topicId) {
 
     subject.topics = subject.topics.filter(topic => topic.id !== topicId);
     selectedTopicId = subject.topics[0] ? subject.topics[0].id : null;
-    document.getElementById("notesArea").value = "";
+    document.getElementById("notesArea").value = getSelectedTopic() ? getSelectedTopic().notes : "";
     renderPage();
 }
 
