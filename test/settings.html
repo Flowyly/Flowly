@@ -403,9 +403,8 @@
         <div class="form-group">
           <label>Theme</label>
           <select id="theme">
-            <option value="Default Blue">Default Blue</option>
             <option value="Light">Light</option>
-            <option value="Dark">Dark</option>
+            <option value="Dark">Default Dark Blue</option>
           </select>
         </div>
 
@@ -602,7 +601,7 @@
     function loadAppearance() {
       const savedAppearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
 
-      document.getElementById("theme").value = savedAppearance.theme || "Default Blue";
+      document.getElementById("theme").value = savedAppearance.theme || "Default Dark Blue";
       document.getElementById("fontSize").value = savedAppearance.fontSize || "Medium";
 
       applyAppearance();
@@ -612,19 +611,16 @@
       const theme = document.getElementById("theme").value;
       const fontSize = document.getElementById("fontSize").value;
 
-      // Theme
-      if (theme === "Default Blue") {
-        document.body.style.background = "#8fb9d6";
-        document.body.style.color = "#1f2937";
-      } else if (theme === "Light") {
+  // THEME
+      if (theme === "Light") {
         document.body.style.background = "#eaf8ff";
         document.body.style.color = "#1f2937";
       } else if (theme === "Dark") {
-         document.body.style.background = "#1e293b";
-  document.body.style.color = "#f8fafc";
+        document.body.style.background = "#1e293b";
+        document.body.style.color = "#f8fafc";
       }
 
-      // Font size
+  // FONT SIZE
       if (fontSize === "Small") {
         document.body.style.fontSize = "14px";
       } else if (fontSize === "Medium") {
@@ -753,7 +749,7 @@
         Notes Style: ${study.defaultNotesStyle || "Short Notes"}<br><br>
 
         <strong>Appearance</strong><br>
-        Theme: ${appearance.theme || "Default Blue"}<br>
+        Theme: ${appearance.theme || "Default Dark Blue"}<br>
         Font Size: ${appearance.fontSize || "Medium"}<br><br>
 
         <strong>Study Data</strong><br>

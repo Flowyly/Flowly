@@ -369,14 +369,7 @@
 
   <div style="text-align:center;">
 
-    <button
-      id="submitQuizBtn"
-      class="submit-btn"
-      onclick="submitQuiz()">
-
-      Submit Quiz
-
-    </button>
+    
 
     <div
       id="resultBox"
@@ -394,6 +387,9 @@
 <script>
 
 let currentQuiz = [];
+let score = 0;
+let answered = 0;
+let currentQuizId = null;
 
 // ===== APPLY SAVED THEME =====
 (function() {
@@ -421,38 +417,21 @@ if (!localStorage.getItem("userEmail")) {
   window.location.href = "login1.html";
 }
 
+// ================= NAV =================
 function toggleMenu() {
   let menu = document.getElementById("menu");
   menu.style.display = menu.style.display === "block" ? "none" : "block";
 }
 
-function goProfile() {
-  window.location.href = "profile.html";
-}
+function goProfile() { window.location.href = "profile.html"; }
+function goSettings() { window.location.href = "settings.html"; }
+function logout() { window.location.href = "login1.html"; }
+function goHome() { window.location.href = "dashboard.html"; }
+function goWork() { window.location.href = "work.html"; }
+function goGenerateNotes() { window.location.href = "generatenotes.html"; }
+function goGenerateQuiz() { window.location.href = "generatequiz.html"; }
 
-function goSettings() {
-  window.location.href = "settings.html";
-}
-
-function logout() {
-  window.location.href = "login1.html";
-}
-
-function goHome() {
-  window.location.href = "dashboard.html";
-}
-
-function goWork() {
-  window.location.href = "work.html";
-}
-
-function goGenerateNotes() {
-  window.location.href = "generatenotes.html";
-}
-function goGenerateQuiz() {
-  window.location.href = "generatequiz.html";
-}
-
+// ================= FILE NAME =================
 function showFileName() {
   let file = document.getElementById("pdfFile").files[0];
 
@@ -464,23 +443,18 @@ function showFileName() {
   }
 }
 
+// ================= GENERATE QUIZ =================
 async function generateQuiz(event) {
   if (event) event.preventDefault();
 
   document.getElementById("generateBtn").disabled = true;
   document.getElementById("loading").style.display = "block";
 
-  // reset any previous quiz/results before generating a new one
   document.getElementById("quizSection").innerHTML = "";
-  document.getElementById("quizSection").dataset.locked = "false";
-  document.getElementById("submitQuizBtn").style.display = "none";
-  document.getElementById("submitQuizBtn").disabled = false;
   document.getElementById("resultBox").innerHTML = "";
 
-  // clear any previously saved quiz state since we're generating a new one
   localStorage.removeItem("currentQuiz");
   localStorage.removeItem("quizAnswers");
-  localStorage.removeItem("quizSubmitted");
 
   let file = document.getElementById("pdfFile").files[0];
 
@@ -496,10 +470,7 @@ async function generateQuiz(event) {
     formData.append("pdf", file);
     formData.append("difficulty", document.getElementById("difficulty").value);
     formData.append("questionCount", document.getElementById("questionCount").value);
-    formData.append("email", localStorage.getItem("userEmail") || ""); // tag this quiz with the logged-in user for the admin panel
-
-    localStorage.setItem("lastDifficulty", document.getElementById("difficulty").value);
-    localStorage.setItem("lastCount", document.getElementById("questionCount").value);
+    formData.append("email", localStorage.getItem("userEmail") || "");
 
     const res = await fetch("http://127.0.0.1:5000/generate_quiz", {
       method: "POST",
@@ -513,187 +484,162 @@ async function generateQuiz(event) {
 
     if (data.success) {
       currentQuiz = data.quiz;
-
-      // NEW: persist the generated quiz so it survives navigating away and back
-      localStorage.setItem("currentQuiz", JSON.stringify(data.quiz));
+      currentQuizId = data.quiz_id;
 
       displayQuizFromAI(data.quiz);
     } else {
-      console.log("BACKEND ERROR:", data.message);
       alert(data.message);
     }
 
   } catch (err) {
     console.error(err);
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("generateBtn").disabled = false;
     alert("Server Error");
   }
 }
 
-// NEW: called whenever the user picks an option, so the choice survives a reload
+// ================= SAVE ANSWER =================
 function saveAnswer(index, value) {
   const answers = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
   answers[index] = value;
   localStorage.setItem("quizAnswers", JSON.stringify(answers));
 }
 
+// ================= DISPLAY QUIZ =================
 function displayQuizFromAI(quiz) {
 
+  score = 0;
+  answered = 0;
+
+  document.getElementById("resultBox").innerHTML = "";
+
   const quizSection = document.getElementById("quizSection");
-
-  // guard against double-render
-  if (quizSection.dataset.locked === "true") return;
-  quizSection.dataset.locked = "true";
-
   quizSection.innerHTML = "";
 
   quiz.forEach((q, index) => {
 
     const card = document.createElement("div");
-
     card.className = "question-card";
 
     card.innerHTML = `
-      <h3>
-        Question ${index + 1}
-      </h3>
-
+      <h3>Question ${index + 1}</h3>
       <p>${q.question}</p>
 
-      <div class="option">
-        <label>
-          <input
-            type="radio"
-            name="q${index}"
-            value="${q.options[0]}"
-            onchange="saveAnswer(${index}, this.value)"
-          >
-          ${q.options[0]}
-        </label>
-      </div>
-
-      <div class="option">
-        <label>
-          <input
-            type="radio"
-            name="q${index}"
-            value="${q.options[1]}"
-            onchange="saveAnswer(${index}, this.value)"
-          >
-          ${q.options[1]}
-        </label>
-      </div>
-
-      <div class="option">
-        <label>
-          <input
-            type="radio"
-            name="q${index}"
-            value="${q.options[2]}"
-            onchange="saveAnswer(${index}, this.value)"
-          >
-          ${q.options[2]}
-        </label>
-      </div>
-
-      <div class="option">
-        <label>
-          <input
-            type="radio"
-            name="q${index}"
-            value="${q.options[3]}"
-            onchange="saveAnswer(${index}, this.value)"
-          >
-          ${q.options[3]}
-        </label>
-      </div>
-
-      <div
-        id="answer${index}"
-        style="
-          display:none;
-          margin-top:15px;
-          color:green;
-          font-weight:bold;
-        ">
-      </div>
+      ${q.options.map((opt, i) => `
+        <div class="option">
+          <label>
+            <input type="radio"
+              name="q${index}"
+              value="${opt}"
+              onchange="saveAnswer(${index}, this.value); checkAnswer(${index}, this);">
+            ${opt}
+          </label>
+        </div>
+      `).join("")}
     `;
 
     quizSection.appendChild(card);
   });
-
-  document.getElementById(
-    "submitQuizBtn"
-  ).style.display = "inline-block";
 }
 
-// NEW: re-checks radio buttons based on answers saved in localStorage
+// ================= RESTORE ANSWERS =================
 function restoreSavedAnswers() {
+
+  score = 0;
+  answered = 0;
+
   const savedAnswers = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
 
   Object.keys(savedAnswers).forEach(index => {
-    const radios = document.querySelectorAll(`input[name="q${index}"]`);
-    radios.forEach(radio => {
-      if (radio.value === savedAnswers[index]) {
-        radio.checked = true;
-      }
-    });
-  });
-}
 
-function submitQuiz() {
-
-  let score = 0;
-
-  currentQuiz.forEach((q, index) => {
-
-    const selected = document.querySelector(
-      `input[name="q${index}"]:checked`
+    const radio = document.querySelector(
+      `input[name="q${index}"][value="${savedAnswers[index]}"]`
     );
 
-    if (
-      selected &&
-      selected.value === q.answer
-    ) {
+    if (!radio) return;
+
+    radio.checked = true;
+
+    if (radio.value === currentQuiz[index].answer) {
       score++;
     }
 
-    const answerBox =
-      document.getElementById(
-        `answer${index}`
-      );
+    answered++;
 
-    answerBox.style.display = "block";
-
-    answerBox.innerHTML =
-      `Correct Answer: ${q.answer}`;
+    checkAnswer(Number(index), radio, true);
   });
 
-  const percentage = Math.round(
-    (score / currentQuiz.length) * 100
-  );
-
-  localStorage.setItem(
-    "quizScore",
-    percentage
-  );
-
-  // NEW: remember that this quiz was already submitted, so reopening the page shows the result again
-  localStorage.setItem("quizSubmitted", "true");
-
-  document.getElementById(
-    "resultBox"
-  ).innerHTML =
-    `🎉 Score: ${score}/${currentQuiz.length} (${percentage}%)`;
-
-  document.getElementById(
-    "submitQuizBtn"
-  ).disabled = true;
+  updateResult();
 }
 
+// ================= CHECK ANSWER =================
+function checkAnswer(index, radio, restoring = false) {
+
+  const question = currentQuiz[index];
+  const options = document.querySelectorAll(`input[name="q${index}"]`);
+
+  options.forEach(opt => {
+
+    opt.disabled = true;
+
+    const box = opt.closest(".option");
+
+    box.style.background = "#f8fafc";
+    box.style.border = "none";
+
+    if (opt.value === question.answer) {
+      box.style.background = "#dcfce7";
+      box.style.border = "2px solid green";
+    }
+
+    if (opt.checked && opt.value !== question.answer) {
+      box.style.background = "#fee2e2";
+      box.style.border = "2px solid red";
+    }
+  });
+
+  if (!restoring) {
+
+    if (radio.value === question.answer) {
+      score++;
+    }
+
+    answered++;
+
+    updateResult();
+
+    // ✅ SAVE TO DATABASE ONLY WHEN COMPLETED
+    if (answered === currentQuiz.length) {
+      fetch("http://127.0.0.1:5000/submit_quiz", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          quiz_id: currentQuizId,
+          score: score
+        })
+      });
+    }
+  }
+}
+
+// ================= UPDATE RESULT UI =================
+function updateResult() {
+
+  if (answered === 0) return;
+
+  const percentage = Math.round((score / answered) * 100);
+
+  if (answered === currentQuiz.length) {
+    document.getElementById("resultBox").innerHTML =
+      `🎉 Final Score: ${score}/${currentQuiz.length} (${percentage}%)`;
+  } else {
+    document.getElementById("resultBox").innerHTML =
+      `Score: ${score}/${answered}`;
+  }
+}
+
+// ================= ON LOAD =================
 window.onload = function () {
-  // Restore saved preferences
+
   const diff = localStorage.getItem("lastDifficulty");
   const count = localStorage.getItem("lastCount");
   const fileName = localStorage.getItem("lastFileName");
@@ -703,33 +649,19 @@ window.onload = function () {
   if (fileName)
     document.getElementById("fileName").innerText = "Uploaded: " + fileName;
 
-  // NEW: restore a previously generated quiz, including answers and submitted state
   const savedQuiz = localStorage.getItem("currentQuiz");
 
   if (savedQuiz) {
-    try {
-      currentQuiz = JSON.parse(savedQuiz);
-      displayQuizFromAI(currentQuiz);
-      restoreSavedAnswers();
-
-      if (localStorage.getItem("quizSubmitted") === "true") {
-        submitQuiz();
-      }
-    } catch (err) {
-      console.error("Failed to restore saved quiz:", err);
-      localStorage.removeItem("currentQuiz");
-      localStorage.removeItem("quizAnswers");
-      localStorage.removeItem("quizSubmitted");
-    }
+    currentQuiz = JSON.parse(savedQuiz);
+    displayQuizFromAI(currentQuiz);
+    restoreSavedAnswers();
   }
-
-  // Attach button listener here (not in DOMContentLoaded)
-  document.getElementById("generateBtn").addEventListener("click", function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-    generateQuiz(event);
-  });
 };
+
+window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("generateBtn")
+    .addEventListener("click", generateQuiz);
+});
 
 </script>
 

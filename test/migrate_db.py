@@ -35,6 +35,7 @@ def add_column_if_missing(table, column, col_type="VARCHAR(100)"):
 
 add_column_if_missing("notes", "created_by")
 add_column_if_missing("quiz", "created_by")
+add_column_if_missing("quiz", "marks", "INTEGER")
 
 conn.commit()
 conn.close()

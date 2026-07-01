@@ -7,6 +7,8 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: Arial, sans-serif;
+  text-align: center;
+  overflow-x: hidden;
 
   background: linear-gradient(
     135deg,
@@ -16,32 +18,66 @@ body {
   );
 
   color: #1e293b;
-  text-align: center;
-  overflow-x: hidden;
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
-/* BACKGROUND SHAPES */
+/* DARK MODE */
+body.dark-mode {
+  background: radial-gradient(circle at 20% 20%, #1e3a8a, transparent 40%),
+              radial-gradient(circle at 80% 30%, #312e81, transparent 40%),
+              #0f172a;
+
+  color: #f1f5f9;
+}
+
+/* SHAPES (BASE) */
 .bg-shape {
   position: fixed;
   border-radius: 50%;
-  filter: blur(80px);
-  z-index: 0;
+  filter: blur(90px);
+  opacity: 0.7;
+  z-index: -1;
+  animation: float 10s ease-in-out infinite;
+  transition: all 0.4s ease;
 }
 
 .shape1 {
-  width: 300px;
-  height: 300px;
-  background: #ffffff;
-  top: -50px;
-  left: -50px;
+  width: 350px;
+  height: 350px;
+  background: #93c5fd;
+  top: -80px;
+  left: -80px;
 }
 
 .shape2 {
-  width: 300px;
-  height: 300px;
-  background: #bfdbfe;
-  bottom: -50px;
-  right: -50px;
+  width: 350px;
+  height: 350px;
+  background: #c4b5fd;
+  bottom: -100px;
+  right: -100px;
+}
+
+/* DARK MODE SHAPES */
+body.dark-mode .shape1 {
+  background: #3b82f6;
+  opacity: 0.08;
+  filter: blur(130px);
+}
+
+body.dark-mode .shape2 {
+  background: #a855f7;
+  opacity: 0.06;
+  filter: blur(150px);
+}
+
+/* FLOAT ANIMATION */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-20px) translateX(20px);
+  }
 }
 
 /* NAVBAR */
@@ -50,22 +86,35 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 20px 50px;
+
+  backdrop-filter: blur(10px);
 }
 
+body.dark-mode .navbar {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* LOGO */
 .logo {
   font-weight: bold;
   font-size: 20px;
 }
 
+/* LINKS */
 .nav-links a {
   margin-left: 20px;
   text-decoration: none;
   color: #1e293b;
   font-size: 14px;
+  transition: 0.3s;
 }
 
 .nav-links a:hover {
   color: #3b82f6;
+}
+
+body.dark-mode .nav-links a {
+  color: #e2e8f0;
 }
 
 /* BUTTONS */
@@ -74,12 +123,18 @@ body {
   border-radius: 8px;
   border: none;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 .btn-login {
   background: transparent;
   border: 1px solid #1e293b;
   color: #1e293b;
+}
+
+body.dark-mode .btn-login {
+  border: 1px solid #94a3b8;
+  color: #e2e8f0;
 }
 
 .btn-register {
@@ -101,12 +156,21 @@ body {
   color: #3b82f6;
 }
 
+body.dark-mode .hero span {
+  color: #60a5fa;
+}
+
 .hero p {
   max-width: 600px;
   margin: 20px auto;
   color: #475569;
 }
 
+body.dark-mode .hero p {
+  color: #cbd5e1;
+}
+
+/* BUTTON SPACING */
 .hero-buttons {
   margin-top: 20px;
 }
@@ -124,7 +188,8 @@ body {
   border: none;
   box-shadow: none;
 }
-/* TITLE*/
+
+/* TITLE */
 .brand-title {
   font-family: "Segoe UI", Arial, sans-serif;
   font-size: 64px;
@@ -133,7 +198,10 @@ body {
   margin-bottom: 18px;
 
   background: linear-gradient(135deg, #2563eb, #60a5fa);
+
   -webkit-background-clip: text;
+  background-clip: text;
+
   -webkit-text-fill-color: transparent;
 }
 </style>
@@ -183,17 +251,14 @@ body {
     const theme = appearance.theme || "Default Blue";
     const fontSize = appearance.fontSize || "Medium";
 
-    if (theme === "Default Blue") {
-    document.body.style.background = "linear-gradient(135deg, #dbe4f0, #cbdcf5, #d6e6f5)";
-    document.body.style.color = "#1f2937";
-    } else if (theme === "Light") {
-        document.body.style.background = "#f8fbff";
-        document.body.style.color = "#1f2937";
-    } else if (theme === "Dark") {
-        document.body.style.background = "#1e293b";
-        document.body.style.color = "#f8fafc";
+    // ONLY handle dark mode class (no background override)
+    if (theme === "Dark") {
+        document.body.classList.add("dark-mode");
+    } else {
+        document.body.classList.remove("dark-mode");
     }
 
+    // font size stays
     if (fontSize === "Small") {
         document.body.style.fontSize = "14px";
     } else if (fontSize === "Medium") {

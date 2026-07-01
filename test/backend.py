@@ -88,6 +88,7 @@ class Quiz(db.Model):
     content = db.Column(db.Text)  # raw AI text, kept for the admin panel
     created_by = db.Column(db.String(100))  # email of the user who generated this quiz
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    marks = db.Column(db.Integer, default=0)
 
 
 class Coursework(db.Model):
@@ -1104,8 +1105,9 @@ Notes:
             }), 500
 
         return jsonify({
-            "success": True,
-            "quiz": structured_quiz
+        "success": True,
+        "quiz": structured_quiz,
+        "quiz_id": new_quiz.id   # ADD THIS
         }), 200
 
     except Exception as e:
@@ -1135,7 +1137,34 @@ def get_quizzes():
         for q in quizzes
     ]), 200
 
+# ==============================
+# SUBMIT QUIZZES
+# ==============================
+@app.route("/submit_quiz", methods=["POST"])
+def submit_quiz():
+    try:
+        data = request.get_json()
 
+        quiz_id = data.get("quiz_id")
+        score = data.get("score")
+
+        quiz = Quiz.query.get(quiz_id)
+
+        if not quiz:
+            return jsonify({"success": False, "message": "Quiz not found"}), 404
+
+        quiz.marks = score
+        db.session.commit()
+
+        return jsonify({
+            "success": True,
+            "message": "Score saved"
+        }), 200
+
+    except Exception as e:
+        print("SUBMIT QUIZ ERROR:", e)
+        return jsonify({"success": False, "message": str(e)}), 500
+    
 # ==============================
 # RUN SERVER
 # ==============================

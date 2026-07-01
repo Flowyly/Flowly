@@ -464,13 +464,11 @@ textarea {
             <aside class="sidebar">
                 <h2>Subjects</h2>
 
-                <!-- NEW: Subject creation is separated clearly from topic creation. -->
                 <div class="add-row">
                     <input type="text" id="newSubjectInput" placeholder="Type new subject">
                     <button type="button" class="primary-btn" onclick="addSubject()">Add</button>
                 </div>
 
-                <!-- NEW: Subject list shows exactly which subject is active. -->
                 <div id="subjectList"></div>
             </aside>
 
@@ -478,7 +476,6 @@ textarea {
                 <div class="card">
                     <h2>Step 1: Choose Subject and Topic</h2>
 
-                    <!-- NEW: Current destination tells user where generated notes will be stored. -->
                     <div class="path-box" id="savePath">Saving to: No subject selected</div>
 
                     <div class="form-grid">
@@ -497,7 +494,6 @@ textarea {
                         </div>
                     </div>
 
-                    <!-- NEW: Topic creation is tied to the selected subject. -->
                     <div class="add-row">
                         <input type="text" id="newTopicInput" placeholder="Type new topic, e.g. Secure Coding">
                         <button type="button" class="primary-btn" onclick="addTopic()">Add Topic</button>
@@ -536,7 +532,6 @@ textarea {
                         <span class="status-badge" id="topicCount">0 Topics</span>
                     </div>
 
-                    <!-- NEW: This is the clear previous notes display. -->
                     <div class="topic-list" id="topicList"></div>
                 </div>
 
@@ -620,11 +615,13 @@ function startQuizFromNotes() {
 }
 
 // ===== BACKEND + LOCAL PAGE STATE =====
-// NEW: This page connects to Flask backend.py.
+// CHANGED: localStorage is now the single source of truth for what you see on
+// this page, the same way generatequiz.html works. The backend database is
+// still written to on save (as a best-effort backup), but it is never used to
+// overwrite or repopulate what's already in your browser on page load. That
+// backend-driven overwrite was why older notes could vanish after a restart.
 const API_BASE_URL = "http://127.0.0.1:5000";
 
-// NEW: Browser storage is used for selected subject/topic and UI state.
-// Generated notes are also loaded back from the backend /notes route.
 let subjects = loadSubjects();
 let selectedSubjectId = localStorage.getItem("selectedSubjectId") || null;
 let selectedTopicId = localStorage.getItem("selectedTopicId") || null;
@@ -636,7 +633,7 @@ function createId() {
 function loadSubjects() {
     const saved = JSON.parse(localStorage.getItem("subjects")) || [];
 
-    // NEW: Migration support for your older notesByTopic structure.
+    // Migration support for older notesByTopic structure.
     return saved.map(subject => {
         if (!subject.id) subject.id = createId();
         if (!Array.isArray(subject.topics)) subject.topics = [];
@@ -692,7 +689,11 @@ function saveSubjects() {
     localStorage.setItem("selectedTopicId", selectedTopicId || "");
 }
 
-// NEW: Load saved notes from Flask SQLite database and group them as Subject > Topic.
+// CHANGED: this is now a manual/background sync only. It no longer runs
+// automatically on page load, so it can never wipe out or overwrite what's
+// already saved locally. It only ADDS subjects/topics from the backend that
+// don't already exist locally by name -- it never touches notes you already
+// have in your browser.
 async function loadNotesFromBackend() {
     try {
         const response = await fetch(API_BASE_URL + "/notes");
@@ -701,6 +702,8 @@ async function loadNotesFromBackend() {
         if (!Array.isArray(backendNotes)) {
             return;
         }
+
+        let addedSomething = false;
 
         backendNotes.forEach(note => {
             const subjectName = (note.subject || "Untitled Subject").trim();
@@ -716,44 +719,39 @@ async function loadNotesFromBackend() {
                     progress: 0
                 };
                 subjects.push(subject);
+                addedSomething = true;
             }
 
             let topic = subject.topics.find(item => item.title.toLowerCase() === topicTitle.toLowerCase());
 
+            // Only create the topic if it doesn't exist locally yet.
+            // If it already exists, leave its notes alone -- local data wins.
             if (!topic) {
                 topic = {
                     id: createId(),
                     title: topicTitle,
-                    notes: "",
+                    notes: note.content || "",
                     fileName: "Saved in database",
                     updatedAt: "",
                     done: false,
                     backendId: note.id
                 };
                 subject.topics.push(topic);
-            }
-
-            // NEW: /notes returns newest first, so the first matching note becomes the visible latest note.
-            if (!topic.backendId || topic.backendId === note.id || !topic.notes) {
-                topic.backendId = note.id;
-                topic.notes = note.content || "";
-                topic.fileName = "Saved in database";
+                addedSomething = true;
             }
         });
 
-        if (!selectedSubjectId && subjects.length > 0) {
-            selectedSubjectId = subjects[0].id;
+        if (addedSomething) {
+            ensureValidSelection();
+            saveSubjects();
+            renderPage();
         }
-
-        ensureValidSelection();
-        saveSubjects();
-        renderPage();
     } catch (error) {
         console.error("LOAD NOTES ERROR:", error);
     }
 }
 
-// NEW: Save edited notes to backend if /save_note route exists.
+// Save edited notes to backend if /save_note route exists.
 // If the route is not added yet, the page still saves notes locally.
 async function saveNoteToBackend(subjectName, topicTitle, content) {
     try {
@@ -872,7 +870,7 @@ function renderSubjects() {
         card.addEventListener("click", () => {
             selectedSubjectId = subject.id;
             selectedTopicId = subject.topics[0] ? subject.topics[0].id : null;
-            document.getElementById("notesArea").value = getSelectedTopic() ? getSelectedTopic().notes : "";
+            document.getElementById("notesArea").value = "";
             renderPage();
         });
 
@@ -1048,7 +1046,7 @@ function changeSubject() {
     selectedSubjectId = document.getElementById("subjectSelect").value;
     const subject = getSelectedSubject();
     selectedTopicId = subject && subject.topics[0] ? subject.topics[0].id : null;
-    document.getElementById("notesArea").value = getSelectedTopic() ? getSelectedTopic().notes : "";
+    document.getElementById("notesArea").value = "";
     renderPage();
 }
 
@@ -1069,7 +1067,7 @@ function deleteSubject(subjectId) {
         selectedSubjectId = subjects[0] ? subjects[0].id : null;
         const newSubject = getSelectedSubject();
         selectedTopicId = newSubject && newSubject.topics[0] ? newSubject.topics[0].id : null;
-        document.getElementById("notesArea").value = getSelectedTopic() ? getSelectedTopic().notes : "";
+        document.getElementById("notesArea").value = "";
     }
 
     renderPage();
@@ -1152,7 +1150,7 @@ function deleteTopic(topicId) {
 
     subject.topics = subject.topics.filter(item => item.id !== topicId);
     selectedTopicId = subject.topics[0] ? subject.topics[0].id : null;
-    document.getElementById("notesArea").value = getSelectedTopic() ? getSelectedTopic().notes : "";
+    document.getElementById("notesArea").value = "";
     renderPage();
 }
 
@@ -1220,17 +1218,17 @@ async function generateNotes() {
 
         const data = await response.json();
 
-if (data.success && data.notes) {
-    topic.notes = data.notes;
-    topic.fileName = file.name;
-    topic.updatedAt = new Date().toISOString();
-    notesArea.value = data.notes;
+        if (data.success && data.notes) {
+            topic.notes = data.notes;
+            topic.fileName = file.name;
+            topic.updatedAt = new Date().toISOString();
+            notesArea.value = data.notes;
 
-    saveSubjects();
-    renderPage();
-} else {
-    notesArea.value = data.message || "AI generation failed.";
-}
+            saveSubjects();
+            renderPage();
+        } else {
+            notesArea.value = data.message || "AI generation failed.";
+        }
     } catch (error) {
         console.error(error);
         notesArea.value = "Error connecting to backend. Make sure Flask backend is running.";
@@ -1251,20 +1249,20 @@ async function saveNotesToCurrentTopic() {
         return;
     }
 
+    // Local save happens first and is always the source of truth.
     topic.notes = notesArea.value;
     topic.updatedAt = new Date().toISOString();
     saveSubjects();
     renderPage();
+    showQuizCta();
 
-    // NEW: Save edited notes into backend database when backend.py has /save_note route.
+    // Best-effort backend backup. Whether this succeeds or fails, it never
+    // overwrites what's already saved locally.
     const backendResult = await saveNoteToBackend(subject.name, topic.title, notesArea.value);
 
     if (backendResult.success) {
-        await loadNotesFromBackend();
-        showQuizCta();
-        alert("Notes saved to database under: " + subject.name + " > " + topic.title);
+        alert("Notes saved under: " + subject.name + " > " + topic.title);
     } else {
-        showQuizCta();
         alert("Notes saved locally under: " + subject.name + " > " + topic.title);
     }
 }
@@ -1281,26 +1279,12 @@ function clearEditor() {
 }
 
 // ===== INITIAL LOAD =====
-async function initializePage() {
+// CHANGED: no longer calls loadNotesFromBackend() automatically. The page
+// now restores purely from localStorage on open, matching generatequiz.html,
+// so your saved notes are always there even after fully closing the browser
+// or turning the computer off.
+function initializePage() {
     renderPage();
-
-    // Pull saved notes from backend.py /notes when the page opens.
-    await loadNotesFromBackend();
-
-    // NEW: repopulate the editor with the currently selected topic's notes.
-    // Without this, navigating away and back leaves the textarea empty even
-    // though the notes were already saved into localStorage / the database.
-    const topic = getSelectedTopic();
-    const notesArea = document.getElementById("notesArea");
-
-    if (topic && topic.notes && !notesArea.value) {
-        notesArea.value = topic.notes;
-    }
-
-    // If notes already exist for the selected topic, the quiz CTA should be visible too
-    if (topic && topic.notes) {
-        showQuizCta();
-    }
 }
 
 initializePage();
