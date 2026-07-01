@@ -724,95 +724,101 @@ textarea {
     transform: scale(1.08);
     background: #dc2626;
 }
-/* DARK MODE FIX: keep main UI text readable/black */
-.card,
-.card h2,
-.card h3,
-.card label,
-.hero h1,
-.notes-header h2,
-.form-group label,
-.subject-card,
-.topic-card,
-.subject-card h3,
-.topic-card h3,
-.upload-box h3,
-.path-box,
-textarea,
-input,
-select,
-.profile-menu,
-.profile-menu div {
+
+/* DARK MODE: background dark, but UI text stays black */
+body.dark-mode {
+    background: radial-gradient(circle at 20% 20%, #1e3a8a, transparent 40%),
+                radial-gradient(circle at 80% 30%, #312e81, transparent 40%),
+                #0f172a;
+
+    color: #1f2937;
+}
+
+/* Force main readable text to stay black in dark mode */
+body.dark-mode .card,
+body.dark-mode .card h2,
+body.dark-mode .card h3,
+body.dark-mode .form-group label,
+body.dark-mode .notes-header h2,
+body.dark-mode .subject-card,
+body.dark-mode .topic-card,
+body.dark-mode .subject-card h3,
+body.dark-mode .topic-card h3,
+body.dark-mode .upload-box h3,
+body.dark-mode .path-box,
+body.dark-mode textarea,
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode .profile-menu,
+body.dark-mode .profile-menu div {
     color: #1f2937 !important;
 }
 
-/* Keep muted text consistent */
-.muted,
-.empty-message,
-.file-name-display {
-    color: #64748b !important;
+/* Keep white/soft UI panels unchanged */
+body.dark-mode .navbar,
+body.dark-mode .card,
+body.dark-mode .subject-card,
+body.dark-mode .topic-card,
+body.dark-mode .upload-box,
+body.dark-mode textarea,
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode .empty-message,
+body.dark-mode .profile-menu {
+    background-color: #ffffff !important;
 }
 
-/* Keep white cards white even in dark mode */
-.card,
-.subject-card,
-.topic-card,
-.upload-box,
-textarea,
-input,
-select,
-.profile-menu {
-    background-color: #ffffff;
-}
-
-/* Keep input/card soft backgrounds */
-.subject-card,
-.topic-card,
-input,
-select,
-.empty-message {
+/* Keep soft inner cards */
+body.dark-mode .subject-card,
+body.dark-mode .topic-card,
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode .empty-message {
     background-color: #f8fbff !important;
 }
 
-/* Keep selected cards readable */
-.active-card {
-    background-color: #eaf8ff !important;
-    color: #1f2937 !important;
+/* Muted text stays readable */
+body.dark-mode .muted,
+body.dark-mode .empty-message,
+body.dark-mode .file-name-display {
+    color: #64748b !important;
 }
 
-/* Keep navbar text normal */
-.nav-item {
+/* Navbar text */
+body.dark-mode .nav-item {
     color: #334155 !important;
 }
 
-.nav-item.active {
+body.dark-mode .nav-item.active {
     color: white !important;
 }
 
-/* Keep blue items blue */
-.flow-step,
-.status-badge,
-.selected-subject-inline,
-.secondary-btn {
+/* Blue elements stay blue */
+body.dark-mode .flow-step,
+body.dark-mode .status-badge,
+body.dark-mode .selected-subject-inline,
+body.dark-mode .secondary-btn {
     color: #2563eb !important;
 }
 
-/* Keep primary buttons white text */
-.primary-btn,
-.primary-btn:hover,
-.danger-btn,
-.danger-btn:hover {
+/* Main buttons stay white text */
+body.dark-mode .primary-btn,
+body.dark-mode .danger-btn {
     color: white !important;
 }
 
-/* Keep quiz CTA readable */
-.quiz-cta,
-.quiz-cta h3 {
+/* Quiz CTA stays readable */
+body.dark-mode .quiz-cta,
+body.dark-mode .quiz-cta h3 {
     color: white !important;
 }
 
-.quiz-cta button {
+body.dark-mode .quiz-cta button {
     color: #2563eb !important;
+}
+/* Only AI Study Notes title turns white in dark mode */
+body.dark-mode .hero h1 {
+    color: #ffffff !important;
 }
 </style>
 </head>
@@ -937,15 +943,10 @@ select,
     const theme = appearance.theme || "Default Blue";
     const fontSize = appearance.fontSize || "Medium";
 
-    if (theme === "Default Blue") {
-        document.body.style.background = "#8fb9d6";
-        document.body.style.color = "#1f2937";
-    } else if (theme === "Light") {
-        document.body.style.background = "#eaf8ff";
-        document.body.style.color = "#1f2937";
-    } else if (theme === "Dark") {
-        document.body.style.background = "#1e293b";
-        document.body.style.color = "#f8fafc";
+    if (theme === "Dark") {
+        document.body.classList.add("dark-mode");
+    } else {
+        document.body.classList.remove("dark-mode");
     }
 
     if (fontSize === "Small") document.body.style.fontSize = "14px";
