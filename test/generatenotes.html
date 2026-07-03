@@ -1456,7 +1456,7 @@ document.addEventListener("click", function(event) {
         const notesArea = document.getElementById("notesArea");
         const fileInput = document.getElementById("fileUpload");
         const generateBtn = document.getElementById("generateBtn");
-
+        hideQuizCta();
         if (!subject) return alert("Please add or select a subject first.");
         if (!topic) return alert("Please add or select a topic first.");
         if (fileInput.files.length === 0) return alert("Please choose a PDF file first.");
@@ -1483,13 +1483,14 @@ document.addEventListener("click", function(event) {
             const response = await fetch(API_BASE_URL + "/generate_notes_from_file", { method: "POST", body: formData });
             const data = await response.json();
 
-            if (data.success && data.notes) {
-                topic.notes = data.notes;
-                topic.fileName = file.name;
-                topic.updatedAt = new Date().toISOString();
-                notesArea.value = data.notes;
-                renderPage();
-            } else {
+           if (data.success && data.notes) {
+    topic.notes = data.notes;
+    topic.fileName = file.name;
+    topic.updatedAt = new Date().toISOString();
+    notesArea.value = data.notes;
+    renderPage();
+    showQuizCta();
+} else {
                 notesArea.value = data.message || "AI generation failed.";
             }
         } catch (error) {
@@ -1517,7 +1518,7 @@ document.addEventListener("click", function(event) {
         const backendResult = await saveNoteToBackend(subject.name, topic.title, notesArea.value);
         if (backendResult.success) await loadNotesFromBackend();
 
-        showQuizCta();
+        
         alert(backendResult.success ? "Notes saved to database." : "Notes saved locally.");
     }
 
@@ -1534,8 +1535,12 @@ document.addEventListener("click", function(event) {
     }
 
     function showQuizCta() {
-        document.getElementById("quizCta")?.classList.add("show");
-    }
+    document.getElementById("quizCta")?.classList.add("show");
+}
+
+function hideQuizCta() {
+    document.getElementById("quizCta")?.classList.remove("show");
+}
 
     function autoResizeNotesEditor() {
         const notesArea = document.getElementById("notesArea");
