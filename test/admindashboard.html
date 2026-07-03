@@ -85,6 +85,56 @@
     }
     .logout-btn:hover { background: rgba(239,68,68,0.28); }
 
+    /* ── DELETE BUTTON ── */
+    .delete-btn {
+      padding: 8px 16px;
+      border-radius: 10px;
+      background: rgba(239,68,68,0.15);
+      border: 1px solid rgba(239,68,68,0.3);
+      color: #f87171;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .delete-btn:hover {
+      background: rgba(239,68,68,0.28);
+    }
+
+    /* ── ROLE BADGES ── */
+    .badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .badge-admin {
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      color: white;
+    }
+    .badge-user {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #94a3b8;
+    }
+
+    /* ── CREATOR TAG ── */
+    .creator-tag {
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(59,130,246,0.15);
+      border: 1px solid rgba(59,130,246,0.3);
+      color: #93c5fd;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .creator-tag.unknown {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #64748b;
+    }
+
     /* ── CONTAINER ── */
     .container { padding: 10px 30px 40px; }
 
@@ -146,78 +196,98 @@
       border-radius: 20px;
     }
 
-    /* ── TABLE ── */
-    table { width: 100%; border-collapse: collapse; }
+    /* ───────── TABLE ───────── */
 
-    thead tr { background: rgba(255,255,255,0.04); }
-
-    th {
-      text-align: left;
-      padding: 12px 16px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #64748b;
-      font-weight: 600;
+    table{
+        width:100%;
+        border-collapse:collapse;
+        table-layout:fixed;
     }
 
-    td {
-      padding: 13px 16px;
-      font-size: 14px;
-      color: #cbd5e1;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      vertical-align: middle;
+    thead tr{
+        background:rgba(255,255,255,.04);
     }
 
-    tr:hover td { background: rgba(255,255,255,0.03); }
-
-    .badge {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
-    }
-    .badge-admin { background: rgba(167,139,250,0.2); color: #a78bfa; }
-    .badge-user  { background: rgba(100,116,139,0.2); color: #94a3b8; }
-
-    .creator-tag {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
-      background: rgba(56,189,248,0.15);
-      color: #7dd3fc;
-      white-space: nowrap;
-    }
-    .creator-tag.unknown {
-      background: rgba(100,116,139,0.15);
-      color: #64748b;
-      font-style: italic;
+    th,
+    td{
+        padding:13px 16px;
+        text-align:left;
+        vertical-align:middle;
     }
 
-    .delete-btn {
-      padding: 6px 14px;
-      border-radius: 8px;
-      background: rgba(239,68,68,0.15);
-      border: 1px solid rgba(239,68,68,0.3);
-      color: #f87171;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 600;
-      transition: all 0.2s;
-      white-space: nowrap;
+    th{
+        font-size:11px;
+        text-transform:uppercase;
+        letter-spacing:1px;
+        color:#64748b;
+        font-weight:600;
     }
-    .delete-btn:hover { background: rgba(239,68,68,0.3); }
 
-    .note-preview {
-      max-width: 360px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: #94a3b8;
-      font-size: 13px;
+    td{
+        font-size:14px;
+        color:#cbd5e1;
+        border-top:1px solid rgba(255,255,255,.05);
+    }
+
+    tr:hover td{
+        background:rgba(255,255,255,.03);
+    }
+
+    /* ---------- Quiz Table Column Widths ---------- */
+
+    #panel-quizzes table th:nth-child(1),
+    #panel-quizzes table td:nth-child(1){
+        width:6%;
+    }
+
+    #panel-quizzes table th:nth-child(2),
+    #panel-quizzes table td:nth-child(2){
+        width:18%;
+    }
+
+    #panel-quizzes table th:nth-child(3),
+    #panel-quizzes table td:nth-child(3){
+        width:36%;
+    }
+
+    #panel-quizzes table th:nth-child(4),
+    #panel-quizzes table td:nth-child(4){
+        width:15%;
+    }
+
+    #panel-quizzes table th:nth-child(5),
+    #panel-quizzes table td:nth-child(5){
+        width:10%;
+        text-align:center;
+    }
+
+    #panel-quizzes table th:nth-child(6),
+    #panel-quizzes table td:nth-child(6){
+        width:15%;
+        text-align:center;
+    }
+
+    /* Make the table fill the whole panel */
+
+    #usersContent,
+    #notesContent,
+    #quizzesContent{
+        width:100%;
+    }
+
+    #usersContent table,
+    #notesContent table,
+    #quizzesContent table{
+        width:100%;
+    }
+
+    .note-preview{
+        width:100%;
+        overflow:hidden;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+        color:#94a3b8;
+        font-size:13px;
     }
 
     .empty-row td {
@@ -332,7 +402,7 @@
       </div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon">❓</div>
+      <div class="stat-icon">🎯</div>
       <div class="stat-info">
         <div class="stat-value" id="statQuizzes">–</div>
         <div class="stat-label">Saved Quizzes</div>
@@ -398,10 +468,10 @@
   }
 
   // ── TABS ──
-  function switchTab(tab, el) {   // ← added 'el' parameter
+  function switchTab(tab, el) {
     document.querySelectorAll(".nav-tab").forEach(e => e.classList.remove("active"));
     document.querySelectorAll(".panel").forEach(e => e.classList.remove("active"));
-    el.classList.add("active");   // ← use 'el' instead of 'event.target'
+    el.classList.add("active");
     document.getElementById(`panel-${tab}`).classList.add("active");
   }
 
@@ -428,10 +498,10 @@
   }
 
   function confirmDelete() {
-    const fn = pendingDelete;  // ← save it first
-    closeModal();              // ← now close (resets pendingDelete to null)
-    if (fn) fn();              // ← call the saved function
-}
+    const fn = pendingDelete;
+    closeModal();
+    if (fn) fn();
+  }
 
   // ── CREATOR TAG HELPER ──
   function creatorTag(value) {
@@ -489,11 +559,8 @@
 
   async function deleteUser(id) {
     try {
-      console.log("Deleting user", id);
       const res = await fetch(`${BASE}/admin/delete_user/${id}`, { method: "DELETE" });
-      console.log("Response status:", res.status);
       const data = await res.json();
-      console.log("Response data:", data);
       if (data.success) {
         showToast("User deleted.", "success");
         loadUsers();
@@ -501,7 +568,6 @@
         showToast(data.message || "Failed to delete user.", "error");
       }
     } catch (e) {
-      console.error("Delete failed:", e);
       showToast("Error deleting user.", "error");
     }
   }
@@ -581,11 +647,31 @@
 
       const rows = quizzes.map(q => `
         <tr>
-          <td>${q.id}</td>
-          <td>${q.title}</td>
-          <td><div class="note-preview">${q.content.replace(/\n/g, " ").substring(0, 120)}…</div></td>
-          <td>${creatorTag(q.created_by)}</td>
-          <td><button class="delete-btn" onclick="askDeleteQuiz(${q.id})">Delete</button></td>
+          <td style="width:5%">${q.id}</td>
+
+          <td style="width:15%">
+            ${q.title}
+          </td>
+
+          <td style="width:40%">
+            <div class="note-preview">
+              ${q.content.replace(/\n/g, " ").substring(0, 120)}...
+            </div>
+          </td>
+
+          <td style="width:15%">
+            ${creatorTag(q.created_by)}
+          </td>
+
+          <td style="width:10%">
+            ${q.marks || "-"}
+          </td>
+
+          <td style="width:15%">
+            <button class="delete-btn" onclick="askDeleteQuiz(${q.id})">
+              Delete
+            </button>
+          </td>
         </tr>
       `).join("");
 
@@ -593,7 +679,7 @@
         <table>
           <thead>
             <tr>
-              <th>ID</th><th>Title</th><th>Preview</th><th>Created By</th><th>Action</th>
+              <th>ID</th> <th>Title</th> <th>Preview</th> <th>Created By</th> <th>Marks</th> <th>Action</th>
             </tr>
           </thead>
           <tbody>${rows}</tbody>

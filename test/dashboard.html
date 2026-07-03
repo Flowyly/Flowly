@@ -4,427 +4,498 @@
   <title>Dashboard</title>
 
   <style>
-   body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background:#8fb9d6
-  }
+    * {
+      box-sizing: border-box;
+    }
 
-  /* NAVBAR */
- /* NAVBAR */
-.navbar {
+    /* LIGHT MODE CANVAS (Default) */
+    body {
+      font-family: Arial, sans-serif;
+      background: #8fb9d6;
+      color: #1f2937;
+      min-height: 100vh;
+      transition: background 0.3s ease;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 30px;
+      margin: 20px;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* LEFT NAV */
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    /* NAV ITEMS */
+    .nav-item {
+      position: relative;
+      padding: 10px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #334155;
+      transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.2s ease;
+    }
+
+    /* HOVER EFFECT */
+    .nav-item:hover {
+      background: #dbeafe;
+      color: #2563eb;
+      transform: translateY(-2px);
+    }
+
+    /* ACTIVE PAGE */
+    .nav-item.active {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+
+    /* PROFILE PROFILE BOX */
+    .profile {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #eff6ff;
+      font-size: 20px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.25s ease, transform 0.2s ease;
+    }
+
+    .profile:hover {
+      background: #dbeafe;
+      transform: scale(1.08);
+    }
+
+    /* MENU DROPDOWN LIST */
+    .profile-menu {
+      border: 2px solid black;
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 50px;
+      background: white;
+      border-radius: 19px;
+      width: 180px;
+      box-shadow: 7px 13px 15px -1px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      z-index: 20;
+      font-size: 15px;
+    }
+
+    .profile-menu div {
+      padding: 12px;
+      cursor: pointer;
+      border-radius: 15px;
+      color: #1f2937;
+      text-align: left;
+    }
+
+    .profile-menu div:hover {
+      background: #6fa0d0;
+      color: white;
+    }
+
+    /* DASHBOARD LAYOUT GRID */
+    .container {
+      padding: 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .grid {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      flex: 1;
+      background: white;
+      padding: 25px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border-radius: 16px;
+      min-height: 220px;
+      min-width: 280px;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 10px;
+      color: #1e293b;
+    }
+
+    /* CALENDAR SYSTEM */
+    .calendar-card {
+      padding: 20px;
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      color: #1e293b;
+      font-weight: bold;
+    }
+
+    .calendar-header button {
+      background: #eff6ff;
+      border: none;
+      padding: 5px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #2563eb;
+      font-weight: bold;
+      transition: background 0.2s ease;
+    }
+
+    .calendar-header button:hover {
+      background: #dbeafe;
+    }
+
+    .weekdays, .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+    }
+
+    .weekdays div {
+      text-align: center;
+      font-weight: bold;
+      padding: 5px;
+      color: #475569;
+      font-size: 13px;
+    }
+
+    .calendar div {
+      height: 40px;
+      border: 1px solid #f1f5f9;
+      text-align: center;
+      padding-top: 10px;
+      font-size: 14px;
+      color: #334155;
+      border-radius: 4px;
+    }
+
+    #scoreDisplay {
+      color: #2563eb;
+      margin: 15px 0 5px 0;
+      font-size: 32px;
+    }
+
+    #motivationText {
+      color: #475569;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* TASKS & REMINDERS ITEMS */
+    .item {
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* STATUS COLOR INDICATORS */
+    .urgent {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-left: 4px solid #ef4444;
+    }
+
+    .warning {
+      background: #fef3c7;
+      color: #92400e;
+      border-left: 4px solid #f59e0b;
+    }
+
+    .done {
+      background: #dcfce7;
+      color: #166534;
+      border-left: 4px solid #10b981;
+    }
+
+    /* GLOBAL DARK MODE OVERRIDES */
+    body.dark-mode {
+      background: radial-gradient(circle at 20% 20%, #1e3a8a, transparent 40%),
+                  radial-gradient(circle at 80% 30%, #312e81, transparent 40%),
+                  #0f172a;
+      background-attachment: fixed;
+    }
+
+    /* Enforce white component cards over dark background workspace canvas */
+    body.dark-mode .card {
+      background: white;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark-mode .profile-menu div {
+      color: #1f2937;
+    }
+    .quiz-result {
+  padding: 14px;
+  margin-top: 12px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border-left: 4px solid #3b82f6;
+}
+.quiz-result .quiz-result-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  padding: 16px 30px;
-  margin: 20px;
-
-  background: rgba(255, 255, 255, 0.75);
-
-  backdrop-filter: blur(12px);
-
-  border: 1px solid rgba(255, 255, 255, 0.4);
-
-  border-radius: 20px;
-
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.08);
-
-  transition: all 0.3s ease;
-}
-
-/* LEFT NAV */
-.nav-left {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-/* NAV ITEMS */
-.nav-item {
-  position: relative;
-
-  padding: 10px 18px;
-
-  border-radius: 12px;
-
-  cursor: pointer;
-
-  font-weight: 500;
-  color: #334155;
-
-  transition:
-    background 0.25s ease,
-    color 0.25s ease,
-    transform 0.2s ease;
-}
-
-/* HOVER EFFECT */
-.nav-item:hover {
-  background: #dbeafe;
-
-  color: #2563eb;
-
-  transform: translateY(-2px);
-}
-
-/* ACTIVE PAGE */
-.nav-item.active {
-  background: linear-gradient(
-    135deg,
-    #3b82f6,
-    #2563eb
-  );
-
-  color: white;
-
   font-weight: 600;
-
-  box-shadow:
-    0 4px 12px rgba(37, 99, 235, 0.35);
+  color: #1e293b;
 }
-
-/* PROFILE */
-.profile {
-  width: 42px;
-  height: 42px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: #eff6ff;
-
+.quiz-result .quiz-result-score {
   font-size: 20px;
-
-  cursor: pointer;
-
-  transition:
-    background 0.25s ease,
-    transform 0.2s ease;
+  color: #2563eb;
 }
+.quiz-result .quiz-result-time {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 4px;
+}
+.quiz-result .quiz-result-quote {
+  font-size: 13px;
+  color: #475569;
+  margin-top: 6px;
+}
+.quiz-result.high { border-left-color: #10b981; }
+.quiz-result.mid  { border-left-color: #f59e0b; }
+.quiz-result.low  { border-left-color: #ef4444; }
 
-.profile:hover {
+.calendar div.has-event {
   background: #dbeafe;
-
-  transform: scale(1.08);
+  border: 1px solid #93c5fd;
+  color: #1e40af;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
 }
 
-  /* PROFILE */
-  .profile {
-    position: relative;
-    cursor: pointer;
-    font-size: 15px;
-  }
+.calendar div.has-event:hover {
+  background: #bfdbfe;
+}
 
-  .profile-menu {
-    font: arial;
-    border: 2px solid black;
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 35px;
-    background: rgb(255, 255, 255);
-    border-radius: 19px;
-    width: 180px;
-    box-shadow: 7px 13px 15px -1px rgba(0, 0, 0, 0.15);
-    
-  }
-
-  .profile-menu div {
-    padding: 12px;
-    cursor: pointer;
-    border-radius: 19px;
-  }
-
-  .profile-menu div:hover {
-    background: #6fa0d0;
-    color: white;
-    border-radius: 19px;
-    border: 2px solid black;
-  }
-
-  .active-menu {
-  background: #2563eb;
+.calendar div.has-event.selected {
+  background: #3b82f6;
   color: white;
-  font-weight: bold;
+  border-color: #2563eb;
 }
 
-  /* DASHBOARD */
-  .container {
-    padding: 30px;
-  }
-
-  .grid {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-
-  .card {
-    border: 2px solid black;
-    flex: 1;
-    background: white;
-    padding: 20px;
-    box-shadow: 7px 13px 15px -1px rgba(0, 0, 0, 0.42);
-    border-radius: 10px;
-    min-height: 220px;
-  }
-
-  .card h3 {
-    margin-top: 0;
-    border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 10px;
-    color: #1e293b;
-  }
-
-  .calendar-card {
-  padding: 10px;
+.calendar-detail {
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #1e293b;
+  line-height: 1.6;
 }
 
-.calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+.calendar-detail .detail-title {
+  font-weight: 700;
+  color: #1e40af;
+  margin-bottom: 4px;
 }
 
-.weekdays, .calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-}
-
-.weekdays div {
-  text-align: center;
-  font-weight: bold;
-  padding: 5px;
-}
-
-.calendar div {
-  height: 40px;
-  border: 1px solid #ddd;
-  text-align: center;
+.calendar-detail .detail-item + .detail-item {
+  margin-top: 10px;
   padding-top: 10px;
+  border-top: 1px solid #bfdbfe;
 }
-
-  /* ITEMS */
-  .item {
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 8px;
-    font-size: 14px;
-  }
-
-  /* STATUS COLORS */
-  .urgent {
-    background: #fee2e2;
-    color: #b91c1c;
-  }
-
-  .warning {
-    background: #fef3c7;
-    color: #92400e;
-  }
-
-  .done {
-    background: #dcfce7;
-    color: #166534;
-  }
-
   </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-  <div class="nav-left">
-    <div class="nav-item active" onclick="goHome()">Home</div>
-    <div class="nav-item" onclick="goWork()">Work</div>
-    <div class="nav-item" onclick="goGenerateQuiz()"> Quiz</div>
-    <div class="nav-item" onclick="goGenerateNotes()">Notes</div>
-  </div>
-
-  <div class="profile" onclick="toggleMenu()">
-    👤
-    <div class="profile-menu" id="menu">
-      <div onclick="goProfile()">Profile</div>
-      <div onclick="goSettings()">Settings</div>
-      <div onclick="logout()">Logout</div>
-    </div>
-  </div>
-</div>
-
-<!-- DASHBOARD -->
-<div class="container">
-  <div class="grid">
-
-    <!-- REMINDER -->
-    <div class="card">
-      <h3>Reminder</h3>
-      <div id="reminderList"></div>
+  <div class="navbar">
+    <div class="nav-left">
+      <div class="nav-item active" onclick="goHome()">Home</div>
+      <div class="nav-item" onclick="goWork()">Work</div>
+      <div class="nav-item" onclick="goGenerateQuiz()">Quiz</div>
+      <div class="nav-item" onclick="goGenerateNotes()">Notes</div>
     </div>
 
-    <!-- CALENDAR -->
-    <div class="card calendar-card">
-      <h3>Calendar</h3>
+    <div class="profile" onclick="toggleMenu()">
+      👤
+      <div class="profile-menu" id="menu">
+        <div onclick="goProfile()">Profile</div>
+        <div onclick="goSettings()">Settings</div>
+        <div onclick="logout()">Logout</div>
+      </div>
+    </div>
+  </div>
 
-      <div class="calendar-header">
-        <button onclick="prevMonth()">◀</button>
-        <span id="monthYear"></span>
-        <button onclick="nextMonth()">▶</button>
+  <div class="container">
+    <div class="grid">
+
+      <div class="card">
+  <h3>Today's Quiz Results</h3>
+  <div id="quizResultsList">
+    <p style="color:#475569;">No quizzes answered today yet.</p>
+     </div>
       </div>
 
-      <div class="weekdays">
-        <div>Sun</div>
-        <div>Mon</div>
-        <div>Tue</div>
-        <div>Wed</div>
-        <div>Thu</div>
-        <div>Fri</div>
-        <div>Sat</div>
+      <div class="card calendar-card">
+        <div class="calendar-header">
+          <button onclick="prevMonth()">◀</button>
+          <span id="monthYear"></span>
+          <button onclick="nextMonth()">▶</button>
+        </div>
+
+        <div class="weekdays">
+          <div>Sun</div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
+        </div>
+
+        <div id="calendar" class="calendar"></div>
+        <div id="calendarDetail" class="calendar-detail" style="display:none;"></div>
       </div>
 
-      <div id="calendar" class="calendar"></div>
+      <div class="card">
+        <h3>Reminders</h3>
+        <div id="reminderList"></div>
+      </div>
+
     </div>
-
-    <!-- QUIZ PERFORMANCE -->
-    <div class="card">
-      <h3>Quiz Performance</h3>
-
-      <h2 id="scoreDisplay">No Quiz Taken</h2>
-
-      <p id="motivationText">
-        Complete a quiz to see your performance.
-      </p>
-    </div>
-
   </div>
-</div>
 
-<script>
-// ===== APPLY SAVED THEME =====
-(function() {
-    const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
-    const theme = appearance.theme || "Default Blue";
-    const fontSize = appearance.fontSize || "Medium";
+  <script>
+  // ===== APPLY SAVED THEME =====
+  (function() {
+      const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
+      const theme = appearance.theme || "Default Blue";
+      const fontSize = appearance.fontSize || "Medium";
 
-    if (theme === "Default Blue") {
-    document.body.style.background = "#8fb9d6";
-    document.body.style.color = "";  // reset to default
-} else if (theme === "Light") {
-    document.body.style.background = "#eaf8ff";
-    document.body.style.color = "";  // reset to default
-} else if (theme === "Dark") {
-    document.body.style.background = "#1e293b";
-    document.body.style.color = "";  // reset to default — cards stay dark text
-}
-
-    if (fontSize === "Small") document.body.style.fontSize = "14px";
-    else if (fontSize === "Medium") document.body.style.fontSize = "16px";
-    else if (fontSize === "Large") document.body.style.fontSize = "18px";
-})();
-
-if (!localStorage.getItem("userEmail")) {
-  window.location.href = "login1.html";
-} 
-
-async function loadAlerts() {
-  try {
-    const res = await fetch("http://127.0.0.1:5000/alerts");
-    const data = await res.json();
-
-    const container = document.getElementById("todoList");
-    container.innerHTML = "";
-
-    if (!data.length) {
-      container.innerHTML = "<div class='item'>No urgent tasks 🎉</div>";
-      return;
-    }
-
-    data.forEach(task => {
-      const div = document.createElement("div");
-      div.classList.add("item");
-
-      div.textContent = `${task.title} (${task.days_left} days left)`;
-
-      if (task.days_left <= 1) {
-        div.classList.add("urgent");
+      if (theme === "Dark") {
+          document.body.classList.add("dark-mode");
       } else {
-        div.classList.add("warning");
+          document.body.classList.remove("dark-mode");
       }
 
-      container.appendChild(div);
-    });
+      if (fontSize === "Small") document.body.style.fontSize = "14px";
+      else if (fontSize === "Medium") document.body.style.fontSize = "16px";
+      else if (fontSize === "Large") document.body.style.fontSize = "18px";
+  })();
 
-  } catch (err) {
-    console.log("Error loading alerts:", err);
-    document.getElementById("todoList").innerHTML =
-      "<div class='item'>Failed to load alerts</div>";
+  if (!localStorage.getItem("userEmail")) {
+      window.location.href = "login1.html";
   }
-}
 
-async function loadUpcoming() {
-  try {
-    const res = await fetch("http://127.0.0.1:5000/upcoming");
-    const data = await res.json();
-
-    const box = document.getElementById("reminderList");
-    box.innerHTML = "";
-
-    if (!data.length) {
-      box.innerHTML = "<div class='item'>No upcoming tasks 📅</div>";
-      return;
+  /* ================= NAV DROPDOWN TOGGLE ================= */
+  function toggleMenu() {
+    const menu = document.getElementById("menu");
+    if (menu) {
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
     }
-
-    data.slice(0, 3).forEach(task => {
-      const div = document.createElement("div");
-
-      if (task.days_left <= 1) {
-        div.className = "item urgent";
-      }
-      else if (task.days_left <= 3) {
-        div.className = "item warning";
-      }
-      else {
-        div.className = "item done";
-      }
-
-      div.textContent = `${task.title} - ${task.days_left} days left`;
-
-      box.appendChild(div);
-    });
-
-  } catch (err) {
-    console.log("Error loading upcoming:", err);
-
-    document.getElementById("reminderList").innerHTML =
-      "<div class='item'>Failed to load tasks</div>";
   }
-}
 
-function toggleMenu() {
-  let menu = document.getElementById("menu");
-  menu.style.display = menu.style.display === "block" ? "none" : "block";
-}
+  // Dropdown safe click handler
+  document.addEventListener("click", function(event) {
+    const profileTrigger = document.querySelector(".profile");
+    const menu = document.getElementById("menu");
 
-function goHome() { window.location.href = "dashboard.html"; }
-function goWork() { window.location.href = "work.html"; }
-function goGenerateQuiz() { window.location.href = "generatequiz.html"; }
-function goGenerateNotes() { window.location.href = "generatenotes.html"; }
-function goProfile() { window.location.href = "profile.html"; }
-function goSettings() { window.location.href = "settings.html"; }
-function logout() { window.location.href = "login1.html"; }
+    if (profileTrigger && menu && !profileTrigger.contains(event.target)) {
+      menu.style.display = "none";
+    }
+  });
 
+  function goHome() { window.location.href = "dashboard.html"; }
+  function goWork() { window.location.href = "work.html"; }
+  function goGenerateQuiz() { window.location.href = "generatequiz.html"; }
+  function goGenerateNotes() { window.location.href = "generatenotes.html"; }
+  function goProfile() { window.location.href = "profile.html"; }
+  function goSettings() { window.location.href = "settings.html"; }
+  
+  function logout() { 
+    if(confirm("Are you sure you want to logout?")) {
+      window.location.href = "login1.html"; 
+    }
+  }
+
+  /* ================= REMINDERS LOGIC ================= */
+  async function loadUpcoming() {
+    try {
+      const res = await fetch("http://127.0.0.1:5000/upcoming");
+      const data = await res.json();
+
+      const box = document.getElementById("reminderList");
+      box.innerHTML = "";
+
+      if (!data.length) {
+        box.innerHTML = "<div class='item done' style='border-left:none;'>No upcoming tasks 📅</div>";
+        return;
+      }
+
+      data.slice(0, 3).forEach(task => {
+        const div = document.createElement("div");
+
+        if (task.days_left <= 1) {
+          div.className = "item urgent";
+        }
+        else if (task.days_left <= 3) {
+          div.className = "item warning";
+        }
+        else {
+          div.className = "item done";
+        }
+
+        div.textContent = `${task.title} - ${task.days_left} days left`;
+        box.appendChild(div);
+      });
+
+    } catch (err) {
+      console.log("Error loading upcoming:", err);
+      document.getElementById("reminderList").innerHTML =
+        "<div class='item urgent' style='border-left:none;'>Failed to load tasks</div>";
+    }
+  }
+
+  /* ================= CALENDAR ENGINE ================= */
 let currentDate = new Date();
+let courseworkByDate = {};
+
+let selectedDateStr = null;
 
 function renderCalendar() {
   const calendar = document.getElementById("calendar");
   const monthYear = document.getElementById("monthYear");
 
+  if (!calendar || !monthYear) return;
   calendar.innerHTML = "";
 
   let year = currentDate.getFullYear();
@@ -447,10 +518,50 @@ function renderCalendar() {
   }
 
   for (let day = 1; day <= lastDate; day++) {
-    calendarHTML += `<div>${day}</div>`;
+    const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    const hasEvent = !!courseworkByDate[dateStr];
+    const isSelected = dateStr === selectedDateStr;
+
+    if (hasEvent) {
+      calendarHTML += `<div class="has-event ${isSelected ? "selected" : ""}" onclick="showDayDetail('${dateStr}')">${day}</div>`;
+    } else {
+      calendarHTML += `<div>${day}</div>`;
+    }
   }
 
   calendar.innerHTML = calendarHTML;
+
+  if (selectedDateStr && courseworkByDate[selectedDateStr]) {
+    document.getElementById("calendarDetail").style.display = "block";
+  }
+}
+
+function showDayDetail(dateStr) {
+  selectedDateStr = dateStr;
+  const events = courseworkByDate[dateStr] || [];
+  const detail = document.getElementById("calendarDetail");
+
+  if (!events.length) {
+    detail.style.display = "none";
+    return;
+  }
+
+  const dateLabel = new Date(dateStr + "T00:00:00").toLocaleDateString(undefined, {
+    weekday: "long", month: "long", day: "numeric"
+  });
+
+  detail.innerHTML = `
+    <div class="detail-title">${dateLabel}</div>
+    ${events.map(e => `
+      <div class="detail-item">
+        <strong>${e.title}</strong><br>
+        ${e.description || "No details"} • <em>${e.status || ""}</em>
+      </div>
+    `).join("")}
+  `;
+  detail.style.display = "block";
+
+  renderCalendar();
 }
 
 function nextMonth() {
@@ -463,62 +574,98 @@ function prevMonth() {
   renderCalendar();
 }
 
-function loadQuizScore() {
+/* ================= LOAD COURSEWORK FOR CALENDAR ================= */
+async function loadCourseworkForCalendar() {
+  try {
+    const res = await fetch("http://127.0.0.1:5000/coursework");
+    const data = await res.json();
 
-  const score =
-    localStorage.getItem("quizScore");
+    courseworkByDate = {};
+    data.forEach(c => {
+      if (!courseworkByDate[c.due_date]) courseworkByDate[c.due_date] = [];
+      courseworkByDate[c.due_date].push(c);
+    });
 
-  if (!score) {
-    return;
+    renderCalendar();
+  } catch (err) {
+    console.log("Error loading coursework for calendar:", err);
   }
-
-  document.getElementById(
-    "scoreDisplay"
-  ).innerText = score + "%";
-
-  let quote = "";
-
-  if (score >= 90) {
-    quote =
-      "Excellent work! Keep pushing forward.";
-  }
-
-  else if (score >= 75) {
-    quote =
-      "Great job! Your understanding is improving.";
-  }
-
-  else if (score >= 60) {
-    quote =
-      "Good effort. A little more revision will help.";
-  }
-
-  else if (score >= 40) {
-    quote =
-      "Keep practicing. Progress comes with consistency.";
-  }
-
-  else {
-    quote =
-      "Don't give up. Every quiz helps you learn.";
-  }
-
-  document.getElementById(
-    "motivationText"
-  ).innerText = quote;
 }
 
-loadAlerts();
+  /* ================= PERFORMANCE TRACKER ================= */
+  function getMotivation(pct) {
+  if (pct >= 90) return "Excellent work! Keep pushing forward.";
+  if (pct >= 75) return "Great job! Your understanding is improving.";
+  if (pct >= 60) return "Good effort. A little more revision will help.";
+  if (pct >= 40) return "Keep practicing. Progress comes with consistency.";
+  return "Don't give up. Every quiz helps you learn.";
+}
+
+async function loadTodayQuizzes() {
+  const list = document.getElementById("quizResultsList");
+  const userEmail = (localStorage.getItem("userEmail") || "").toLowerCase();
+
+  try {
+    const res = await fetch("http://127.0.0.1:5000/quizzes");
+    const quizzes = await res.json();
+
+    const today = new Date().toDateString();
+
+    const todaysResults = quizzes.filter(q => {
+      if (!q.attempted || !q.submitted_at) return false;
+      if ((q.created_by || "").toLowerCase() !== userEmail) return false;
+      return new Date(q.submitted_at).toDateString() === today;
+    });
+
+    todaysResults.sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at));
+
+    if (!todaysResults.length) {
+      list.innerHTML = `<p style="color:#475569;">No quizzes answered today yet.</p>`;
+      return;
+    }
+
+    list.innerHTML = todaysResults.map(q => {
+      const [scoreStr, totalStr] = (q.marks || "0/0").split("/");
+      const score = Number(scoreStr) || 0;
+      const total = Number(totalStr) || 0;
+      const pct = total > 0 ? Math.round((score / total) * 100) : 0;
+
+      let tier = "low";
+      if (pct >= 75) tier = "high";
+      else if (pct >= 40) tier = "mid";
+
+      const time = new Date(q.submitted_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+      return `
+        <div class="quiz-result ${tier}">
+          <div class="quiz-result-top">
+            <span>${q.title || "Quiz"}</span>
+            <span class="quiz-result-score">${pct}%</span>
+          </div>
+          <div class="quiz-result-time">${score}/${total} correct • ${time}</div>
+          <div class="quiz-result-quote">${getMotivation(pct)}</div>
+        </div>
+      `;
+    }).join("");
+
+  } catch (err) {
+    console.log("Error loading today's quizzes:", err);
+    list.innerHTML = `<p style="color:#b91c1c;">Failed to load quiz results.</p>`;
+  }
+}
+
+  // Boot processes
 loadUpcoming();
 renderCalendar();
-loadQuizScore();
+loadCourseworkForCalendar();
+loadTodayQuizzes();
 
-setInterval(() => {
-  loadAlerts();
-  loadUpcoming();
-}, 10000); // refresh every 10 seconds
+// Polling loop
+setInterval(loadUpcoming, 10000);
+setInterval(loadTodayQuizzes, 10000);
+setInterval(loadCourseworkForCalendar, 10000);
 
-</script>
+  </script>
 
 </body>
 </html>

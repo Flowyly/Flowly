@@ -4,10 +4,17 @@
   <title>Dashboard</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    /* LIGHT MODE CANVAS (Default) */
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-       background:#8fb9d6
+      background: #8fb9d6;
+      color: #1f2937;
+      min-height: 100vh;
+      transition: background 0.3s ease;
     }
 
     /* Background shapes */
@@ -34,152 +41,107 @@
       right: -50px;
     }
 
-    /* Navbar */
     /* NAVBAR */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 30px;
+      margin: 20px;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 10;
+    }
 
-  padding: 16px 30px;
-  margin: 20px;
+    /* LEFT NAV */
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
 
-  background: rgba(255, 255, 255, 0.75);
-
-  backdrop-filter: blur(12px);
-
-  border: 1px solid rgba(255, 255, 255, 0.4);
-
-  border-radius: 20px;
-
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.08);
-
-  transition: all 0.3s ease;
-}
-
-/* LEFT NAV */
-.nav-left {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-/* NAV ITEMS */
-.nav-item {
-  position: relative;
-
-  padding: 10px 18px;
-
-  border-radius: 12px;
-
-  cursor: pointer;
-
-  font-weight: 500;
-  color: #334155;
-
-  transition:
-    background 0.25s ease,
-    color 0.25s ease,
-    transform 0.2s ease;
-}
-
-/* HOVER EFFECT */
-.nav-item:hover {
-  background: #dbeafe;
-
-  color: #2563eb;
-
-  transform: translateY(-2px);
-}
-
-/* ACTIVE PAGE */
-.nav-item.active {
-  background: linear-gradient(
-    135deg,
-    #3b82f6,
-    #2563eb
-  );
-
-  color: white;
-
-  font-weight: 600;
-
-  box-shadow:
-    0 4px 12px rgba(37, 99, 235, 0.35);
-}
-
-/* PROFILE */
-.profile {
-  width: 42px;
-  height: 42px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: #eff6ff;
-
-  font-size: 20px;
-
-  cursor: pointer;
-
-  transition:
-    background 0.25s ease,
-    transform 0.2s ease;
-}
-
-.profile:hover {
-  background: #dbeafe;
-
-  transform: scale(1.08);
-}
-
-     /* PROFILE */
-  .profile {
-    position: relative;
-    cursor: pointer;
-    font-size: 15px;
-  }
-
-  .profile-menu {
-    font: arial;
-    border: 2px solid black;
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 35px;
-    background: rgb(255, 255, 255);
-    border-radius: 19px;
-    width: 180px;
-    box-shadow: 7px 13px 15px -1px rgba(0, 0, 0, 0.15);
-    
-  }
-
-  .profile-menu div {
-    padding: 12px;
-    cursor: pointer;
-    border-radius: 19px;
-  }
-
-  .profile-menu div:hover {
-    background: #6fa0d0;
-    color: white;
-    border-radius: 19px;
-    border: 2px solid black;
-  }
-
-    
-
-    .logout-btn {
-      background: #ef4444;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 6px;
+    /* NAV ITEMS */
+    .nav-item {
+      position: relative;
+      padding: 10px 18px;
+      border-radius: 12px;
       cursor: pointer;
+      font-weight: 500;
+      color: #334155;
+      transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.2s ease;
+    }
+
+    /* HOVER EFFECT */
+    .nav-item:hover {
+      background: #dbeafe;
+      color: #2563eb;
+      transform: translateY(-2px);
+    }
+
+    /* ACTIVE PAGE */
+    .nav-item.active {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+
+    /* CLICKABLE PROFILE TRIGGER */
+    .profile {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #eff6ff;
+      font-size: 20px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.25s ease, transform 0.2s ease;
+    }
+
+    .profile:hover {
+      background: #dbeafe;
+      transform: scale(1.08);
+    }
+
+    /* DROPDOWN MENU */
+    .profile-menu {
+      border: 2px solid black;
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 50px;
+      background: white;
+      border-radius: 19px;
+      width: 180px;
+      box-shadow: 7px 13px 15px -1px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      z-index: 20;
+      font-size: 15px;
+    }
+
+    .profile-menu div {
+      padding: 12px;
+      cursor: pointer;
+      border-radius: 15px;
+      color: #1f2937;
+      text-align: left;
+      font-weight: normal;
+    }
+
+    .profile-menu div:hover {
+      background: #6fa0d0;
+      color: white;
     }
 
     /* Container */
@@ -188,11 +150,11 @@
       z-index: 1;
       max-width: 900px;
       margin: 40px auto;
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(10px);
+      background: white; /* Clean crisp solid white matching core specs */
       padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(226, 232, 240, 0.8);
     }
 
     h2 {
@@ -205,6 +167,8 @@
       margin: 5px;
       border: 1px solid #cbd5e1;
       border-radius: 6px;
+      background: #f8fafc;
+      color: #1f2937;
     }
 
     button {
@@ -214,6 +178,7 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      font-weight: bold;
     }
 
     button:hover {
@@ -230,254 +195,279 @@
       padding: 10px;
       border-bottom: 1px solid #e2e8f0;
       text-align: left;
+      color: #1f2937;
     }
 
     .delete-btn {
-  padding: 6px 12px;
-  border-radius: 6px;
-}
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: #ef4444;
+      font-weight: normal;
+    }
 
-.delete-btn:hover {
-  background: #dc2626;
-}
+    .delete-btn:hover {
+      background: #dc2626;
+    }
 
     /* Status colors */
-    .status-progress { color: orange; }
-    .status-review { color: blue; }
-    .status-complete { color: green; }
+    .status-progress { color: orange; font-weight: 600; }
+    .status-review { color: blue; font-weight: 600; }
+    .status-complete { color: green; font-weight: 600; }
 
+    /* GLOBAL DARK MODE RULES */
+    body.dark-mode {
+      background: radial-gradient(circle at 20% 20%, #1e3a8a, transparent 40%),
+                  radial-gradient(circle at 80% 30%, #312e81, transparent 40%),
+                  #0f172a;
+      background-attachment: fixed;
+    }
+
+    /* Hide background decorative blur shapes in dark mode */
+    body.dark-mode .bg-shape {
+      display: none;
+    }
+
+    /* Enforce robust white structural cards on top of dark ambient canvas */
+    body.dark-mode .container {
+      background: white;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark-mode .profile-menu div {
+      color: #1f2937;
+    }
   </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-  <div class="nav-left">
-    <div class="nav-item " onclick="goHome()">Home</div>
-    <div class="nav-item active" onclick="goWork()">Work</div>
-    <div class="nav-item" onclick="goGenerateQuiz()">Quiz</div>
-    <div class="nav-item" onclick="goGenerateNotes()">Notes</div>
-  </div>
+  <div class="bg-shape shape1"></div>
+  <div class="bg-shape shape2"></div>
 
-  <div class="profile" onclick="toggleMenu()">
-    👤
-    <div class="profile-menu" id="menu">
-      <div onclick="goProfile()">Profile</div>
-      <div onclick="goSettings()">Settings</div>
-      <div onclick="logout()">Logout</div>
+  <div class="navbar">
+    <div class="nav-left">
+      <div class="nav-item" onclick="goHome()">Home</div>
+      <div class="nav-item active" onclick="goWork()">Work</div>
+      <div class="nav-item" onclick="goGenerateQuiz()">Quiz</div>
+      <div class="nav-item" onclick="goGenerateNotes()">Notes</div>
+    </div>
+
+    <div class="profile" onclick="toggleMenu()">
+      👤
+      <div class="profile-menu" id="menu">
+        <div onclick="goProfile()">Profile</div>
+        <div onclick="goSettings()">Settings</div>
+        <div onclick="logout()">Logout</div>
+      </div>
     </div>
   </div>
-</div>
 
+  <div class="container">
+    <h2>Coursework Dashboard</h2>
 
+    <input type="text" id="subject" placeholder="Subject Name">
+    <input type="text" id="members" placeholder="Group Members (comma separated)">
+    <input type="date" id="dueDate">
 
+    <select id="status">
+      <option value="In Progress">In Progress</option>
+      <option value="In Review">In Review</option>
+      <option value="Completed">Completed</option>
+    </select>
 
+    <button onclick="addCoursework()">Add</button>
 
+    <table>
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Group Members</th>
+          <th>Due Date</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
 
-<!-- Main -->
-<div class="container">
-  <h2>Coursework Dashboard</h2>
+  <script>
+  // ===== APPLY SAVED THEME =====
+  (function() {
+      const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
+      const theme = appearance.theme || "Default Blue";
+      const fontSize = appearance.fontSize || "Medium";
 
-  <!-- Input Form -->
-  <input type="text" id="subject" placeholder="Subject Name">
-  <input type="text" id="members" placeholder="Group Members (comma separated)">
-  <input type="date" id="dueDate">
+      if (theme === "Dark") {
+          document.body.classList.add("dark-mode");
+      } else {
+          document.body.classList.remove("dark-mode");
+      }
 
-  <select id="status">
-    <option value="In Progress">In Progress</option>
-    <option value="In Review">In Review</option>
-    <option value="Completed">Completed</option>
-  </select>
+      if (fontSize === "Small") document.body.style.fontSize = "14px";
+      else if (fontSize === "Medium") document.body.style.fontSize = "16px";
+      else if (fontSize === "Large") document.body.style.fontSize = "18px";
+  })();
 
-  <button onclick="addCoursework()">Add</button>
-
-  <!-- Table -->
-  <table>
-    <thead>
-      <tr>
-        <th>Subject</th>
-        <th>Group Members</th>
-        <th>Due Date</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody id="tableBody"></tbody>
-  </table>
-</div>
-
-<script>
-// ===== APPLY SAVED THEME =====
-(function() {
-    const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
-    const theme = appearance.theme || "Default Blue";
-    const fontSize = appearance.fontSize || "Medium";
-
-    if (theme === "Default Blue") {
-    document.body.style.background = "#8fb9d6";
-    document.body.style.color = "";  // reset to default
-  } else if (theme === "Light") {
-    document.body.style.background = "#eaf8ff";
-    document.body.style.color = "";  // reset to default
-  } else if (theme === "Dark") {
-    document.body.style.background = "#1e293b";
-    document.body.style.color = "";  // reset to default — cards stay dark text
-  }
-
-    if (fontSize === "Small") document.body.style.fontSize = "14px";
-    else if (fontSize === "Medium") document.body.style.fontSize = "16px";
-    else if (fontSize === "Large") document.body.style.fontSize = "18px";
-})();
   if (!localStorage.getItem("userEmail")) {
-  window.location.href = "login1.html";
-}
-
-let coursework = [];
-
-/* ================= NAV ================= */
-function toggleMenu() {
-  const menu = document.getElementById("menu");
-  menu.style.display = menu.style.display === "block" ? "none" : "block";
-}
-
-function goHome() { window.location.href = "dashboard.html"; }
-function goWork() { window.location.href = "work.html"; }
-function goGenerateQuiz() { window.location.href = "generatequiz.html"; }
-function goGenerateNotes() { window.location.href = "generatenotes.html"; }
-function goProfile() { window.location.href = "profile.html"; }
-function goSettings() { window.location.href = "settings.html"; }
-function logout() { window.location.href = "login1.html"; }
-
-
-/* ================= LOAD ================= */
-async function loadCoursework() {
-  try {
-    const res = await fetch("http://127.0.0.1:5000/coursework");
-    const data = await res.json();
-
-    coursework = data;
-    displayCoursework();
-
-  } catch (err) {
-    console.log("Error loading coursework:", err);
-  }
-}
-
-
-/* ================= ADD ================= */
-async function addCoursework() {
-  const subject = document.getElementById("subject").value.trim();
-  const members = document.getElementById("members").value.trim();
-  const dueDate = document.getElementById("dueDate").value;
-  const status = document.getElementById("status").value;
-
-  // validation
-  if (!subject || !members || !dueDate) {
-    alert("Please fill all fields");
-    return;
+    window.location.href = "login1.html";
   }
 
-  if (new Date(dueDate) < new Date().setHours(0,0,0,0)) {
-    alert("Due date cannot be in the past");
-    return;
+  let coursework = [];
+
+  /* ================= NAV DROPDOWN TOGGLE ================= */
+  function toggleMenu() {
+    const menu = document.getElementById("menu");
+    if (menu) {
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
   }
 
-  try {
-    const res = await fetch("http://127.0.0.1:5000/add_coursework", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        title: subject,
-        description: members,
-        due_date: dueDate,
-        status: status
-      })
-    });
+  // Close profile dropdown click safety catcher
+  document.addEventListener("click", function(event) {
+    const profileTrigger = document.querySelector(".profile");
+    const menu = document.getElementById("menu");
 
-    const data = await res.json();
+    if (profileTrigger && menu && !profileTrigger.contains(event.target)) {
+      menu.style.display = "none";
+    }
+  });
 
-    if (res.ok) {
-      // clear inputs AFTER success
-      document.getElementById("subject").value = "";
-      document.getElementById("members").value = "";
-      document.getElementById("dueDate").value = "";
-      document.getElementById("status").value = "In Progress";
+  function goHome() { window.location.href = "dashboard.html"; }
+  function goWork() { window.location.href = "work.html"; }
+  function goGenerateQuiz() { window.location.href = "generatequiz.html"; }
+  function goGenerateNotes() { window.location.href = "generatenotes.html"; }
+  function goProfile() { window.location.href = "profile.html"; }
+  function goSettings() { window.location.href = "settings.html"; }
+  
+  function logout() { 
+    if(confirm("Are you sure you want to logout?")) {
+      window.location.href = "login1.html"; 
+    }
+  }
 
-      loadCoursework();
-    } else {
-      alert(data.error || "Failed to add coursework");
+  /* ================= LOAD ================= */
+  async function loadCoursework() {
+    try {
+      const res = await fetch("http://127.0.0.1:5000/coursework");
+      const data = await res.json();
+
+      coursework = data;
+      displayCoursework();
+
+    } catch (err) {
+      console.log("Error loading coursework:", err);
+    }
+  }
+
+  /* ================= ADD ================= */
+  async function addCoursework() {
+    const subject = document.getElementById("subject").value.trim();
+    const members = document.getElementById("members").value.trim();
+    const dueDate = document.getElementById("dueDate").value;
+    const status = document.getElementById("status").value;
+
+    if (!subject || !members || !dueDate) {
+      alert("Please fill all fields");
+      return;
     }
 
-  } catch (err) {
-    console.log("Add error:", err);
+    if (new Date(dueDate) < new Date().setHours(0,0,0,0)) {
+      alert("Due date cannot be in the past");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://127.0.0.1:5000/add_coursework", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          title: subject,
+          description: members,
+          due_date: dueDate,
+          status: status
+        })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        document.getElementById("subject").value = "";
+        document.getElementById("members").value = "";
+        document.getElementById("dueDate").value = "";
+        document.getElementById("status").value = "In Progress";
+
+        loadCoursework();
+      } else {
+        alert(data.error || "Failed to add coursework");
+      }
+
+    } catch (err) {
+      console.log("Add error:", err);
+    }
   }
-}
 
+  /* ================= DISPLAY ================= */
+  function displayCoursework() {
+    const table = document.getElementById("tableBody");
+    table.innerHTML = "";
 
-/* ================= DISPLAY ================= */
-function displayCoursework() {
-  const table = document.getElementById("tableBody");
-  table.innerHTML = "";
+    if (!coursework.length) {
+      table.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align:center; padding: 20px;">No coursework yet</td>
+        </tr>
+      `;
+      return;
+    }
 
-  if (!coursework.length) {
-    table.innerHTML = `
-      <tr>
-        <td colspan="5">No coursework yet</td>
-      </tr>
-    `;
-    return;
-  }
+    coursework.forEach((c) => {
+      let statusClass = "";
 
-  coursework.forEach((c) => {
-    let statusClass = "";
+      if (c.status === "In Progress") statusClass = "status-progress";
+      else if (c.status === "In Review") statusClass = "status-review";
+      else if (c.status === "Completed") statusClass = "status-complete";
 
-    if (c.status === "In Progress") statusClass = "status-progress";
-    else if (c.status === "In Review") statusClass = "status-review";
-    else if (c.status === "Completed") statusClass = "status-complete";
-
-    table.innerHTML += `
-      <tr>
-        <td>${c.title}</td>
-        <td>${c.description}</td>
-        <td>${c.due_date}</td>
-        <td class="${statusClass}">${c.status}</td>
-        <td>
-          <button class="delete-btn" onclick="deleteCoursework(${c.id})">
-            Delete
-          </button>
-        </td>
-      </tr>
-    `;
-  });
-}
-
-
-/* ================= DELETE ================= */
-async function deleteCoursework(id) {
-  if (!confirm("Delete this coursework?")) return;
-
-  try {
-    await fetch(`http://127.0.0.1:5000/delete_coursework/${id}`, {
-      method: "DELETE"
+      table.innerHTML += `
+        <tr>
+          <td>${c.title}</td>
+          <td>${c.description}</td>
+          <td>${c.due_date}</td>
+          <td class="${statusClass}">${c.status}</td>
+          <td>
+            <button class="delete-btn" onclick="deleteCoursework(${c.id})">
+              Delete
+            </button>
+          </td>
+        </tr>
+      `;
     });
-
-    loadCoursework();
-
-  } catch (err) {
-    console.log("Delete error:", err);
   }
-}
 
+  /* ================= DELETE ================= */
+  async function deleteCoursework(id) {
+    if (!confirm("Delete this coursework?")) return;
 
-/* ================= AUTO LOAD ================= */
-loadCoursework();
+    try {
+      await fetch(`http://127.0.0.1:5000/delete_coursework/${id}`, {
+        method: "DELETE"
+      });
 
-// refresh every 30 seconds
-setInterval(loadCoursework, 30000);
-</script>
+      loadCoursework();
+
+    } catch (err) {
+      console.log("Delete error:", err);
+    }
+  }
+
+  /* ================= AUTO LOAD ================= */
+  loadCoursework();
+
+  // refresh every 30 seconds
+  setInterval(loadCoursework, 30000);
+  </script>
 
 </body>
 </html>

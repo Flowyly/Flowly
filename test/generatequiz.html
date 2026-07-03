@@ -4,154 +4,152 @@
   <title>Quiz Generator</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    /* LIGHT MODE CANVAS (Default) */
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background:#8fb9d6
-      
+      background: #8fb9d6;
+      color: #1f2937;
+      min-height: 100vh;
+      transition: background 0.3s ease;
+    }
+
+    /* Decorative Ambient Glow Elements */
+    .bg-shape {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+    }
+
+    .shape1 {
+      width: 300px;
+      height: 300px;
+      background: #93c5fd;
+      top: -50px;
+      left: -50px;
+    }
+
+    .shape2 {
+      width: 300px;
+      height: 300px;
+      background: #bfdbfe;
+      bottom: -50px;
+      right: -50px;
     }
 
     /* NAVBAR */
-   /* NAVBAR */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 30px;
+      margin: 20px;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 10;
+    }
 
-  padding: 16px 30px;
-  margin: 20px;
+    /* LEFT NAV */
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
 
-  background: rgba(255, 255, 255, 0.75);
+    /* NAV ITEMS */
+    .nav-item {
+      position: relative;
+      padding: 10px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #334155;
+      transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.2s ease;
+    }
 
-  backdrop-filter: blur(12px);
+    /* HOVER EFFECT */
+    .nav-item:hover {
+      background: #dbeafe;
+      color: #2563eb;
+      transform: translateY(-2px);
+    }
 
-  border: 1px solid rgba(255, 255, 255, 0.4);
+    /* ACTIVE PAGE */
+    .nav-item.active {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
 
-  border-radius: 20px;
-
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.08);
-
-  transition: all 0.3s ease;
-}
-
-/* LEFT NAV */
-.nav-left {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-/* NAV ITEMS */
-.nav-item {
-  position: relative;
-
-  padding: 10px 18px;
-
-  border-radius: 12px;
-
-  cursor: pointer;
-
-  font-weight: 500;
-  color: #334155;
-
-  transition:
-    background 0.25s ease,
-    color 0.25s ease,
-    transform 0.2s ease;
-}
-
-/* HOVER EFFECT */
-.nav-item:hover {
-  background: #dbeafe;
-
-  color: #2563eb;
-
-  transform: translateY(-2px);
-}
-
-/* ACTIVE PAGE */
-.nav-item.active {
-  background: linear-gradient(
-    135deg,
-    #3b82f6,
-    #2563eb
-  );
-
-  color: white;
-
-  font-weight: 600;
-
-  box-shadow:
-    0 4px 12px rgba(37, 99, 235, 0.35);
-}
-
-/* PROFILE */
-.profile {
-  width: 42px;
-  height: 42px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: #eff6ff;
-
-  font-size: 20px;
-
-  cursor: pointer;
-
-  transition:
-    background 0.25s ease,
-    transform 0.2s ease;
-}
-
-.profile:hover {
-  background: #dbeafe;
-
-  transform: scale(1.08);
-}
-
+    /* PROFILE */
     .profile {
-    position: relative;
-    cursor: pointer;
-    font-size: 15px;
-  }
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #eff6ff;
+      font-size: 20px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.25s ease, transform 0.2s ease;
+    }
 
-  .profile-menu {
-    font: arial;
-    border: 2px solid black;
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 35px;
-    background: rgb(255, 255, 255);
-    border-radius: 19px;
-    width: 180px;
-    box-shadow: 7px 13px 15px -1px rgba(0, 0, 0, 0.15);
-    
-  }
+    .profile:hover {
+      background: #dbeafe;
+      transform: scale(1.08);
+    }
 
-  .profile-menu div {
-    padding: 12px;
-    cursor: pointer;
-    border-radius: 19px;
-  }
+    /* MENU DROPDOWN LIST */
+    .profile-menu {
+      border: 2px solid black;
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 50px;
+      background: white;
+      border-radius: 19px;
+      width: 180px;
+      box-shadow: 7px 13px 15px -1px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      z-index: 20;
+      font-size: 15px;
+    }
 
-  .profile-menu div:hover {
-    background: #6fa0d0;
-    color: white;
-    border-radius: 19px;
-    border: 2px solid black;
-  }
+    .profile-menu div {
+      padding: 12px;
+      cursor: pointer;
+      border-radius: 15px;
+      color: #1f2937;
+      text-align: left;
+    }
 
-    /* MAIN */
+    .profile-menu div:hover {
+      background: #6fa0d0;
+      color: white;
+    }
+
+    /* MAIN CONTAINER SETUP */
     .container {
       max-width: 900px;
       margin: auto;
       padding: 40px 20px;
+      position: relative;
+      z-index: 1;
     }
 
     .title-section {
@@ -160,22 +158,33 @@
     }
 
     .title-section h1 {
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       font-size: 38px;
+      font-weight: 700;
+      color: #1e293b;
+      transition: color 0.3s ease;
     }
 
     .title-section p {
-      color: #64748b;
+      color: #475569;
+      font-size: 16px;
     }
 
-    /* UPLOAD CARD */
-    .upload-card {
+    /* MODERN CONTRAST WORK CARDS */
+    .upload-card, .question-card {
       background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .upload-card {
       border: 2px dashed #93c5fd;
-      border-radius: 15px;
       padding: 50px 30px;
       text-align: center;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
     }
 
     .upload-icon {
@@ -184,486 +193,547 @@
     }
 
     .upload-card h2 {
+      margin-top: 0;
       margin-bottom: 10px;
+      color: #1e293b;
     }
 
     .upload-card p {
       color: #64748b;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
-    input[type="file"] {
-      margin-top: 10px;
-    }
-
-    /* OPTIONS */
+    /* CONFIG OPTIONS GRID */
     .options {
       display: flex;
-      gap: 20px;
+      gap: 15px;
       margin-top: 25px;
       justify-content: center;
       flex-wrap: wrap;
     }
 
-    select,
-    input[type="number"] {
-      padding: 10px;
+    select, input[type="number"] {
+      padding: 12px;
       border-radius: 8px;
       border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #1f2937;
+      font-size: 14px;
+      min-width: 140px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    /* BUTTON */
-    .generate-btn {
-      margin-top: 25px;
+    select:focus, input[type="number"]:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    /* ACTION BUTTONS */
+    .generate-btn, .submit-btn {
       padding: 12px 30px;
-      background: #3b82f6;
       color: white;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 16px;
-      font-weight: bold;
+      font-weight: 600;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .generate-btn {
+      margin-top: 25px;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
     }
 
     .generate-btn:hover {
-      background: #2563eb;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.3);
+    }
+    
+    .generate-btn:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
-    /* FILE NAME */
     #fileName {
       margin-top: 15px;
-      color: #475569;
+      color: #2563eb;
+      font-weight: 600;
       font-size: 14px;
     }
 
-    /* LOADING */
     .loading {
       display: none;
       text-align: center;
       margin-top: 30px;
       font-size: 18px;
-      color: #3b82f6;
+      color: #2563eb;
       font-weight: bold;
     }
 
-    /* QUIZ SECTION */
+    /* GENERATED QUESTION CARDS */
     .quiz-section {
-      margin-top: 50px;
+      margin-top: 40px;
     }
 
     .question-card {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+      padding: 25px;
+      margin-bottom: 25px;
     }
 
     .question-card h3 {
       margin-top: 0;
+      color: #2563eb;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .question-card p {
+      color: #1e293b;
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 20px;
     }
 
     .option {
-      margin-top: 10px;
-      padding: 10px;
+      margin-top: 12px;
+      padding: 14px;
       background: #f8fafc;
+      border: 1px solid #e2e8f0;
       border-radius: 8px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
     }
 
-    /* SUBMIT */
-    .submit-btn {
-      display: none;
-      margin: 30px auto;
-      padding: 12px 30px;
-      background: #10b981;
-      color: white;
-      border: none;
-      border-radius: 10px;
+    .option label {
       cursor: pointer;
-      font-size: 16px;
+      width: 100%;
+      display: block;
+      color: #334155;
+    }
+
+    .option input[type="radio"] {
+      margin-right: 10px;
+      transform: scale(1.1);
+      vertical-align: middle;
+    }
+
+    /* RESULT PRESENTATION CARD */
+    #resultBox {
+      margin-top: 30px;
+      font-size: 22px;
       font-weight: bold;
+      color: #1e293b;
+      background: white;
+      display: inline-block;
+      padding: 15px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
 
-    .submit-btn:hover {
-      background: #059669;
+    /* GLOBAL DARK MODE OVERRIDES */
+    body.dark-mode {
+      background: radial-gradient(circle at 20% 20%, #1e3a8a, transparent 40%),
+                  radial-gradient(circle at 80% 30%, #312e81, transparent 40%),
+                  #0f172a;
+      background-attachment: fixed;
     }
 
+    body.dark-mode .bg-shape {
+      display: none;
+    }
+
+    /* Ensure structural question content layouts keep clean white surfaces over dark workspaces */
+    body.dark-mode .upload-card,
+    body.dark-mode .question-card,
+    body.dark-mode #resultBox {
+      background: white;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark-mode .title-section h1 {
+      color: #ffffff;
+    }
+    
+    body.dark-mode .title-section p {
+      color: #94a3b8;
+    }
+
+    body.dark-mode .profile-menu div {
+      color: #1f2937;
+    }
   </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
+  <div class="bg-shape shape1"></div>
+  <div class="bg-shape shape2"></div>
 
-  <div class="nav-left">
-    <div class="nav-item" onclick="goHome()">Home</div>
-    <div class="nav-item" onclick="goWork()">Work</div>
-    <div class="nav-item active" onclick="goGenerateQuiz()">Quiz</div>
-    <div class="nav-item" onclick="goGenerateNotes()">Notes</div>
-  </div>
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <div class="nav-left">
+      <div class="nav-item" onclick="goHome()">Home</div>
+      <div class="nav-item" onclick="goWork()">Work</div>
+      <div class="nav-item active" onclick="goGenerateQuiz()">Quiz</div>
+      <div class="nav-item" onclick="goGenerateNotes()">Notes</div>
+    </div>
 
-  <div class="profile" onclick="toggleMenu()">
-    👤
-    <div class="profile-menu" id="menu">
-      <div onclick="goProfile()">Profile</div>
-      <div onclick="goSettings()">Settings</div>
-      <div onclick="logout()">Logout</div>
+    <div class="profile" onclick="toggleMenu()">
+      👤
+      <div class="profile-menu" id="menu">
+        <div onclick="goProfile()">Profile</div>
+        <div onclick="goSettings()">Settings</div>
+        <div onclick="logout()">Logout</div>
+      </div>
     </div>
   </div>
 
-</div>
+  <!-- MAIN VIEW ENGINE -->
+  <div class="container">
 
-<!-- MAIN -->
-<div class="container">
-
-  <!-- TITLE -->
-  <div class="title-section">
-    <h1>Generate Quiz from PDF</h1>
-    <p>Upload lecture notes or coursework materials to generate quizzes automatically.</p>
-  </div>
-
-  <!-- UPLOAD -->
-  <div class="upload-card">
-
-    <div class="upload-icon">📄</div>
-
-    <h2>Upload PDF File</h2>
-
-    <p>Drag & drop your PDF or choose file</p>
-
-    <input type="file" id="pdfFile" accept=".pdf" onchange="showFileName()">
-
-    <div id="fileName"></div>
-
-    <!-- OPTIONS -->
-    <div class="options">
-
-      <select id="difficulty">
-        <option>Easy</option>
-        <option>Medium</option>
-        <option>Hard</option>
-      </select>
-
-      <input type="number"
-       id="questionCount"
-       value="10"
-       min="1"
-       max="20">
-
+    <!-- HEADER TITLE BOX -->
+    <div class="title-section">
+      <h1>Generate Quiz from PDF</h1>
+      <p>Upload lecture notes or coursework materials to generate quizzes automatically.</p>
     </div>
 
-    <button type="button" class="generate-btn" id="generateBtn">
-  Generate Quiz
-    </button>
+    <!-- DOCUMENT UPLOAD FORM INTERFACE -->
+    <div class="upload-card">
+      <div class="upload-icon">📄</div>
+      <h2>Upload PDF File</h2>
+      <p>Drag & drop your PDF or choose file</p>
 
-  </div>
+      <input type="file" id="pdfFile" accept=".pdf" onchange="showFileName()">
+      <div id="fileName"></div>
 
-  <!-- LOADING -->
-  <div class="loading" id="loading">
-    ⏳ Generating quiz...
-  </div>
+      <!-- ACCENTED CONFIG SELECTION -->
+      <div class="options">
+        <select id="difficulty">
+          <option>Easy</option>
+          <option>Medium</option>
+          <option>Hard</option>
+        </select>
 
-  <!-- QUIZ -->
-  <div class="quiz-section" id="quizSection"></div>
+        <input type="number" id="questionCount" value="10" min="1" max="20">
+      </div>
 
-  <div style="text-align:center;">
+      <button type="button" class="generate-btn" id="generateBtn">
+        Generate Quiz
+      </button>
+    </div>
 
-    
+    <!-- ASYNC STATE LOADER -->
+    <div class="loading" id="loading">
+      ⏳ Generating quiz...
+    </div>
 
-    <div
-      id="resultBox"
-      style="
-        margin-top:20px;
-        font-size:20px;
-        font-weight:bold;
-      ">
+    <!-- QUIZ INJECT TARGET NODE -->
+    <div class="quiz-section" id="quizSection"></div>
+
+    <div style="text-align:center;">
+      <div id="resultBox" style="display:none;"></div>
     </div>
 
   </div>
 
-</div>
+  <script>
+  let currentQuiz = [];
+  let score = 0;
+  let answered = 0;
+  let currentQuizId = null;
 
-<script>
+  // ===== APPLY SAVED THEME =====
+  (function() {
+      const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
+      const theme = appearance.theme || "Default Blue";
+      const fontSize = appearance.fontSize || "Medium";
 
-let currentQuiz = [];
-let score = 0;
-let answered = 0;
-let currentQuizId = null;
+      if (theme === "Dark") {
+          document.body.classList.add("dark-mode");
+      } else {
+          document.body.classList.remove("dark-mode");
+      }
 
-// ===== APPLY SAVED THEME =====
-(function() {
-    const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
-    const theme = appearance.theme || "Default Blue";
-    const fontSize = appearance.fontSize || "Medium";
+      if (fontSize === "Small") document.body.style.fontSize = "14px";
+      else if (fontSize === "Medium") document.body.style.fontSize = "16px";
+      else if (fontSize === "Large") document.body.style.fontSize = "18px";
+  })();
 
-    if (theme === "Default Blue") {
-        document.body.style.background = "#8fb9d6";
-        document.body.style.color = "#1f2937";
-    } else if (theme === "Light") {
-        document.body.style.background = "#eaf8ff";
-        document.body.style.color = "#1f2937";
-    } else if (theme === "Dark") {
-        document.body.style.background = "#1e293b";
-        document.body.style.color = "#f8fafc";
+  if (!localStorage.getItem("userEmail")) {
+      window.location.href = "login1.html";
+  }
+
+  /* ================= NAV DROPDOWN TOGGLE ================= */
+  function toggleMenu() {
+    const menu = document.getElementById("menu");
+    if (menu) {
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+  }
+
+  // Close profile dropdown click safety catcher
+  document.addEventListener("click", function(event) {
+    const profileTrigger = document.querySelector(".profile");
+    const menu = document.getElementById("menu");
+
+    if (profileTrigger && menu && !profileTrigger.contains(event.target)) {
+      menu.style.display = "none";
+    }
+  });
+
+  function goProfile() { window.location.href = "profile.html"; }
+  function goSettings() { window.location.href = "settings.html"; }
+  function goHome() { window.location.href = "dashboard.html"; }
+  function goWork() { window.location.href = "work.html"; }
+  function goGenerateNotes() { window.location.href = "generatenotes.html"; }
+  function goGenerateQuiz() { window.location.href = "generatequiz.html"; }
+  
+  function logout() { 
+    if(confirm("Are you sure you want to logout?")) {
+      window.location.href = "login1.html"; 
+    }
+  }
+
+  /* ================= FILE NAME HANDLING ================= */
+  function showFileName() {
+    let file = document.getElementById("pdfFile").files[0];
+    if (file) {
+      document.getElementById("fileName").innerText = "Uploaded: " + file.name;
+      localStorage.setItem("lastFileName", file.name);
+    }
+  }
+
+  /* ================= ENGINE RUN GENERATION ================= */
+  async function generateQuiz(event) {
+    if (event) event.preventDefault();
+
+    const generateBtn = document.getElementById("generateBtn");
+    const loading = document.getElementById("loading");
+    const quizSection = document.getElementById("quizSection");
+    const resultBox = document.getElementById("resultBox");
+
+    generateBtn.disabled = true;
+    loading.style.display = "block";
+    quizSection.innerHTML = "";
+    resultBox.innerHTML = "";
+    resultBox.style.display = "none";
+
+    localStorage.removeItem("currentQuiz");
+    localStorage.removeItem("quizAnswers");
+
+    let file = document.getElementById("pdfFile").files[0];
+
+    if (!file) {
+      alert("Please upload a PDF");
+      loading.style.display = "none";
+      generateBtn.disabled = false;
+      return;
     }
 
-    if (fontSize === "Small") document.body.style.fontSize = "14px";
-    else if (fontSize === "Medium") document.body.style.fontSize = "16px";
-    else if (fontSize === "Large") document.body.style.fontSize = "18px";
-})();
+    try {
+      const formData = new FormData();
+      formData.append("pdf", file);
+      formData.append("difficulty", document.getElementById("difficulty").value);
+      formData.append("questionCount", document.getElementById("questionCount").value);
+      formData.append("email", localStorage.getItem("userEmail") || "");
 
-if (!localStorage.getItem("userEmail")) {
-  window.location.href = "login1.html";
-}
+      const res = await fetch("http://127.0.0.1:5000/generate_quiz", {
+        method: "POST",
+        body: formData
+      });
 
-// ================= NAV =================
-function toggleMenu() {
-  let menu = document.getElementById("menu");
-  menu.style.display = menu.style.display === "block" ? "none" : "block";
-}
+      const data = await res.json();
 
-function goProfile() { window.location.href = "profile.html"; }
-function goSettings() { window.location.href = "settings.html"; }
-function logout() { window.location.href = "login1.html"; }
-function goHome() { window.location.href = "dashboard.html"; }
-function goWork() { window.location.href = "work.html"; }
-function goGenerateNotes() { window.location.href = "generatenotes.html"; }
-function goGenerateQuiz() { window.location.href = "generatequiz.html"; }
+      loading.style.display = "none";
+      generateBtn.disabled = false;
 
-// ================= FILE NAME =================
-function showFileName() {
-  let file = document.getElementById("pdfFile").files[0];
+      if (data.success) {
+        currentQuiz = data.quiz;
+        currentQuizId = data.quiz_id;
+        
+        // Cache to storage securely
+        localStorage.setItem("currentQuiz", JSON.stringify(data.quiz));
+        localStorage.setItem("currentQuizId", data.quiz_id);
 
-  if (file) {
-    document.getElementById("fileName").innerText =
-      "Uploaded: " + file.name;
+        displayQuizFromAI(data.quiz);
+      } else {
+        alert(data.message);
+      }
 
-    localStorage.setItem("lastFileName", file.name);
-  }
-}
-
-// ================= GENERATE QUIZ =================
-async function generateQuiz(event) {
-  if (event) event.preventDefault();
-
-  document.getElementById("generateBtn").disabled = true;
-  document.getElementById("loading").style.display = "block";
-
-  document.getElementById("quizSection").innerHTML = "";
-  document.getElementById("resultBox").innerHTML = "";
-
-  localStorage.removeItem("currentQuiz");
-  localStorage.removeItem("quizAnswers");
-
-  let file = document.getElementById("pdfFile").files[0];
-
-  if (!file) {
-    alert("Please upload a PDF");
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("generateBtn").disabled = false;
-    return;
+    } catch (err) {
+      console.error(err);
+      alert("Server Error Connecting to Quiz Engine");
+      loading.style.display = "none";
+      generateBtn.disabled = false;
+    }
   }
 
-  try {
-    const formData = new FormData();
-    formData.append("pdf", file);
-    formData.append("difficulty", document.getElementById("difficulty").value);
-    formData.append("questionCount", document.getElementById("questionCount").value);
-    formData.append("email", localStorage.getItem("userEmail") || "");
+  /* ================= RUN ANSWER PERSISTENCE ================= */
+  function saveAnswer(index, value) {
+    const answers = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
+    answers[index] = value;
+    localStorage.setItem("quizAnswers", JSON.stringify(answers));
+  }
 
-    const res = await fetch("http://127.0.0.1:5000/generate_quiz", {
-      method: "POST",
-      body: formData
+  /* ================= DISPLAY COMPONENT ENGINE ================= */
+  function displayQuizFromAI(quiz) {
+    score = 0;
+    answered = 0;
+
+    const resultBox = document.getElementById("resultBox");
+    resultBox.innerHTML = "";
+    resultBox.style.display = "none";
+
+    const quizSection = document.getElementById("quizSection");
+    quizSection.innerHTML = "";
+
+    quiz.forEach((q, index) => {
+      const card = document.createElement("div");
+      card.className = "question-card";
+
+      card.innerHTML = `
+        <h3>Question ${index + 1}</h3>
+        <p>${q.question}</p>
+
+        ${q.options.map((opt, i) => `
+          <div class="option">
+            <label>
+              <input type="radio"
+                name="q${index}"
+                value="${opt}"
+                onchange="saveAnswer(${index}, this.value); checkAnswer(${index}, this);">
+              ${opt}
+            </label>
+          </div>
+        `).join("")}
+      `;
+      quizSection.appendChild(card);
+    });
+  }
+
+  /* ================= RESTORE ANSWERS LOGIC ================= */
+  function restoreSavedAnswers() {
+    score = 0;
+    answered = 0;
+
+    const savedAnswers = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
+
+    Object.keys(savedAnswers).forEach(index => {
+      const radio = document.querySelector(
+        `input[name="q${index}"][value="${savedAnswers[index]}"]`
+      );
+
+      if (!radio) return;
+      radio.checked = true;
+
+      if (radio.value === currentQuiz[index].answer) {
+        score++;
+      }
+      answered++;
+
+      checkAnswer(Number(index), radio, true);
     });
 
-    const data = await res.json();
-
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("generateBtn").disabled = false;
-
-    if (data.success) {
-      currentQuiz = data.quiz;
-      currentQuizId = data.quiz_id;
-
-      displayQuizFromAI(data.quiz);
-    } else {
-      alert(data.message);
-    }
-
-  } catch (err) {
-    console.error(err);
-    alert("Server Error");
-  }
-}
-
-// ================= SAVE ANSWER =================
-function saveAnswer(index, value) {
-  const answers = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
-  answers[index] = value;
-  localStorage.setItem("quizAnswers", JSON.stringify(answers));
-}
-
-// ================= DISPLAY QUIZ =================
-function displayQuizFromAI(quiz) {
-
-  score = 0;
-  answered = 0;
-
-  document.getElementById("resultBox").innerHTML = "";
-
-  const quizSection = document.getElementById("quizSection");
-  quizSection.innerHTML = "";
-
-  quiz.forEach((q, index) => {
-
-    const card = document.createElement("div");
-    card.className = "question-card";
-
-    card.innerHTML = `
-      <h3>Question ${index + 1}</h3>
-      <p>${q.question}</p>
-
-      ${q.options.map((opt, i) => `
-        <div class="option">
-          <label>
-            <input type="radio"
-              name="q${index}"
-              value="${opt}"
-              onchange="saveAnswer(${index}, this.value); checkAnswer(${index}, this);">
-            ${opt}
-          </label>
-        </div>
-      `).join("")}
-    `;
-
-    quizSection.appendChild(card);
-  });
-}
-
-// ================= RESTORE ANSWERS =================
-function restoreSavedAnswers() {
-
-  score = 0;
-  answered = 0;
-
-  const savedAnswers = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
-
-  Object.keys(savedAnswers).forEach(index => {
-
-    const radio = document.querySelector(
-      `input[name="q${index}"][value="${savedAnswers[index]}"]`
-    );
-
-    if (!radio) return;
-
-    radio.checked = true;
-
-    if (radio.value === currentQuiz[index].answer) {
-      score++;
-    }
-
-    answered++;
-
-    checkAnswer(Number(index), radio, true);
-  });
-
-  updateResult();
-}
-
-// ================= CHECK ANSWER =================
-function checkAnswer(index, radio, restoring = false) {
-
-  const question = currentQuiz[index];
-  const options = document.querySelectorAll(`input[name="q${index}"]`);
-
-  options.forEach(opt => {
-
-    opt.disabled = true;
-
-    const box = opt.closest(".option");
-
-    box.style.background = "#f8fafc";
-    box.style.border = "none";
-
-    if (opt.value === question.answer) {
-      box.style.background = "#dcfce7";
-      box.style.border = "2px solid green";
-    }
-
-    if (opt.checked && opt.value !== question.answer) {
-      box.style.background = "#fee2e2";
-      box.style.border = "2px solid red";
-    }
-  });
-
-  if (!restoring) {
-
-    if (radio.value === question.answer) {
-      score++;
-    }
-
-    answered++;
-
     updateResult();
+  }
 
-    // ✅ SAVE TO DATABASE ONLY WHEN COMPLETED
-    if (answered === currentQuiz.length) {
-      fetch("http://127.0.0.1:5000/submit_quiz", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          quiz_id: currentQuizId,
-          score: score
-        })
-      });
+  /* ================= LIVE CHOICE EVALUATION ================= */
+  function checkAnswer(index, radio, restoring = false) {
+    const question = currentQuiz[index];
+    const options = document.querySelectorAll(`input[name="q${index}"]`);
+
+    options.forEach(opt => {
+      opt.disabled = true;
+      const box = opt.closest(".option");
+
+      box.style.background = "#f8fafc";
+      box.style.border = "1px solid #cbd5e1";
+
+      if (opt.value === question.answer) {
+        box.style.background = "#dcfce7";
+        box.style.border = "2px solid #166534";
+        box.style.color = "#166534";
+      }
+
+      if (opt.checked && opt.value !== question.answer) {
+        box.style.background = "#fee2e2";
+        box.style.border = "2px solid #991b1b";
+        box.style.color = "#991b1b";
+      }
+    });
+
+    if (!restoring) {
+      if (radio.value === question.answer) {
+        score++;
+      }
+      answered++;
+      updateResult();
+
+      // Submit score payload to database when fully evaluated
+      if (answered === currentQuiz.length) {
+        // Also save last quiz score overview metric locally for dashboard visibility syncing
+        const percentage = Math.round((score / currentQuiz.length) * 100);
+        localStorage.setItem("quizScore", percentage);
+
+        fetch("http://127.0.0.1:5000/submit_quiz", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            quiz_id: currentQuizId,
+            score: score,
+            total: currentQuiz.length
+          })
+        }).catch(err => console.log("Failed updating score telemetry:", err));
+      }
     }
   }
-}
 
-// ================= UPDATE RESULT UI =================
-function updateResult() {
+  /* ================= RESULTS CARD HUD OVERLAY ================= */
+  function updateResult() {
+    if (answered === 0) return;
 
-  if (answered === 0) return;
+    const resultBox = document.getElementById("resultBox");
+    const percentage = Math.round((score / answered) * 100);
+    resultBox.style.display = "inline-block";
 
-  const percentage = Math.round((score / answered) * 100);
-
-  if (answered === currentQuiz.length) {
-    document.getElementById("resultBox").innerHTML =
-      `🎉 Final Score: ${score}/${currentQuiz.length} (${percentage}%)`;
-  } else {
-    document.getElementById("resultBox").innerHTML =
-      `Score: ${score}/${answered}`;
+    if (answered === currentQuiz.length) {
+      resultBox.innerHTML = `🎉 Final Score: ${score}/${currentQuiz.length} (${percentage}%)`;
+    } else {
+      resultBox.innerHTML = `Progress Score: ${score}/${answered}`;
+    }
   }
-}
 
-// ================= ON LOAD =================
-window.onload = function () {
+  /* ================= CORE INITIALIZATION HOOKS ================= */
+  window.onload = function () {
+    const diff = localStorage.getItem("lastDifficulty");
+    const count = localStorage.getItem("lastCount");
+    const fileName = localStorage.getItem("lastFileName");
 
-  const diff = localStorage.getItem("lastDifficulty");
-  const count = localStorage.getItem("lastCount");
-  const fileName = localStorage.getItem("lastFileName");
+    if (diff) document.getElementById("difficulty").value = diff;
+    if (count) document.getElementById("questionCount").value = count;
+    if (fileName) document.getElementById("fileName").innerText = "Uploaded: " + fileName;
 
-  if (diff) document.getElementById("difficulty").value = diff;
-  if (count) document.getElementById("questionCount").value = count;
-  if (fileName)
-    document.getElementById("fileName").innerText = "Uploaded: " + fileName;
+    const savedQuiz = localStorage.getItem("currentQuiz");
+    if (savedQuiz) {
+      currentQuiz = JSON.parse(savedQuiz);
+      displayQuizFromAI(currentQuiz);
+      restoreSavedAnswers();
+    }
+    const savedQuizId = localStorage.getItem("currentQuizId");
+    if (savedQuizId) currentQuizId = Number(savedQuizId);
+  };
 
-  const savedQuiz = localStorage.getItem("currentQuiz");
-
-  if (savedQuiz) {
-    currentQuiz = JSON.parse(savedQuiz);
-    displayQuizFromAI(currentQuiz);
-    restoreSavedAnswers();
-  }
-};
-
-window.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("generateBtn")
-    .addEventListener("click", generateQuiz);
-});
-
-</script>
+  window.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("generateBtn").addEventListener("click", generateQuiz);
+  });
+  </script>
 
 </body>
 </html>

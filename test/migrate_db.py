@@ -1,6 +1,6 @@
 # ==============================
 # ONE-TIME MIGRATION SCRIPT
-# Adds the missing 'created_by' column to the existing
+# Adds the missing columns to the existing
 # notes and quiz tables, WITHOUT deleting your existing data.
 #
 # Run this once: python migrate_db.py
@@ -37,8 +37,13 @@ add_column_if_missing("notes", "created_by")
 add_column_if_missing("quiz", "created_by")
 add_column_if_missing("quiz", "marks", "INTEGER")
 
+# ---- New columns for dashboard's "today's quiz results" feature ----
+add_column_if_missing("quiz", "attempted", "BOOLEAN DEFAULT 0")
+add_column_if_missing("quiz", "submitted_at", "DATETIME")
+
 conn.commit()
 conn.close()
 
 print("Migration complete. Your existing users/notes/quizzes are untouched.")
 print("Old notes/quizzes will show 'Unknown' as the creator since they predate this change.")
+print("Old quizzes will have attempted=0 and no submitted_at, so they won't appear on the dashboard until re-answered.")

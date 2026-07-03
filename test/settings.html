@@ -17,6 +17,33 @@
       min-height: 100vh;
       background: #8fb9d6;
       color: #1f2937;
+      transition: background 0.3s ease;
+    }
+
+    /* Ambient Glow Shapes */
+    .bg-shape {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: -1;
+      opacity: 0.5;
+      transition: background 0.4s ease;
+    }
+
+    .shape1 {
+      top: -10%;
+      left: -10%;
+      width: 40vw;
+      height: 40vw;
+      background: #3b82f6;
+    }
+
+    .shape2 {
+      bottom: -10%;
+      right: -10%;
+      width: 45vw;
+      height: 45vw;
+      background: #60a5fa;
     }
 
     /* NAVBAR */
@@ -24,16 +51,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-
       padding: 16px 30px;
       margin: 20px;
-
       background: rgba(255, 255, 255, 0.75);
       backdrop-filter: blur(12px);
-
       border: 1px solid rgba(255, 255, 255, 0.4);
       border-radius: 20px;
-
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
       transition: all 0.3s ease;
     }
@@ -105,6 +128,7 @@
       padding: 12px;
       cursor: pointer;
       border-radius: 15px;
+      color: #1f2937;
     }
 
     .profile-menu div:hover {
@@ -112,7 +136,7 @@
       color: white;
     }
 
-    /* MAIN */
+    /* MAIN CONTAINER */
     .container {
       width: 86%;
       max-width: 1100px;
@@ -128,6 +152,7 @@
     .title-section h1 {
       font-size: 40px;
       margin-bottom: 10px;
+      color: #1f2937;
     }
 
     .title-section p {
@@ -141,12 +166,14 @@
       gap: 24px;
     }
 
+    /* CARDS STAYS WHITE */
     .settings-card {
       background: white;
       border: 2px dashed #93c5fd;
       border-radius: 18px;
       padding: 28px;
       box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+      color: #1f2937;
     }
 
     .settings-card h2 {
@@ -172,23 +199,23 @@
       font-size: 14px;
     }
 
-    input,
-    select {
+    input, select {
       width: 100%;
       padding: 12px;
       border-radius: 10px;
       border: 1px solid #cbd5e1;
       background: #f8fbff;
       font-size: 14px;
+      color: #1f2937;
     }
 
-    input:focus,
-    select:focus {
+    input:focus, select:focus {
       outline: none;
       border-color: #3b82f6;
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
     }
 
+    /* BUTTONS */
     .btn {
       background: #2563eb;
       color: white;
@@ -281,19 +308,41 @@
       line-height: 1.6;
     }
 
+    /* ========================================================== */
+    /* GLOBAL DARK MODE RULES                                     */
+    /* ========================================================== */
+    body.dark-mode {
+      background: radial-gradient(circle at 20% 20%, #1e3a8a, transparent 40%),
+                  radial-gradient(circle at 80% 30%, #312e81, transparent 40%),
+                  #0f172a;
+      background-attachment: fixed;
+    }
+
+    /* Adjust ambient glow elements for dark mode */
+    body.dark-mode .shape1 { background: #1e3a8a; }
+    body.dark-mode .shape2 { background: #312e81; }
+
+    /* Only change texts sitting directly on the dark background canvas */
+    body.dark-mode .title-section h1 {
+      color: #ffffff;
+    }
+    body.dark-mode .title-section p {
+      color: #cbd5e1;
+    }
+
+    /* ALL BOXES, CARDS, INPUTS, AND DROPDOWN STYLES REMOVED FROM HERE */
+    /* They will now stay white even in Dark Mode */
+
     @media (max-width: 900px) {
       .settings-grid {
         grid-template-columns: 1fr;
       }
-
       .container {
         width: 94%;
       }
-
       .nav-left {
         gap: 8px;
       }
-
       .nav-item {
         padding: 9px 12px;
         font-size: 14px;
@@ -304,7 +353,9 @@
 
 <body>
 
-  <!-- NAVBAR -->
+  <div class="bg-shape shape1"></div>
+  <div class="bg-shape shape2"></div>
+
   <div class="navbar">
     <div class="nav-left">
       <div class="nav-item" onclick="goHome()">Home</div>
@@ -323,7 +374,6 @@
     </div>
   </div>
 
-  <!-- MAIN -->
   <main class="container">
 
     <section class="title-section">
@@ -333,7 +383,6 @@
 
     <section class="settings-grid">
 
-      <!-- PROFILE SETTINGS -->
       <div class="settings-card">
         <h2>Profile Information</h2>
         <p class="desc">Update your basic user details for the study platform.</p>
@@ -357,7 +406,6 @@
         <div id="profileStatus" class="status-message success"></div>
       </div>
 
-      <!-- STUDY PREFERENCES -->
       <div class="settings-card">
         <h2>Study Preferences</h2>
         <p class="desc">Set your default options for quiz and notes generation.</p>
@@ -395,7 +443,6 @@
         <div id="studyStatus" class="status-message success"></div>
       </div>
 
-      <!-- APPEARANCE SETTINGS -->
       <div class="settings-card">
         <h2>Appearance</h2>
         <p class="desc">Customize simple display options for the interface.</p>
@@ -425,7 +472,6 @@
         </div>
       </div>
 
-      <!-- DATA MANAGEMENT -->
       <div class="settings-card">
         <h2>Data Management</h2>
         <p class="desc">Manage saved notes, subjects, revision progress, and preferences stored in this browser.</p>
@@ -444,7 +490,6 @@
         </div>
       </div>
 
-      <!-- QUICK SUMMARY -->
       <div class="settings-card full-width">
         <h2>Current Settings Summary</h2>
         <p class="desc">This shows the latest settings saved in your browser.</p>
@@ -467,39 +512,20 @@
 
     function toggleMenu() {
       const menu = document.getElementById("menu");
-
       if (menu) {
         menu.style.display = menu.style.display === "block" ? "none" : "block";
       }
     }
 
-    function goHome() {
-      window.location.href = "dashboard.html";
-    }
-
-    function goWork() {
-      window.location.href = "work.html";
-    }
-
-    function goGenerateQuiz() {
-      window.location.href = "generatequiz.html";
-    }
-
-    function goGenerateNotes() {
-      window.location.href = "generatenotes.html";
-    }
-
-    function goProfile() {
-      window.location.href = "profile.html";
-    }
-
-    function goSettings() {
-      window.location.href = "settings.html";
-    }
+    function goHome() { window.location.href = "dashboard.html"; }
+    function goWork() { window.location.href = "work.html"; }
+    function goGenerateQuiz() { window.location.href = "generatequiz.html"; }
+    function goGenerateNotes() { window.location.href = "generatenotes.html"; }
+    function goProfile() { window.location.href = "profile.html"; }
+    function goSettings() { window.location.href = "settings.html"; }
 
     function logout() {
       const confirmLogout = confirm("Are you sure you want to logout?");
-
       if (confirmLogout) {
         window.location.href = "login1.html";
       }
@@ -509,7 +535,6 @@
     document.addEventListener("click", function(event) {
       const profile = document.querySelector(".profile");
       const menu = document.getElementById("menu");
-
       if (profile && menu && !profile.contains(event.target)) {
         menu.style.display = "none";
       }
@@ -521,7 +546,6 @@
 
     function showMessage(elementId, message, type = "success") {
       const element = document.getElementById(elementId);
-
       element.textContent = message;
       element.className = "status-message " + type;
       element.style.display = "block";
@@ -543,14 +567,12 @@
       };
 
       localStorage.setItem("profileSettings", JSON.stringify(profileData));
-
       showMessage("profileStatus", "Profile saved successfully.", "success");
       updateSummary();
     }
 
     function loadProfile() {
       const savedProfile = JSON.parse(localStorage.getItem("profileSettings")) || {};
-
       document.getElementById("fullName").value = savedProfile.fullName || "";
       document.getElementById("email").value = savedProfile.email || "";
       document.getElementById("studentId").value = savedProfile.studentId || "";
@@ -568,14 +590,12 @@
       };
 
       localStorage.setItem("studyPreferences", JSON.stringify(studyPreferences));
-
       showMessage("studyStatus", "Study preferences saved successfully.", "success");
       updateSummary();
     }
 
     function loadStudyPreferences() {
       const savedPreferences = JSON.parse(localStorage.getItem("studyPreferences")) || {};
-
       document.getElementById("defaultDifficulty").value = savedPreferences.defaultDifficulty || "Easy";
       document.getElementById("defaultQuestionCount").value = savedPreferences.defaultQuestionCount || "5";
       document.getElementById("defaultNotesStyle").value = savedPreferences.defaultNotesStyle || "Short Notes";
@@ -592,7 +612,6 @@
       };
 
       localStorage.setItem("appearanceSettings", JSON.stringify(appearanceSettings));
-
       applyAppearance();
       showMessage("appearanceStatus", "Appearance saved successfully.", "success");
       updateSummary();
@@ -600,10 +619,8 @@
 
     function loadAppearance() {
       const savedAppearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
-
-      document.getElementById("theme").value = savedAppearance.theme || "Default Dark Blue";
+      document.getElementById("theme").value = savedAppearance.theme || "Dark";
       document.getElementById("fontSize").value = savedAppearance.fontSize || "Medium";
-
       applyAppearance();
     }
 
@@ -611,16 +628,14 @@
       const theme = document.getElementById("theme").value;
       const fontSize = document.getElementById("fontSize").value;
 
-  // THEME
-      if (theme === "Light") {
-        document.body.style.background = "#eaf8ff";
-        document.body.style.color = "#1f2937";
-      } else if (theme === "Dark") {
-        document.body.style.background = "#1e293b";
-        document.body.style.color = "#f8fafc";
+      // THEME
+      if (theme === "Dark") {
+        document.body.classList.add("dark-mode");
+      } else {
+        document.body.classList.remove("dark-mode");
       }
 
-  // FONT SIZE
+      // FONT SIZE
       if (fontSize === "Small") {
         document.body.style.fontSize = "14px";
       } else if (fontSize === "Medium") {
@@ -641,7 +656,6 @@
       const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
 
       let totalNotes = 0;
-
       subjects.forEach(subject => {
         if (subject.notesByTopic) {
           totalNotes += Object.keys(subject.notesByTopic).length;
@@ -662,46 +676,30 @@
 
     function clearSavedNotesOnly() {
       const confirmClear = confirm("Are you sure you want to clear all saved notes? Subjects and progress will remain.");
-
-      if (!confirmClear) {
-        return;
-      }
+      if (!confirmClear) return;
 
       let subjects = JSON.parse(localStorage.getItem("subjects")) || [];
-
-      subjects.forEach(subject => {
-        subject.notesByTopic = {};
-      });
-
+      subjects.forEach(subject => { subject.notesByTopic = {}; });
       localStorage.setItem("subjects", JSON.stringify(subjects));
 
       showStorageInfo();
       updateSummary();
-
       showMessage("dataStatus", "All saved notes cleared.", "warning");
     }
 
     function clearSubjectsAndProgress() {
       const confirmClear = confirm("Are you sure you want to clear all subjects and revision progress?");
-
-      if (!confirmClear) {
-        return;
-      }
+      if (!confirmClear) return;
 
       localStorage.removeItem("subjects");
-
       showStorageInfo();
       updateSummary();
-
       showMessage("dataStatus", "Subjects and progress cleared.", "warning");
     }
 
     function resetAllData() {
       const confirmReset = confirm("This will delete profile settings, preferences, subjects, notes, and progress. Continue?");
-
-      if (!confirmReset) {
-        return;
-      }
+      if (!confirmReset) return;
 
       localStorage.removeItem("profileSettings");
       localStorage.removeItem("studyPreferences");
@@ -710,7 +708,6 @@
 
       loadSettings();
       showStorageInfo();
-
       showMessage("dataStatus", "All app data has been reset.", "warning");
     }
 
@@ -728,13 +725,8 @@
       let totalTopics = 0;
 
       subjects.forEach(subject => {
-        if (subject.notesByTopic) {
-          totalNotes += Object.keys(subject.notesByTopic).length;
-        }
-
-        if (subject.topics) {
-          totalTopics += subject.topics.length;
-        }
+        if (subject.notesByTopic) totalNotes += Object.keys(subject.notesByTopic).length;
+        if (subject.topics) totalTopics += subject.topics.length;
       });
 
       document.getElementById("summaryBox").innerHTML = `
@@ -769,7 +761,6 @@
     // =========================
     // INITIAL LOAD
     // =========================
-
     loadSettings();
   </script>
 
