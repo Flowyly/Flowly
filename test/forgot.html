@@ -4,49 +4,48 @@
   <title>Forgot Password</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      padding: 16px 30px;
-      margin: 20px;
-
-      background: rgba(139, 187, 235, 0.75);
-
-      backdrop-filter: blur(12px);
-
-      border: 1px solid rgba(255, 255, 255, 0.4);
-
-      border-radius: 20px;
-
-      box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.08);
-
-      transition: all 0.3s ease;
-
       position: fixed;
-      top: 20px;
-      left: 20px;
+      top: 25px;
+      left: 25px;
       z-index: 2;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(12px);
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .home-btn {
+      text-decoration: none;
+      color: #1e3a5f;
+      font-size: 15px;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .home-btn:hover {
+      color: #2563eb;
     }
 
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      color: #ffffff;
+      background: #8fb9d6;
+      color: #1f2937;
+      min-height: 100vh;
+      transition: background 0.3s ease;
+    
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-
-      background: linear-gradient(
-        135deg,
-        #dbe4f0,
-        #cbdcf5,
-        #d6e6f5
-      );
     }
+
 
     /* Background shapes */
     .bg-shape {
@@ -76,26 +75,18 @@
     .container {
       position: relative;
       z-index: 1;
-
       width: 380px;
       padding: 35px;
-
       background: rgba(255, 255, 255, 0.92);
-
       border: 2px solid #bfdbfe;
-
       border-radius: 20px;
-
-      box-shadow:
-        0 15px 35px rgba(59, 130, 246, 0.15);
-
+      box-shadow: 0 15px 35px rgba(59, 130, 246, 0.15);
       text-align: center;
-
       transition: 0.3s ease;
     }
 
     .container:hover {
-      transform: none;
+      transform: translateY(-3px);
     }
 
     h2 {
@@ -112,60 +103,44 @@
 
     input {
       width: 100%;
-      box-sizing: border-box;
-
       padding: 12px 15px;
       margin: 10px 0;
-
       border: 2px solid #cbd5e1;
       border-radius: 10px;
-
       background: #f8fafc;
-
       font-size: 14px;
-
+      color: #1f2937;
       transition: all 0.3s ease;
     }
 
     input:focus {
       outline: none;
-
       border-color: #3b82f6;
-
-      box-shadow:
-        0 0 0 4px rgba(59, 130, 246, 0.15);
-
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
       background: white;
     }
 
     button {
       width: 100%;
       padding: 12px;
-
       margin-top: 10px;
-
       background: linear-gradient(
         135deg,
         #3b82f6,
         #2563eb
       );
-
       color: white;
-
       border: none;
       border-radius: 10px;
-
       font-size: 15px;
       font-weight: bold;
-
       cursor: pointer;
-
       transition: all 0.3s ease;
     }
 
     button:hover {
-      box-shadow:
-        0 8px 20px rgba(37, 99, 235, 0.25);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
     }
 
     a {
@@ -184,98 +159,134 @@
       color: green;
     }
 
-    .home-btn {
-      text-decoration: none;
+    /* GLOBAL DARK MODE RULES */
+    body.dark-mode {
+      background: radial-gradient(circle at 20% 20%, #1e3a8a, transparent 40%),
+                  radial-gradient(circle at 80% 30%, #312e81, transparent 40%),
+                  #0f172a;
+      background-attachment: fixed;
+    }
+
+    /* Hide background decorative blur shapes in dark mode */
+    body.dark-mode .bg-shape {
+      display: none;
+    }
+
+    /* Adjust top navigation button container in dark mode */
+    body.dark-mode .top-bar {
+      background: rgba(15, 23, 42, 0.4);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode .home-btn {
+      color: #cbd5e1;
+    }
+
+    body.dark-mode .home-btn:hover {
       color: #3b82f6;
-      font-weight: bold;
-      font-size: 14px;
+    }
+
+    /* Keeping the center card pristine white */
+    body.dark-mode .container {
+      background: rgba(255, 255, 255, 0.95);
+      color: #1f2937;
+    }
+
+    body.dark-mode h2 {
+      color: #1e293b;
+    }
+
+    body.dark-mode p {
+      color: #475569;
+    }
+
+    body.dark-mode input {
+      background: #f8fafc;
+      color: #1f2937;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Background shapes -->
   <div class="bg-shape shape1"></div>
   <div class="bg-shape shape2"></div>
 
-  <!-- Home button -->
   <div class="top-bar">
     <a href="websitepage.html" class="home-btn">Home</a>
   </div>
 
-  <!-- Card -->
   <div class="container">
     <h2>Forgot Password</h2>
-
     <p>Enter your email and we’ll send you a reset link.</p>
 
-
     <form onsubmit="resetPassword(event)">
-  <input type="email" id="email" placeholder="Email" required>
-  <button type="submit">Send Reset Link</button>
-</form>
+      <input type="email" id="email" placeholder="Email" required>
+      <button type="submit">Send Reset Link</button>
+    </form>
 
-<div class="links">
-  <p><a href="login1.html">Back to Login</a></p>
-</div>
+    <div class="links">
+      <p><a href="login1.html">Back to Login</a></p>
+    </div>
 
-<p id="message"></p>
+    <p id="message"></p>
+  </div>
 
-</div>
+  <script>
+  // ===== APPLY SAVED THEME =====
+  (function () {
+      const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
+      const theme = appearance.theme || "Light";
+      const fontSize = appearance.fontSize || "Medium";
 
-<script>
-(function() {
-  const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
-  const theme = appearance.theme || "Default Blue";
-  const fontSize = appearance.fontSize || "Medium";
+      if (theme === "Dark") {
+          document.body.classList.add("dark-mode");
+      } else {
+          document.body.classList.remove("dark-mode");
+      }
 
-  if (theme === "Default Blue") {
-    document.body.style.background = "linear-gradient(135deg, #dbe4f0, #cbdcf5, #d6e6f5)";
-  } else if (theme === "Light") {
-    document.body.style.background = "#eaf8ff";
-  } else if (theme === "Dark") {
-    document.body.style.background = "#1e293b";
-  }
+      if (fontSize === "Small") {
+          document.body.style.fontSize = "14px";
+      } else if (fontSize === "Medium") {
+          document.body.style.fontSize = "16px";
+      } else if (fontSize === "Large") {
+          document.body.style.fontSize = "18px";
+      }
+  })();
 
-  if (fontSize === "Small") document.body.style.fontSize = "14px";
-  else if (fontSize === "Medium") document.body.style.fontSize = "16px";
-  else if (fontSize === "Large") document.body.style.fontSize = "18px";
-})();
+  async function resetPassword(event) {
+    event.preventDefault();
 
-async function resetPassword(event) {
-  event.preventDefault();
+    let email = document.getElementById("email").value;
+    let message = document.getElementById("message");
 
-  let email = document.getElementById("email").value;
-  let message = document.getElementById("message");
+    message.style.color = "black";
+    message.innerText = "Sending reset link...";
 
-  message.style.color = "black";
-  message.innerText = "Sending reset link...";
+    try {
+      const res = await fetch("http://127.0.0.1:5000/forgot_password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email })
+      });
 
-  try {
-    const res = await fetch("http://127.0.0.1:5000/forgot_password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: email })
-    });
+      const data = await res.json();
 
-    const data = await res.json();
+      if (data.success) {
+        message.style.color = "green";
+        message.innerText = data.message;
+      } else {
+        message.style.color = "red";
+        message.innerText = data.message;
+      }
 
-    if (data.success) {
-      message.style.color = "green";
-      message.innerText = data.message;
-    } else {
+    } catch (error) {
+      console.log(error);
       message.style.color = "red";
-      message.innerText = data.message;
+      message.innerText = "Server error. Please try again.";
     }
-
-  } catch (error) {
-    console.log(error);
-    message.style.color = "red";
-    message.innerText = "Server error. Please try again.";
   }
-}
-</script>
+  </script>
 
 </body>
 </html>

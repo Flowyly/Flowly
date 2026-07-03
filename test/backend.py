@@ -88,6 +88,9 @@ class Quiz(db.Model):
     content = db.Column(db.Text)  # raw AI text, kept for the admin panel
     created_by = db.Column(db.String(100))  # email of the user who generated this quiz
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    marks = db.Column(db.String(20), default="0/0")
+    attempted = db.Column(db.Boolean, default=False)
+    submitted_at = db.Column(db.DateTime, nullable=True)
 
 
 class Coursework(db.Model):
@@ -1083,12 +1086,15 @@ Notes:
         )
 
         raw_quiz_text = response.choices[0].message.content
+        structured_quiz = parse_quiz_text(raw_quiz_text)
+        total_questions = len(structured_quiz)
 
         # Save the raw text for the admin panel / records
         new_quiz = Quiz(
-            title=f"{difficulty} Quiz",
-            content=raw_quiz_text,
-            created_by=email
+        title=f"{difficulty} Quiz",
+        content=raw_quiz_text,
+        created_by=email,
+        marks=f"0/{total_questions}"
         )
 
         db.session.add(new_quiz)
@@ -1104,8 +1110,9 @@ Notes:
             }), 500
 
         return jsonify({
-            "success": True,
-            "quiz": structured_quiz
+        "success": True,
+        "quiz": structured_quiz,
+        "quiz_id": new_quiz.id   # ADD THIS
         }), 200
 
     except Exception as e:
@@ -1130,12 +1137,47 @@ def get_quizzes():
             "id": q.id,
             "title": q.title,
             "content": q.content,
-            "created_by": q.created_by or "Unknown"
+            "created_by": q.created_by or "Unknown",
+            "marks": q.marks,
+            "attempted": q.attempted,
+            "created_at": q.created_at.isoformat() if q.created_at else None,
+            "submitted_at": q.submitted_at.isoformat() if q.submitted_at else None
         }
         for q in quizzes
     ]), 200
 
+# ==============================
+# SUBMIT QUIZZES
+# ==============================
+@app.route("/submit_quiz", methods=["POST"])
+def submit_quiz():
+    try:
+        data = request.get_json()
 
+        quiz_id = data.get("quiz_id")
+        score = data.get("score")
+        total = data.get("total")
+
+        quiz = Quiz.query.get(quiz_id)
+
+        if not quiz:
+            return jsonify({"success": False, "message": "Quiz not found"}), 404
+
+        quiz.marks = f"{score}/{total}"
+        quiz.attempted = True
+        quiz.submitted_at = datetime.utcnow()
+
+        db.session.commit()
+
+        return jsonify({
+            "success": True,
+            "message": "Score saved"
+        }), 200
+
+    except Exception as e:
+        print("SUBMIT QUIZ ERROR:", e)
+        return jsonify({"success": False, "message": str(e)}), 500
+    
 # ==============================
 # RUN SERVER
 # ==============================

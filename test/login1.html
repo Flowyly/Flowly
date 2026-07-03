@@ -4,23 +4,42 @@
   <title>Login</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
 
     .top-bar {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-}
+      position: fixed;
+      top: 25px;
+      left: 25px;
+      z-index: 2;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(12px);
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
 
-.home-btn {
-  text-decoration: none;
-  color: #3b82f6;
-  font-size: 16px;
-  font-weight: bold;
-}
+    .home-btn {
+      text-decoration: none;
+      color: #1e3a5f;
+      font-size: 15px;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .home-btn:hover {
+      color: #2563eb;
+    }
+
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f8fafc, #dbeafe, #e0f2fe);
+      background: #8fb9d6;
+      color: #1f2937;
+      min-height: 100vh;
+      transition: background 0.3s ease;
+    
       display: flex;
       justify-content: center;
       align-items: center;
@@ -28,41 +47,63 @@
     }
 
     .container {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      width: 320px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 1;
+      width: 400px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
       text-align: center;
     }
 
     h2 {
-      margin-bottom: 20px;
       color: #1e293b;
+      font-size: 30px;
+      margin-bottom: 10px;
     }
 
     input {
       width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
+      padding: 12px 15px;
+      margin: 10px 0;
+      border: 2px solid #dbeafe;
+      border-radius: 10px;
+      background: #f8fafc;
+      font-size: 14px;
+      color: #1f2937;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+      background: white;
     }
 
     button {
       width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      background: #3b82f6;
+      padding: 12px;
+      margin-top: 15px;
+      background: linear-gradient(
+        135deg,
+        #3b82f6,
+        #2563eb
+      );
       color: white;
       border: none;
-      border-radius: 6px;
-      cursor: pointer;
+      border-radius: 10px;
+      font-size: 15px;
       font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
 
     button:hover {
-      background: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
     }
 
     a {
@@ -73,6 +114,7 @@
     .links {
       margin-top: 15px;
       font-size: 14px;
+      color: #475569;
     }
 
     #message {
@@ -80,14 +122,76 @@
       font-size: 14px;
       color: red;
     }
+
+    .bg-shape {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.7;
+      z-index: 0;
+    }
+
+    .shape1 {
+      width: 350px;
+      height: 350px;
+      background: #c7d7e7;
+      top: -100px;
+      left: -100px;
+    }
+
+    .shape2 {
+      width: 350px;
+      height: 350px;
+      background: #9db8d4;
+      bottom: -100px;
+      right: -100px;
+    }
+
+    /* GLOBAL DARK MODE RULES */
+    body.dark-mode {
+      background: radial-gradient(circle at 20% 20%, #1e3a8a, transparent 40%),
+                  radial-gradient(circle at 80% 30%, #312e81, transparent 40%),
+                  #0f172a;
+      background-attachment: fixed;
+    }
+
+    /* Adjusting top navigation button container in dark mode for readability */
+    body.dark-mode .top-bar {
+      background: rgba(15, 23, 42, 0.4);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode .home-btn {
+      color: #cbd5e1;
+    }
+
+    body.dark-mode .home-btn:hover {
+      color: #3b82f6;
+    }
+
+    /* Keeping the container card pristine white */
+    body.dark-mode .container {
+      background: rgba(255, 255, 255, 0.95);
+      color: #1f2937;
+    }
+
+    body.dark-mode h2 {
+      color: #1e293b;
+    }
+
+    body.dark-mode input {
+      background: #f8fafc;
+      color: #1f2937;
+    }
   </style>
 </head>
 
 <body>
 
 <div class="top-bar">
-  <a href="websitepage.html" class="home-btn">← Home</a>
+  <a href="websitepage.html" class="home-btn">Home</a>
 </div>
+
 <div class="container">
   <h2>Login</h2>
 
@@ -108,25 +212,24 @@
 
 <script>
 // ===== APPLY SAVED THEME =====
-(function() {
+(function () {
     const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
-    const theme = appearance.theme || "Default Blue";
+    const theme = appearance.theme || "Light";
     const fontSize = appearance.fontSize || "Medium";
 
-    if (theme === "Default Blue") {
-    document.body.style.background = "#8fb9d6";
-    document.body.style.color = "";  // reset to default
-  } else if (theme === "Light") {
-    document.body.style.background = "#eaf8ff";
-    document.body.style.color = "";  // reset to default
-  } else if (theme === "Dark") {
-    document.body.style.background = "#1e293b";
-    document.body.style.color = "";  // reset to default — cards stay dark text
-  }
+    if (theme === "Dark") {
+        document.body.classList.add("dark-mode");
+    } else {
+        document.body.classList.remove("dark-mode");
+    }
 
-    if (fontSize === "Small") document.body.style.fontSize = "14px";
-    else if (fontSize === "Medium") document.body.style.fontSize = "16px";
-    else if (fontSize === "Large") document.body.style.fontSize = "18px";
+    if (fontSize === "Small") {
+        document.body.style.fontSize = "14px";
+    } else if (fontSize === "Medium") {
+        document.body.style.fontSize = "16px";
+    } else if (fontSize === "Large") {
+        document.body.style.fontSize = "18px";
+    }
 })();
 
 async function loginUser(event) {
@@ -137,7 +240,6 @@ async function loginUser(event) {
   let message = document.getElementById("message");
 
   try {
-
     const res = await fetch("http://127.0.0.1:5000/login", {
       method: "POST",
       headers: {
@@ -152,7 +254,6 @@ async function loginUser(event) {
     const data = await res.json();
 
     if (data.success) {
-
       localStorage.setItem("userEmail", email);
       localStorage.setItem("is_admin", data.is_admin);
       localStorage.setItem("username", data.username);
@@ -169,21 +270,17 @@ async function loginUser(event) {
       }, 800);
 
     } else {
-
       message.style.color = "red";
       message.innerText = data.message;
-
     }
 
   } catch (err) {
-
     console.error(err);
     message.style.color = "red";
     message.innerText = "Server error. Try again.";
-
   }
 }
 </script>
 
 </body>
-</html>
+</html> 

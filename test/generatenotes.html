@@ -6,6 +6,7 @@
 <title>AI Study Notes</title>
 
 <style>
+<style>
 * {
     margin: 0;
     padding: 0;
@@ -41,6 +42,7 @@ body {
 }
 
 /* NAVBAR */
+/* NAVBAR */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -52,6 +54,8 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    position: relative;
+    z-index: 10;
 }
 
 .nav-left {
@@ -72,10 +76,13 @@ body {
 .nav-item:hover {
     background: var(--blue-soft);
     color: var(--blue);
+    background: var(--blue-soft);
+    color: var(--blue);
     transform: translateY(-2px);
 }
 
 .nav-item.active {
+    background: linear-gradient(135deg, #3b82f6, var(--blue));
     background: linear-gradient(135deg, #3b82f6, var(--blue));
     color: white;
     font-weight: 600;
@@ -122,6 +129,7 @@ body {
 
     box-shadow: 7px 13px 15px -1px rgba(0, 0, 0, 0.15);
     z-index: 999;
+    z-index: 999;
 }
 
 .profile-menu div {
@@ -139,12 +147,14 @@ body {
 /* PAGE */
 .page-container {
     max-width: 1180px;
+    max-width: 1180px;
     margin: auto;
     padding: 40px 20px;
 }
 
 .hero {
     text-align: center;
+    margin-bottom: 28px;
     margin-bottom: 28px;
 }
 
@@ -154,7 +164,12 @@ body {
 }
 
 .flow-grid {
+.flow-grid {
     display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+    margin-bottom: 24px;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
     align-items: stretch;
@@ -194,16 +209,61 @@ body {
     background: var(--blue-soft);
     color: var(--blue);
     font-weight: 800;
+.flow-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+    border-radius: 10px;
+    background: var(--blue-soft);
+    color: var(--blue);
+    font-weight: 800;
 }
 
+.notes-header {
 .notes-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 12px;
     margin-bottom: 18px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
 }
 
+#topicsHeading {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    line-height: 1;
+}
+
+.selected-subject-inline {
+    display: inline-flex;
+    align-items: center;
+    color: var(--blue);
+    font-size: 1em;
+    font-weight: 700;
+    line-height: 1;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.status-badge {
+    background: #e0f2fe;
+    color: var(--blue);
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 13px;
+    white-space: nowrap;
 #topicsHeading {
     display: flex;
     align-items: center;
@@ -271,9 +331,11 @@ button {
     font-weight: bold;
     cursor: pointer;
     transition: 0.2s ease;
+    transition: 0.2s ease;
 }
 
 .primary-btn {
+    background: var(--blue);
     background: var(--blue);
     color: white;
     padding: 12px 18px;
@@ -281,9 +343,12 @@ button {
 
 .primary-btn:hover {
     background: var(--blue-dark);
+    background: var(--blue-dark);
 }
 
 .secondary-btn {
+    background: #e0f2fe;
+    color: var(--blue);
     background: #e0f2fe;
     color: var(--blue);
     padding: 10px 14px;
@@ -291,9 +356,11 @@ button {
 
 .secondary-btn:hover {
     background: #c7eafe;
+    background: #c7eafe;
 }
 
 .danger-btn {
+    background: var(--danger);
     background: var(--danger);
     color: white;
 }
@@ -375,7 +442,10 @@ button {
     border: 1px solid #e5f3ff;
     border-radius: 14px;
     background: var(--panel);
+    background: var(--panel);
     cursor: pointer;
+    scroll-snap-align: start;
+    overflow: visible;
     scroll-snap-align: start;
     overflow: visible;
     transition: 0.25s ease;
@@ -394,6 +464,42 @@ button {
 
 .subject-card h3,
 .topic-card h3 {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0 0 6px;
+    padding-right: 18px;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.2;
+    overflow: hidden;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.topic-card h3 {
+    min-height: 18px;
+    max-height: 34px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.subject-card h3::before,
+.topic-card h3::before {
+    content: "▣";
+    flex: 0 0 22px;
+    width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    background: var(--blue-soft);
+    color: var(--blue);
+    font-size: 12px;
+    line-height: 22px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -550,15 +656,24 @@ button {
     align-items: center;
     justify-content: space-between;
     gap: 10px;
+    min-height: 118px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
     border: 2px dashed #9ddcff;
     background: #f8fcff;
+    background: #f8fcff;
     border-radius: 16px;
+    padding: 22px;
     padding: 22px;
     text-align: center;
     transition: 0.3s ease;
 }
 
 .upload-box:hover {
+    background: #eef8ff;
     background: #eef8ff;
     border-color: #72bfd7;
 }
@@ -568,6 +683,7 @@ button {
 }
 
 .upload-icon {
+    font-size: 34px;
     font-size: 34px;
 }
 
@@ -588,6 +704,9 @@ textarea {
     height: auto;
     overflow: hidden;
     resize: none;
+    height: auto;
+    overflow: hidden;
+    resize: none;
     padding: 18px;
     border: none;
     border-radius: 14px;
@@ -595,6 +714,12 @@ textarea {
     box-shadow: inset 0 0 0 1px var(--blue-soft);
     font-size: 15px;
     line-height: 1.7;
+    color: #1f2937;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--blue);
 }
 
 .button-row {
@@ -609,6 +734,7 @@ textarea {
     margin-top: 18px;
     padding: 18px;
     border-radius: 18px;
+    background: linear-gradient(135deg, var(--blue), #7c3aed);
     background: linear-gradient(135deg, var(--blue), #7c3aed);
     color: white;
     box-shadow: 0 12px 28px rgba(37, 99, 235, 0.25);
@@ -625,6 +751,7 @@ textarea {
 .quiz-cta button {
     background: white;
     color: var(--blue);
+    color: var(--blue);
     padding: 12px 18px;
     border-radius: 12px;
     font-weight: bold;
@@ -633,10 +760,13 @@ textarea {
 
 @media (max-width: 900px) {
     .flow-grid {
+    .flow-grid {
         grid-template-columns: 1fr;
     }
 
     .page-container {
+        max-width: 100%;
+        padding: 28px 16px;
         max-width: 100%;
         padding: 28px 16px;
     }
@@ -879,6 +1009,10 @@ body.dark-mode .profile:hover {
 </head>
 
 <body>
+
+    <div class="bg-shape shape1"></div>
+    <div class="bg-shape shape2"></div>
+
     <div class="navbar">
         <div class="nav-left">
             <div class="nav-item" onclick="goHome()">Home</div>
@@ -918,7 +1052,34 @@ body.dark-mode .profile:hover {
                         <input type="text" id="newSubjectInput" placeholder="Type new subject">
                         <button type="button" class="primary-btn" onclick="addSubject()">Add</button>
                     </div>
+            <section class="flow-grid">
+                <div class="card flow-card subject-flow-card">
+                    <h2><span class="flow-step">1</span>Subject</h2>
 
+                    <div class="form-group" style="margin-top:14px;">
+                        <label>Selected Subject</label>
+                        <select id="subjectSelect" onchange="changeSubject()">
+                            <option value="">No subject added yet</option>
+                        </select>
+                    </div>
+
+                    <div class="add-row">
+                        <input type="text" id="newSubjectInput" placeholder="Type new subject">
+                        <button type="button" class="primary-btn" onclick="addSubject()">Add</button>
+                    </div>
+
+                    <div class="subject-carousel">
+                        <button type="button" class="scroll-arrow" onclick="scrollSubjectStrip(-1)">‹</button>
+                        <div class="subject-strip" id="subjectList"></div>
+                        <button type="button" class="scroll-arrow" onclick="scrollSubjectStrip(1)">›</button>
+                    </div>
+                </div>
+
+                <div class="card flow-card topics-card">
+                    <div class="notes-header">
+                        <h2 id="topicsHeading"><span class="flow-step">2</span>Topics:<span id="selectedSubjectInline" class="selected-subject-inline"></span></h2>
+                        <span class="status-badge" id="topicCount">0 Topics</span>
+                    </div>
                     <div class="subject-carousel">
                         <button type="button" class="scroll-arrow" onclick="scrollSubjectStrip(-1)">‹</button>
                         <div class="subject-strip" id="subjectList"></div>
@@ -937,11 +1098,23 @@ body.dark-mode .profile:hover {
                         <select id="topicSelect" onchange="changeTopic()">
                             <option value="">Select or create topic</option>
                         </select>
+                    <div class="form-group">
+                        <label>Selected Topic</label>
+                        <select id="topicSelect" onchange="changeTopic()">
+                            <option value="">Select or create topic</option>
+                        </select>
                     </div>
 
                     <div class="add-row">
                         <input type="text" id="newTopicInput" placeholder="Type new topic">
+                        <input type="text" id="newTopicInput" placeholder="Type new topic">
                         <button type="button" class="primary-btn" onclick="addTopic()">Add Topic</button>
+                    </div>
+
+                    <div class="topic-carousel">
+                        <button type="button" class="scroll-arrow" onclick="scrollTopicStrip(-1)">‹</button>
+                        <div class="topic-list" id="topicList"></div>
+                        <button type="button" class="scroll-arrow" onclick="scrollTopicStrip(1)">›</button>
                     </div>
 
                     <div class="topic-carousel">
@@ -953,7 +1126,19 @@ body.dark-mode .profile:hover {
 
                 <div class="card flow-card upload-card">
                     <h2><span class="flow-step">3</span>Generate Notes</h2>
+                <div class="card flow-card upload-card">
+                    <h2><span class="flow-step">3</span>Generate Notes</h2>
 
+                    <div class="upload-row">
+                        <div class="path-box" id="savePath">No subject selected</div>
+
+                        <div class="upload-box">
+                            <div class="upload-icon">📄</div>
+                            <h3>PDF</h3>
+                            <input type="file" id="fileUpload" accept=".pdf,application/pdf" onchange="showSelectedFile()">
+                            <button type="button" class="primary-btn" onclick="document.getElementById('fileUpload').click()">Choose File</button>
+                            <p id="fileNameDisplay" class="file-name-display">No file</p>
+                        </div>
                     <div class="upload-row">
                         <div class="path-box" id="savePath">No subject selected</div>
 
@@ -969,7 +1154,16 @@ body.dark-mode .profile:hover {
                     </div>
                 </div>
             </section>
+                        <button type="button" class="primary-btn generate-wide-btn" id="generateBtn" onclick="generateNotes()">Generate Notes</button>
+                    </div>
+                </div>
+            </section>
 
+            <section class="card editor-card">
+                <div class="notes-header">
+                    <h2>Generated Notes</h2>
+                    <span class="status-badge" id="editorStatus">No Topic Selected</span>
+                </div>
             <section class="card editor-card">
                 <div class="notes-header">
                     <h2>Generated Notes</h2>
@@ -977,13 +1171,22 @@ body.dark-mode .profile:hover {
                 </div>
 
                 <textarea id="notesArea" placeholder="Generated notes..."></textarea>
+                <textarea id="notesArea" placeholder="Generated notes..."></textarea>
 
                 <div class="button-row">
                     <button type="button" class="primary-btn" onclick="saveNotesToCurrentTopic()">Save</button>
                     <button type="button" class="secondary-btn" onclick="copyNotes()">Copy</button>
                     <button type="button" class="secondary-btn" onclick="clearEditor()">Clear</button>
                 </div>
+                <div class="button-row">
+                    <button type="button" class="primary-btn" onclick="saveNotesToCurrentTopic()">Save</button>
+                    <button type="button" class="secondary-btn" onclick="copyNotes()">Copy</button>
+                    <button type="button" class="secondary-btn" onclick="clearEditor()">Clear</button>
+                </div>
 
+                <div class="quiz-cta" id="quizCta">
+                    <h3>Want to try a quiz?</h3>
+                    <button type="button" onclick="startQuizFromNotes()">Start Quiz</button>
                 <div class="quiz-cta" id="quizCta">
                     <h3>Want to try a quiz?</h3>
                     <button type="button" onclick="startQuizFromNotes()">Start Quiz</button>
@@ -1004,10 +1207,10 @@ body.dark-mode .profile:hover {
         document.body.classList.remove("dark-mode");
     }
 
-    if (fontSize === "Small") document.body.style.fontSize = "14px";
-    else if (fontSize === "Medium") document.body.style.fontSize = "16px";
-    else if (fontSize === "Large") document.body.style.fontSize = "18px";
-})();
+        if (fontSize === "Small") document.body.style.fontSize = "14px";
+        else if (fontSize === "Medium") document.body.style.fontSize = "16px";
+        else if (fontSize === "Large") document.body.style.fontSize = "18px";
+    })();
 
 function toggleMenu() {
     const menu = document.getElementById("menu");
@@ -1028,21 +1231,21 @@ let subjects = loadSubjects();
 let selectedSubjectId = localStorage.getItem("selectedSubjectId") || null;
 let selectedTopicId = localStorage.getItem("selectedTopicId") || null;
 
-function createId() {
-    return Date.now().toString() + Math.random().toString(16).slice(2);
-}
+    function createId() {
+        return Date.now().toString() + Math.random().toString(16).slice(2);
+    }
 
-function loadSubjects() {
-    const saved = JSON.parse(localStorage.getItem("subjects")) || [];
+    function loadSubjects() {
+        const saved = JSON.parse(localStorage.getItem("subjects")) || [];
 
     return saved.map(subject => {
         if (!subject.id) subject.id = createId();
         if (!Array.isArray(subject.topics)) subject.topics = [];
 
-        subject.topics = subject.topics.map(topic => {
-            if (typeof topic === "string") {
-                return { id: createId(), title: topic, notes: "", fileName: "", updatedAt: "", done: false };
-            }
+            subject.topics = subject.topics.map(topic => {
+                if (typeof topic === "string") {
+                    return { id: createId(), title: topic, notes: "", fileName: "", updatedAt: "", done: false };
+                }
 
             return {
                 id: topic.id || createId(),
@@ -1067,20 +1270,20 @@ function loadSubjects() {
             delete subject.notesByTopic;
         }
 
-        return {
-            id: subject.id,
-            name: subject.name || "Untitled Subject",
-            topics: subject.topics,
-            progress: subject.progress || 0
-        };
-    });
-}
+            return {
+                id: subject.id,
+                name: subject.name || "Untitled Subject",
+                topics: subject.topics,
+                progress: subject.progress || 0
+            };
+        });
+    }
 
-function saveSubjects() {
-    localStorage.setItem("subjects", JSON.stringify(subjects));
-    localStorage.setItem("selectedSubjectId", selectedSubjectId || "");
-    localStorage.setItem("selectedTopicId", selectedTopicId || "");
-}
+    function saveSubjects() {
+        localStorage.setItem("subjects", JSON.stringify(subjects));
+        localStorage.setItem("selectedSubjectId", selectedSubjectId || "");
+        localStorage.setItem("selectedTopicId", selectedTopicId || "");
+    }
 
 async function loadNotesFromBackend() {
     try {
@@ -1088,9 +1291,9 @@ async function loadNotesFromBackend() {
         const backendNotes = await response.json();
         if (!Array.isArray(backendNotes)) return;
 
-        backendNotes.forEach(note => {
-            const subjectName = (note.subject || "Untitled Subject").trim();
-            const topicTitle = (note.topic || "Untitled Topic").trim();
+            backendNotes.forEach(note => {
+                const subjectName = (note.subject || "Untitled Subject").trim();
+                const topicTitle = (note.topic || "Untitled Topic").trim();
 
             let subject = subjects.find(item => item.name.toLowerCase() === subjectName.toLowerCase());
             if (!subject) {
@@ -1132,9 +1335,9 @@ async function saveNoteToBackend(subjectName, topicTitle, content) {
     }
 }
 
-function getSelectedSubject() {
-    return subjects.find(subject => subject.id === selectedSubjectId) || null;
-}
+    function getSelectedSubject() {
+        return subjects.find(subject => subject.id === selectedSubjectId) || null;
+    }
 
 function getSelectedTopic() {
     const subject = getSelectedSubject();
@@ -1153,12 +1356,12 @@ function renderPage() {
     autoResizeNotesEditor();
 }
 
-function ensureValidSelection() {
-    if (subjects.length === 0) {
-        selectedSubjectId = null;
-        selectedTopicId = null;
-        return;
-    }
+    function ensureValidSelection() {
+        if (subjects.length === 0) {
+            selectedSubjectId = null;
+            selectedTopicId = null;
+            return;
+        }
 
     if (!getSelectedSubject()) selectedSubjectId = subjects[0].id;
 
@@ -1189,10 +1392,10 @@ function renderSubjects() {
         return;
     }
 
-    subjects.forEach(subject => {
-        const totalTopics = subject.topics.length;
-        const completedTopics = subject.topics.filter(topic => topic.done).length;
-        subject.progress = totalTopics === 0 ? 0 : Math.round((completedTopics / totalTopics) * 100);
+        subjects.forEach(subject => {
+            const totalTopics = subject.topics.length;
+            const completedTopics = subject.topics.filter(topic => topic.done).length;
+            subject.progress = totalTopics === 0 ? 0 : Math.round((completedTopics / totalTopics) * 100);
 
         const card = document.createElement("div");
         card.className = "subject-card" + (subject.id === selectedSubjectId ? " active-card" : "");
@@ -1217,41 +1420,41 @@ function renderSubjects() {
             deleteSubject(subject.id);
         });
 
-        subjectList.appendChild(card);
+            subjectList.appendChild(card);
 
-        const option = document.createElement("option");
-        option.value = subject.id;
-        option.textContent = subject.name;
-        subjectSelect.appendChild(option);
-    });
+            const option = document.createElement("option");
+            option.value = subject.id;
+            option.textContent = subject.name;
+            subjectSelect.appendChild(option);
+        });
 
-    subjectSelect.value = selectedSubjectId || "";
-}
+        subjectSelect.value = selectedSubjectId || "";
+    }
 
 function renderTopicDropdown() {
     const topicSelect = document.getElementById("topicSelect");
     const subject = getSelectedSubject();
     topicSelect.innerHTML = "";
 
-    if (!subject) {
-        topicSelect.innerHTML = "<option value=''>Select subject first</option>";
-        return;
-    }
+        if (!subject) {
+            topicSelect.innerHTML = "<option value=''>Select subject first</option>";
+            return;
+        }
 
     if (subject.topics.length === 0) {
         topicSelect.innerHTML = "<option value=''>No topic</option>";
         return;
     }
 
-    subject.topics.forEach(topic => {
-        const option = document.createElement("option");
-        option.value = topic.id;
-        option.textContent = topic.title;
-        topicSelect.appendChild(option);
-    });
+        subject.topics.forEach(topic => {
+            const option = document.createElement("option");
+            option.value = topic.id;
+            option.textContent = topic.title;
+            topicSelect.appendChild(option);
+        });
 
-    topicSelect.value = selectedTopicId || "";
-}
+        topicSelect.value = selectedTopicId || "";
+    }
 
 function renderTopicCards() {
     const topicList = document.getElementById("topicList");
@@ -1265,7 +1468,7 @@ function renderTopicCards() {
         return;
     }
 
-    topicCount.textContent = subject.topics.length + (subject.topics.length === 1 ? " Topic" : " Topics");
+        topicCount.textContent = subject.topics.length + (subject.topics.length === 1 ? " Topic" : " Topics");
 
     if (subject.topics.length === 0) {
         topicList.innerHTML = "<p class='empty-message'>No topic</p>";
@@ -1291,23 +1494,23 @@ function renderTopicCards() {
             deleteTopic(topic.id);
         });
 
-        topicList.appendChild(card);
-    });
-}
+            topicList.appendChild(card);
+        });
+    }
 
-function updateSavePath() {
-    const savePath = document.getElementById("savePath");
-    const subject = getSelectedSubject();
-    const topic = getSelectedTopic();
+    function updateSavePath() {
+        const savePath = document.getElementById("savePath");
+        const subject = getSelectedSubject();
+        const topic = getSelectedTopic();
 
     if (!subject) savePath.textContent = "No subject selected";
     else if (!topic) savePath.textContent = subject.name + " > No topic selected";
     else savePath.textContent = subject.name + " > " + topic.title;
 }
 
-function updateEditorStatus() {
-    const editorStatus = document.getElementById("editorStatus");
-    const topic = getSelectedTopic();
+    function updateEditorStatus() {
+        const editorStatus = document.getElementById("editorStatus");
+        const topic = getSelectedTopic();
 
     if (!topic) editorStatus.textContent = "No Topic Selected";
     else editorStatus.textContent = topic.notes ? "Saved" : "Empty Topic";
@@ -1326,19 +1529,19 @@ function addSubject() {
         selectedSubjectId = subject.id;
     }
 
-    selectedTopicId = null;
-    input.value = "";
-    document.getElementById("notesArea").value = "";
-    renderPage();
-}
+        selectedTopicId = null;
+        input.value = "";
+        document.getElementById("notesArea").value = "";
+        renderPage();
+    }
 
-function changeSubject() {
-    selectedSubjectId = document.getElementById("subjectSelect").value;
-    const subject = getSelectedSubject();
-    selectedTopicId = subject && subject.topics[0] ? subject.topics[0].id : null;
-    document.getElementById("notesArea").value = getSelectedTopic() ? getSelectedTopic().notes : "";
-    renderPage();
-}
+    function changeSubject() {
+        selectedSubjectId = document.getElementById("subjectSelect").value;
+        const subject = getSelectedSubject();
+        selectedTopicId = subject && subject.topics[0] ? subject.topics[0].id : null;
+        document.getElementById("notesArea").value = getSelectedTopic() ? getSelectedTopic().notes : "";
+        renderPage();
+    }
 
 function deleteSubject(subjectId) {
     subjects = subjects.filter(subject => subject.id !== subjectId);
@@ -1351,10 +1554,10 @@ function deleteSubject(subjectId) {
     renderPage();
 }
 
-function addTopic() {
-    const subject = getSelectedSubject();
-    const input = document.getElementById("newTopicInput");
-    const topicTitle = input.value.trim();
+    function addTopic() {
+        const subject = getSelectedSubject();
+        const input = document.getElementById("newTopicInput");
+        const topicTitle = input.value.trim();
 
     if (!subject) return alert("Please add or select a subject first.");
     if (!topicTitle) return alert("Please type a topic name.");
@@ -1367,40 +1570,40 @@ function addTopic() {
         selectedTopicId = topic.id;
     }
 
-    input.value = "";
-    document.getElementById("notesArea").value = getSelectedTopic().notes || "";
-    renderPage();
-}
+        input.value = "";
+        document.getElementById("notesArea").value = getSelectedTopic().notes || "";
+        renderPage();
+    }
 
-function changeTopic() {
-    selectedTopicId = document.getElementById("topicSelect").value;
-    const topic = getSelectedTopic();
-    document.getElementById("notesArea").value = topic ? topic.notes : "";
-    renderPage();
-}
+    function changeTopic() {
+        selectedTopicId = document.getElementById("topicSelect").value;
+        const topic = getSelectedTopic();
+        document.getElementById("notesArea").value = topic ? topic.notes : "";
+        renderPage();
+    }
 
-function openTopic(topicId) {
-    selectedTopicId = topicId;
-    const topic = getSelectedTopic();
-    document.getElementById("notesArea").value = topic ? topic.notes : "";
-    renderPage();
-    document.getElementById("notesArea").scrollIntoView({ behavior: "smooth", block: "center" });
-}
+    function openTopic(topicId) {
+        selectedTopicId = topicId;
+        const topic = getSelectedTopic();
+        document.getElementById("notesArea").value = topic ? topic.notes : "";
+        renderPage();
+        document.getElementById("notesArea").scrollIntoView({ behavior: "smooth", block: "center" });
+    }
 
-function toggleTopicDone(topicId) {
-    const subject = getSelectedSubject();
-    if (!subject) return;
+    function toggleTopicDone(topicId) {
+        const subject = getSelectedSubject();
+        if (!subject) return;
 
-    const topic = subject.topics.find(item => item.id === topicId);
-    if (!topic) return;
+        const topic = subject.topics.find(item => item.id === topicId);
+        if (!topic) return;
 
-    topic.done = !topic.done;
-    renderPage();
-}
+        topic.done = !topic.done;
+        renderPage();
+    }
 
-function deleteTopic(topicId) {
-    const subject = getSelectedSubject();
-    if (!subject) return;
+    function deleteTopic(topicId) {
+        const subject = getSelectedSubject();
+        if (!subject) return;
 
     subject.topics = subject.topics.filter(topic => topic.id !== topicId);
     selectedTopicId = subject.topics[0] ? subject.topics[0].id : null;
@@ -1414,16 +1617,16 @@ function showSelectedFile() {
     fileNameDisplay.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : "No file";
 }
 
-function isPdfFile(file) {
-    return file && (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"));
-}
+    function isPdfFile(file) {
+        return file && (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"));
+    }
 
-async function generateNotes() {
-    const subject = getSelectedSubject();
-    const topic = getSelectedTopic();
-    const notesArea = document.getElementById("notesArea");
-    const fileInput = document.getElementById("fileUpload");
-    const generateBtn = document.getElementById("generateBtn");
+    async function generateNotes() {
+        const subject = getSelectedSubject();
+        const topic = getSelectedTopic();
+        const notesArea = document.getElementById("notesArea");
+        const fileInput = document.getElementById("fileUpload");
+        const generateBtn = document.getElementById("generateBtn");
 
     if (!subject) return alert("Please add or select a subject first.");
     if (!topic) return alert("Please add or select a topic first.");
@@ -1437,10 +1640,10 @@ async function generateNotes() {
         return;
     }
 
-    const formData = new FormData();
-    formData.append("subject", subject.name);
-    formData.append("topic", topic.title);
-    formData.append("file", file);
+        const formData = new FormData();
+        formData.append("subject", subject.name);
+        formData.append("topic", topic.title);
+        formData.append("file", file);
 
     notesArea.value = "Generating notes...";
     generateBtn.disabled = true;
@@ -1477,10 +1680,10 @@ async function saveNotesToCurrentTopic() {
 
     if (!subject || !topic) return alert("Please select a topic first.");
 
-    topic.notes = notesArea.value;
-    topic.updatedAt = new Date().toISOString();
-    saveSubjects();
-    renderPage();
+        topic.notes = notesArea.value;
+        topic.updatedAt = new Date().toISOString();
+        saveSubjects();
+        renderPage();
 
     const backendResult = await saveNoteToBackend(subject.name, topic.title, notesArea.value);
     if (backendResult.success) await loadNotesFromBackend();
@@ -1489,12 +1692,12 @@ async function saveNotesToCurrentTopic() {
     alert(backendResult.success ? "Notes saved to database." : "Notes saved locally.");
 }
 
-function copyNotes() {
-    const notesArea = document.getElementById("notesArea");
-    notesArea.select();
-    document.execCommand("copy");
-    alert("Notes copied.");
-}
+    function copyNotes() {
+        const notesArea = document.getElementById("notesArea");
+        notesArea.select();
+        document.execCommand("copy");
+        alert("Notes copied.");
+    }
 
 function clearEditor() {
     document.getElementById("notesArea").value = "";

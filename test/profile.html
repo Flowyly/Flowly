@@ -4,149 +4,154 @@
   <title>Profile</title>
 
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f8fafc, #e0f2fe);
+      background: #8fb9d6;
+      color: #1f2937;
+      min-height: 100vh;
+      transition: background 0.3s ease;
+    }
+
+    /* Ambient Glow Shapes */
+    .bg-shape {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: -1;
+      opacity: 0.5;
+      transition: background 0.4s ease;
+    }
+
+    .shape1 {
+      top: -10%;
+      left: -10%;
+      width: 40vw;
+      height: 40vw;
+      background: #3b82f6;
+    }
+
+    .shape2 {
+      bottom: -10%;
+      right: -10%;
+      width: 45vw;
+      height: 45vw;
+      background: #60a5fa;
     }
 
     /* NAVBAR */
-  .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 30px;
+      margin: 20px;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+    }
 
-  padding: 16px 30px;
-  margin: 20px;
+    /* LEFT NAV */
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
 
-  background: rgba(255, 255, 255, 0.75);
+    /* NAV ITEMS */
+    .nav-item {
+      position: relative;
+      padding: 10px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #334155;
+      transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+    }
 
-  backdrop-filter: blur(12px);
+    /* HOVER EFFECT */
+    .nav-item:hover {
+      background: #dbeafe;
+      color: #2563eb;
+      transform: translateY(-2px);
+    }
 
-  border: 1px solid rgba(255, 255, 255, 0.4);
+    /* ACTIVE PAGE */
+    .nav-item.active {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
 
-  border-radius: 20px;
+    /* CLICKABLE PROFILE TRIGGER */
+    .profile-icon {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #eff6ff;
+      font-size: 20px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.25s ease, transform 0.2s ease;
+    }
 
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.08);
+    .profile-icon:hover {
+      background: #dbeafe;
+      transform: scale(1.08);
+    }
 
-  transition: all 0.3s ease;
-}
+    /* DROPDOWN MENU */
+    .profile-menu {
+      border: 2px solid black;
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 50px;
+      background: white;
+      border-radius: 19px;
+      width: 180px;
+      box-shadow: 7px 13px 15px -1px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      z-index: 10;
+      font-size: 15px;
+    }
 
-/* LEFT NAV */
-.nav-left {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
+    .profile-menu div {
+      padding: 12px;
+      cursor: pointer;
+      border-radius: 15px;
+      color: #1f2937;
+      text-align: left;
+      font-weight: normal;
+    }
 
-/* NAV ITEMS */
-.nav-item {
-  position: relative;
+    .profile-menu div:hover {
+      background: #6fa0d0;
+      color: white;
+    }
 
-  padding: 10px 18px;
-
-  border-radius: 12px;
-
-  cursor: pointer;
-
-  font-weight: 500;
-  color: #334155;
-
-  transition:
-    background 0.25s ease,
-    color 0.25s ease,
-    transform 0.2s ease;
-}
-
-/* HOVER EFFECT */
-.nav-item:hover {
-  background: #dbeafe;
-
-  color: #2563eb;
-
-  transform: translateY(-2px);
-}
-
-/* ACTIVE PAGE */
-.nav-item.active {
-  background: linear-gradient(
-    135deg,
-    #3b82f6,
-    #2563eb
-  );
-
-  color: white;
-
-  font-weight: 600;
-
-  box-shadow:
-    0 4px 12px rgba(37, 99, 235, 0.35);
-}
-
-    /* PROFILE DROPDOWN - match generate notes */
-.profile {
-  position: relative;
-  width: 42px;
-  height: 42px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-  background: #eff6ff;
-
-  font-size: 15px;
-  cursor: pointer;
-
-  transition:
-    background 0.25s ease,
-    transform 0.2s ease;
-}
-
-.profile:hover {
-  background: #dbeafe;
-  transform: scale(1.08);
-}
-
-.profile-menu {
-  font: arial;
-  border: 2px solid black;
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 42px;
-
-  background: rgb(255, 255, 255);
-  border-radius: 19px;
-  width: 180px;
-
-  box-shadow: 7px 13px 15px -1px rgba(0, 0, 0, 0.15);
-  z-index: 999;
-}
-
-.profile-menu div {
-  padding: 12px;
-  cursor: pointer;
-  border-radius: 19px;
-}
-
-.profile-menu div:hover {
-  background: #6fa0d0;
-  color: white;
-  border-radius: 19px;
-  border: 2px solid black;
-}
-
-    /* CONTAINER */
+    /* CONTAINER STAYS WHITE */
     .container {
       max-width: 500px;
       margin: 40px auto;
       background: white;
       padding: 30px;
-      border-radius: 12px;
+      border-radius: 18px;
+      border: 2px dashed #93c5fd;
       box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+      color: #1f2937;
     }
 
     h2 {
@@ -162,200 +167,209 @@
 
     label {
       display: block;
-      margin-top: 10px;
+      margin-top: 15px;
       font-weight: bold;
+      font-size: 14px;
     }
 
     input {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
+      padding: 12px;
+      margin-top: 6px;
       border: 1px solid #cbd5e1;
-      border-radius: 6px;
+      border-radius: 10px;
+      background: #f8fbff;
+      font-size: 14px;
+      color: #1f2937;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
     }
 
     button {
       width: 100%;
-      padding: 10px;
-      margin-top: 15px;
-      background: #3b82f6;
+      padding: 12px;
+      margin-top: 20px;
+      background: #2563eb;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 10px;
       cursor: pointer;
       font-weight: bold;
+      transition: 0.2s ease;
     }
 
     button:hover {
-      background: #2563eb;
+      background: #1d4ed8;
+      transform: translateY(-1px);
     }
 
     .section {
-      margin-top: 25px;
+      margin-top: 10px;
     }
 
     #message {
       text-align: center;
-      margin-top: 10px;
+      margin-top: 14px;
       font-size: 14px;
+      font-weight: bold;
     }
-    /* DARK MODE FIX: keep profile page text dark/readable */
-body,
-.navbar,
-.nav-item,
-.container,
-.container h2,
-.container label,
-.container input,
-.profile-menu,
-.profile-menu div {
-  color: #1f2937;
-}
 
-/* Keep profile card white in dark mode */
-.container,
-.navbar,
-.profile-menu,
-input {
-  background-color: white;
-}
+    /* ========================================================== */
+    /* GLOBAL DARK MODE RULES                                     */
+    /* ========================================================== */
+    body.dark-mode {
+      background: radial-gradient(circle at 20% 20%, #1e3a8a, transparent 40%),
+                  radial-gradient(circle at 80% 30%, #312e81, transparent 40%),
+                  #0f172a;
+      background-attachment: fixed;
+    }
 
-/* Muted/success message stays readable */
-#message {
-  color: green;
-}
+    /* Adjust ambient glow elements for dark mode */
+    body.dark-mode .shape1 { background: #1e3a8a; }
+    body.dark-mode .shape2 { background: #312e81; }
 
-/* Active nav still white text */
-.nav-item.active {
-  color: white !important;
-}
+    body.dark-mode .profile-menu div {
+      color: #1f2937;
+    }
 
-/* Button still white text */
-button {
-  color: white;
-}
+    /* WE REMOVED CONTAINER OVERWRITES FROM HERE */
+    /* The core container card, labels, inputs, and text stay white */
   </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-  <div class="nav-left">
-    <div class="nav-item" onclick="goHome()">Home</div>
-    <div class="nav-item active">Profile</div>
-  </div>
+  <div class="bg-shape shape1"></div>
+  <div class="bg-shape shape2"></div>
 
-  <div class="profile" onclick="toggleMenu()">
-    👤
-    <div class="profile-menu" id="menu">
-      <div onclick="goProfile()">Profile</div>
-      <div onclick="goSettings()">Settings</div>
-      <div onclick="logout()">Logout</div>
+  <div class="navbar">
+    <div class="nav-left">
+      <div class="nav-item" onclick="goHome()">Home</div>
+      <div class="nav-item" onclick="goWork()">Work</div>
+      <div class="nav-item" onclick="goGenerateQuiz()">Quiz</div>
+      <div class="nav-item" onclick="goGenerateNotes()">Notes</div>
+    </div>
+
+    <div class="profile-icon" onclick="toggleMenu()">
+      👤
+      <div class="profile-menu" id="menu">
+        <div class="active-menu" onclick="goProfile()">Profile</div>
+        <div onclick="goSettings()">Settings</div>
+        <div onclick="logout()">Logout</div>
+      </div>
     </div>
   </div>
-</div>
-<!-- PROFILE -->
-<div class="container">
-  <div class="avatar">👤</div>
-  <h2>Profile</h2>
 
-  <!-- EDIT PROFILE -->
-  <div class="section">
-    <label>Full Name</label>
-<input type="text" id="fullName" placeholder="Enter your full name">
+  <div class="container">
+    <div class="avatar">👤</div>
+    <h2>Profile</h2>
 
-<label>Email</label>
-<input type="email" id="email" placeholder="Enter your email">
+    <div class="section">
+      <label>Full Name</label>
+      <input type="text" id="fullName" placeholder="Enter your full name">
 
-<label>Student ID / User ID</label>
-<input type="text" id="studentId" placeholder="Enter your student ID">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="Enter your email">
 
-<button onclick="saveProfile()">Save Changes</button>
-<p id="message"></p>
+      <label>Student ID / User ID</label>
+      <input type="text" id="studentId" placeholder="Enter your student ID">
+
+      <button onclick="saveProfile()">Save Changes</button>
+      <p id="message"></p>
+    </div>
   </div>
-</div>
 
-<script>
-// ===== APPLY SAVED THEME =====
-(function() {
-    const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
-    const theme = appearance.theme || "Default Blue";
-    const fontSize = appearance.fontSize || "Medium";
+  <script>
+  // ===== APPLY SAVED THEME =====
+  (function() {
+      const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
+      const theme = appearance.theme || "Dark"; // Matches Settings default
+      const fontSize = appearance.fontSize || "Medium";
 
-    if (theme === "Default Blue") {
-        document.body.style.background = "#8fb9d6";
-        document.body.style.color = "#1f2937";
-    } else if (theme === "Light") {
-        document.body.style.background = "#eaf8ff";
-        document.body.style.color = "#1f2937";
-    } else if (theme === "Dark") {
-        document.body.style.background = "#1e293b";
-        document.body.style.color = "#1f2937";
-    }
+      if (theme === "Dark") {
+          document.body.classList.add("dark-mode");
+      } else {
+          document.body.classList.remove("dark-mode");
+      }
 
-    if (fontSize === "Small") document.body.style.fontSize = "14px";
-    else if (fontSize === "Medium") document.body.style.fontSize = "16px";
-    else if (fontSize === "Large") document.body.style.fontSize = "18px";
-})();
+      if (fontSize === "Small") document.body.style.fontSize = "14px";
+      else if (fontSize === "Medium") document.body.style.fontSize = "16px";
+      else if (fontSize === "Large") document.body.style.fontSize = "18px";
+  })();
 
   if (!localStorage.getItem("userEmail")) {
-  window.location.href = "login1.html";
-}
-
-function goHome() {
-  window.location.href = "dashboard.html";
-}
-
-function goWork() {
-  window.location.href = "work.html";
-}
-
-function loadProfile() {
-  const savedProfile = JSON.parse(localStorage.getItem("profileSettings")) || {};
-
-  document.getElementById("fullName").value = savedProfile.fullName || "";
-  document.getElementById("email").value = savedProfile.email || localStorage.getItem("userEmail") || "";
-  document.getElementById("studentId").value = savedProfile.studentId || "";
-}
-
-function saveProfile() {
-  const profileData = {
-    fullName: document.getElementById("fullName").value.trim(),
-    email: document.getElementById("email").value.trim(),
-    studentId: document.getElementById("studentId").value.trim()
-  };
-
-  localStorage.setItem("profileSettings", JSON.stringify(profileData));
-
-  if (profileData.email) {
-    localStorage.setItem("userEmail", profileData.email);
+    window.location.href = "login1.html";
   }
 
-  const message = document.getElementById("message");
-  message.style.color = "green";
-  message.innerText = "Profile updated successfully.";
-}
+  // ===== DROPDOWN TOGGLE =====
+  function toggleMenu() {
+    const menu = document.getElementById("menu");
+    if (menu) {
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+  }
 
+  document.addEventListener("click", function(event) {
+    const profileIcon = document.querySelector(".profile-icon");
+    const menu = document.getElementById("menu");
 
-loadProfile();
-function toggleMenu() {
-  const menu = document.getElementById("menu");
-  menu.style.display = menu.style.display === "block" ? "none" : "block";
-}
+    if (profileIcon && menu && !profileIcon.contains(event.target)) {
+      menu.style.display = "none";
+    }
+  });
 
-function goProfile() {
-  window.location.href = "profile.html";
-}
+  // ===== ROUTING FUNCTIONS =====
+  function goHome() { window.location.href = "dashboard.html"; }
+  function goWork() { window.location.href = "work.html"; }
+  function goGenerateQuiz() { window.location.href = "generatequiz.html"; }
+  function goGenerateNotes() { window.location.href = "generatenotes.html"; }
+  function goProfile() { window.location.href = "profile.html"; }
+  function goSettings() { window.location.href = "settings.html"; }
 
-function goSettings() {
-  window.location.href = "settings.html";
-}
+  function logout() {
+    const confirmLogout = confirm("Are you sure you want to logout?");
+    if (confirmLogout) {
+      window.location.href = "login1.html";
+    }
+  }
 
-function logout() {
-  window.location.href = "login1.html";
-}
-</script>
+  // ===== PROFILE DATA MANAGEMENT =====
+  function loadProfile() {
+    const savedProfile = JSON.parse(localStorage.getItem("profileSettings")) || {};
+
+    document.getElementById("fullName").value = savedProfile.fullName || "";
+    document.getElementById("email").value = savedProfile.email || localStorage.getItem("userEmail") || "";
+    document.getElementById("studentId").value = savedProfile.studentId || "";
+  }
+
+  function saveProfile() {
+    const profileData = {
+      fullName: document.getElementById("fullName").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      studentId: document.getElementById("studentId").value.trim()
+    };
+
+    localStorage.setItem("profileSettings", JSON.stringify(profileData));
+
+    if (profileData.email) {
+      localStorage.setItem("userEmail", profileData.email);
+    }
+
+    const message = document.getElementById("message");
+    message.style.color = "green";
+    message.innerText = "Profile updated successfully.";
+    
+    setTimeout(() => {
+      message.innerText = "";
+    }, 2500);
+  }
+
+  loadProfile();
+  </script>
 
 </body>
 </html>
