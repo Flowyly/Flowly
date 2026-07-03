@@ -46,19 +46,18 @@
 
     /* NAVBAR */
     .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 30px;
-      margin: 20px;
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-      transition: all 0.3s ease;
-    }
-
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 30px;
+  margin: 20px 28px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
     /* LEFT NAV */
     .nav-left {
       display: flex;
@@ -217,7 +216,144 @@
       font-size: 14px;
       font-weight: bold;
     }
+.profile-wrapper {
+  max-width: 980px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1.5fr 0.9fr;
+  gap: 22px;
+  align-items: start;
+}
+.profile-wrapper .container {
+  max-width: none;
+  margin: 0;
+}
 
+
+.profile-card {
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  border: 2px dashed #93c5fd;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  color: #1f2937;
+}
+
+.profile-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 22px;
+  text-align: left;
+}
+
+.profile-top .avatar {
+  margin-bottom: 0;
+}
+
+.profile-subtitle {
+  color: #64748b;
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.section h3 {
+  margin-bottom: 12px;
+  color: #2563eb;
+  font-size: 16px;
+}
+
+select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #f8fbff;
+  font-size: 14px;
+  color: #1f2937;
+}
+
+select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.stats-card {
+  background: white;
+  padding: 26px;
+  border-radius: 18px;
+  border: 2px dashed #93c5fd;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.stats-card h3 {
+  text-align: center;
+  margin-bottom: 18px;
+  color: #1f2937;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.stat-box {
+  background: #f8fbff;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  padding: 18px;
+  text-align: center;
+}
+
+.stat-box span {
+  display: block;
+  font-size: 28px;
+  font-weight: 800;
+  color: #2563eb;
+  margin-bottom: 5px;
+}
+
+.stat-box p {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.quick-actions {
+  margin-top: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.quick-actions button {
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .profile-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-top {
+    text-align: center;
+    flex-direction: column;
+  }
+}
     /* ========================================================== */
     /* GLOBAL DARK MODE RULES                                     */
     /* ========================================================== */
@@ -264,30 +400,106 @@
     </div>
   </div>
 
-  <div class="container">
-    <div class="avatar">👤</div>
-    <h2>Profile</h2>
+<div class="profile-wrapper">
 
-    <div class="section">
-      <label>Full Name</label>
-      <input type="text" id="fullName" placeholder="Enter your full name">
+  <div class="container profile-card">
+    <div class="profile-top">
+      <div class="avatar">👤</div>
+      <div>
+        <h2>Profile</h2>
+        <p class="profile-subtitle">Manage your student profile and study preferences.</p>
+      </div>
+    </div>
 
-      <label>Email</label>
-      <input type="email" id="email" placeholder="Enter your email">
+    <div class="profile-grid">
+      <div class="section">
+        <h3>Personal Information</h3>
 
-      <label>Student ID / User ID</label>
-      <input type="text" id="studentId" placeholder="Enter your student ID">
+        <label>Full Name</label>
+        <input type="text" id="fullName" placeholder="Enter your full name">
 
-      <button onclick="saveProfile()">Save Changes</button>
-      <p id="message"></p>
+        <label>Email</label>
+        <input type="email" id="email" placeholder="Enter your email">
+
+        <label>Student ID / User ID</label>
+        <input type="text" id="studentId" placeholder="Enter your student ID">
+
+       <label>Study Field</label>
+<input type="text" id="studyField" placeholder="Example: Cybersecurity">
+      </div>
+
+      <div class="section">
+        <h3>Study Preferences</h3>
+
+<label>University</label>
+<input type="text" id="university" placeholder="Example: MMU / UNITEN">
+
+<label>Daily Study Goal</label>
+<select id="studyGoal">
+  <option value="">Select daily goal</option>
+  <option>15 minutes per day</option>
+  <option>30 minutes per day</option>
+  <option>45 minutes per day</option>
+  <option>1 hour per day</option>
+  <option>1 hour 30 minutes per day</option>
+  <option>2 hours per day</option>
+  <option>3 hours per day</option>
+  <option>4 hours per day</option>
+</select>
+
+        
+
+        <label>Preferred Study Mode</label>
+        <select id="studyMode">
+          <option value="">Select study mode</option>
+          <option>Notes Only</option>
+          <option>Quiz Only</option>
+          <option>Notes + Quiz</option>
+          <option>Revision Checklist</option>
+        </select>
+
+        <label>Favourite Subject</label>
+        <input type="text" id="favouriteSubject" placeholder="Example: Network Security">
+      </div>
+    </div>
+
+    <button onclick="saveProfile()">Save Changes</button>
+    <p id="message"></p>
+  </div>
+
+  <div class="stats-card">
+    <h3>Study Summary</h3>
+
+    <div class="stats-grid">
+      <div class="stat-box">
+        <span id="notesCount">0</span>
+        <p>Subjects</p>
+      </div>
+
+      <div class="stat-box">
+        <span id="topicsCount">0</span>
+        <p>Topics</p>
+      </div>
+
+      <div class="stat-box">
+        <span id="quizScore">0%</span>
+        <p>Last Quiz Score</p>
+      </div>
+    </div>
+
+    <div class="quick-actions">
+      <button type="button" onclick="goGenerateNotes()">Go to Notes</button>
+      <button type="button" onclick="goGenerateQuiz()">Go to Quiz</button>
     </div>
   </div>
+
+</div>
 
   <script>
   // ===== APPLY SAVED THEME =====
   (function() {
       const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
-      const theme = appearance.theme || "Dark"; // Matches Settings default
+      const theme = appearance.theme || "Default Blue";
       const fontSize = appearance.fontSize || "Medium";
 
       if (theme === "Dark") {
@@ -339,35 +551,62 @@
 
   // ===== PROFILE DATA MANAGEMENT =====
   function loadProfile() {
-    const savedProfile = JSON.parse(localStorage.getItem("profileSettings")) || {};
+  const savedProfile = JSON.parse(localStorage.getItem("profileSettings")) || {};
 
-    document.getElementById("fullName").value = savedProfile.fullName || "";
-    document.getElementById("email").value = savedProfile.email || localStorage.getItem("userEmail") || "";
-    document.getElementById("studentId").value = savedProfile.studentId || "";
+  document.getElementById("fullName").value = savedProfile.fullName || "";
+  document.getElementById("email").value = savedProfile.email || localStorage.getItem("userEmail") || "";
+  document.getElementById("studentId").value = savedProfile.studentId || "";
+
+  document.getElementById("studyField").value = savedProfile.studyField || savedProfile.programme || "";
+document.getElementById("university").value = savedProfile.university || "";
+document.getElementById("studyGoal").value = savedProfile.studyGoal || "";
+document.getElementById("studyMode").value = savedProfile.studyMode || "";
+document.getElementById("favouriteSubject").value = savedProfile.favouriteSubject || "";
+  loadStudySummary();
+}
+ function saveProfile() {
+  const profileData = {
+    fullName: document.getElementById("fullName").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    studentId: document.getElementById("studentId").value.trim(),
+
+ studyField: document.getElementById("studyField").value.trim(),
+university: document.getElementById("university").value.trim(),
+studyGoal: document.getElementById("studyGoal").value,
+studyMode: document.getElementById("studyMode").value,
+favouriteSubject: document.getElementById("favouriteSubject").value.trim()
+  };
+
+  localStorage.setItem("profileSettings", JSON.stringify(profileData));
+
+  if (profileData.email) {
+    localStorage.setItem("userEmail", profileData.email);
   }
 
-  function saveProfile() {
-    const profileData = {
-      fullName: document.getElementById("fullName").value.trim(),
-      email: document.getElementById("email").value.trim(),
-      studentId: document.getElementById("studentId").value.trim()
-    };
+  const message = document.getElementById("message");
+  message.style.color = "green";
+  message.innerText = "Profile updated successfully.";
 
-    localStorage.setItem("profileSettings", JSON.stringify(profileData));
+  setTimeout(() => {
+    message.innerText = "";
+  }, 2500);
+}
+function loadStudySummary() {
+  const subjects = JSON.parse(localStorage.getItem("subjects")) || [];
 
-    if (profileData.email) {
-      localStorage.setItem("userEmail", profileData.email);
+  let topicTotal = 0;
+  subjects.forEach(subject => {
+    if (Array.isArray(subject.topics)) {
+      topicTotal += subject.topics.length;
     }
+  });
 
-    const message = document.getElementById("message");
-    message.style.color = "green";
-    message.innerText = "Profile updated successfully.";
-    
-    setTimeout(() => {
-      message.innerText = "";
-    }, 2500);
-  }
+  const quizScore = localStorage.getItem("quizScore") || "0";
 
+  document.getElementById("notesCount").innerText = subjects.length;
+  document.getElementById("topicsCount").innerText = topicTotal;
+  document.getElementById("quizScore").innerText = quizScore + "%";
+}
   loadProfile();
   </script>
 
