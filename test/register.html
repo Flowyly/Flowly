@@ -249,7 +249,7 @@
     let password = document.getElementById("password").value;
 
     try {
-      const res = await fetch("http://127.0.0.1:5000/register", {
+      const res = await fetch("https://flowly-1-pkxf.onrender.com/register", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({username, email, password})
@@ -259,10 +259,10 @@
 
       if (data.success) {
         localStorage.setItem("profileSettings", JSON.stringify({
-          fullName: username,
-          email: email,
-          studentId: ""
-        }));
+        username: username,
+        email: email,
+        studentId: ""
+ }));
         
         document.getElementById("message").style.color = "green";
         document.getElementById("message").innerText = "Registration successful!";

@@ -403,7 +403,7 @@
       const userEmail = localStorage.getItem("userEmail");
 
       const res = await fetch(
-    `http://127.0.0.1:5000/coursework?email=${encodeURIComponent(userEmail)}`
+  `https://flowly-1-pkxf.onrender.com/coursework?email=${encodeURIComponent(userEmail)}`
 );
       const data = await res.json();
 
@@ -433,7 +433,7 @@
     }
 
     try {
-      const res = await fetch("http://127.0.0.1:5000/add_coursework", {
+      const res = await fetch("https://flowly-1-pkxf.onrender.com/add_coursework", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -510,11 +510,11 @@
       const userEmail = localStorage.getItem("userEmail");
 
     await fetch(
-    `http://127.0.0.1:5000/delete_coursework/${id}?email=${encodeURIComponent(userEmail)}`,
-    {
-        method: "DELETE"
-    }
-    );
+  `https://flowly-1-pkxf.onrender.com/delete_coursework/${id}?email=${encodeURIComponent(userEmail)}`,
+  {
+    method: "DELETE"
+  }
+   );
 
       loadCoursework();
 

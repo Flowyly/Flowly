@@ -100,7 +100,7 @@ class Coursework(db.Model):
     title = db.Column(db.String(255))
     description = db.Column(db.Text)
     due_date = db.Column(db.Date)
-    status = db.Column(db.String(50), default="Pending")
+    status = db.Column(db.String(50), default="In Progress")
 
     created_by = db.Column(db.String(100))
 
@@ -506,7 +506,7 @@ We received a request to reset your password.
 
 Click the link below to reset it:
 
-http://127.0.0.1:5500/test/resetpassword.html?email={email}
+http://127.0.0.1:5500/resetpassword.html?email={email}
 
 If you did not request this,
 please ignore this email.
@@ -604,7 +604,7 @@ def add_coursework():
                 "message": "Invalid input"
             }), 400
 
-        due_date_obj = datetime.strptime(data["due_date"], "%Y-%m-%d").date()
+        due_date_obj = datetime.strptime(data.get("due_date", ""), "%Y-%m-%d").date()
 
         email = data.get("email")
 
@@ -738,7 +738,7 @@ def upcoming():
 # ==============================
 @app.route("/alerts", methods=["GET"])
 def alerts():
-    tasks = Coursework.query.all()
+    tasks = Coursework.query.filter(Coursework.due_date != None).all()
     today = datetime.now().date()
 
     result = []
@@ -762,7 +762,7 @@ def alerts():
 # ==============================
 @app.route("/overdue", methods=["GET"])
 def overdue():
-    tasks = Coursework.query.all()
+    tasks = Coursework.query.filter(Coursework.due_date != None).all()
     today = datetime.now().date()
 
     result = []
@@ -779,65 +779,6 @@ def overdue():
             })
 
     return jsonify(result), 200
-
-
-# ==============================
-# ADD MEMBER
-# ==============================
-@app.route("/add_member", methods=["POST"])
-def add_member():
-    try:
-        data = request.get_json()
-
-        if not data or "name" not in data:
-            return jsonify({
-                "success": False,
-                "message": "Invalid input"
-            }), 400
-
-        member = Member(
-            name=data["name"],
-            email=data.get("email", ""),
-            role=data.get("role", ""),
-            coursework_id=data.get("coursework_id")
-        )
-
-        db.session.add(member)
-        db.session.commit()
-
-        return jsonify({
-            "success": True,
-            "message": "Member added successfully"
-        }), 200
-
-    except Exception as e:
-        print("ADD MEMBER ERROR:", e)
-        traceback.print_exc()
-
-        return jsonify({
-            "success": False,
-            "message": str(e)
-        }), 500
-
-
-# ==============================
-# GET ALL MEMBERS
-# ==============================
-@app.route("/all_members", methods=["GET"])
-def all_members():
-    members = Member.query.all()
-
-    return jsonify([
-        {
-            "id": m.id,
-            "name": m.name,
-            "email": m.email,
-            "role": m.role,
-            "coursework_id": m.coursework_id
-        }
-        for m in members
-    ]), 200
-
 
 # ==============================
 # AI NOTE SUMMARIZER
@@ -1316,4 +1257,4 @@ def delete_note():
 # RUN SERVER
 # ==============================
 if __name__ == "__main__":
-    app.run(debug=True, use_reloader=False)
+    app.run(host="0.0.0.0", port=5000, debug=False)

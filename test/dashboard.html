@@ -407,6 +407,8 @@
 
   <script>
   // ===== APPLY SAVED THEME =====
+  const BASE = "https://flowly-1-pkxf.onrender.com";
+  
   (function() {
       const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
       const theme = appearance.theme || "Default Blue";
@@ -472,8 +474,8 @@
     try {
 
         const res = await fetch(
-            `http://127.0.0.1:5000/upcoming?email=${encodeURIComponent(userEmail)}`
-        );
+    `${BASE}/upcoming?email=${encodeURIComponent(userEmail)}`
+  );
 
         const data = await res.json();
 
@@ -611,7 +613,7 @@ async function loadCourseworkForCalendar() {
   try {
     const userEmail = localStorage.getItem("userEmail");
     const res = await fetch(
-      `http://127.0.0.1:5000/coursework?email=${encodeURIComponent(userEmail)}`
+    `${BASE}/coursework?email=${encodeURIComponent(userEmail)}`
     );
     const data = await res.json();
 
@@ -645,8 +647,8 @@ async function loadTodayQuizzes() {
     try {
 
         const res = await fetch(
-            `http://127.0.0.1:5000/quizzes?email=${encodeURIComponent(userEmail)}`
-        );
+    `${BASE}/quizzes?email=${encodeURIComponent(userEmail)}`
+     );
 
         const quizzes = await res.json();
 

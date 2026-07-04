@@ -571,7 +571,7 @@ formData.append("difficulty", document.getElementById("difficulty").value);
 formData.append("questionCount", document.getElementById("questionCount").value);
 formData.append("email", localStorage.getItem("userEmail") || "");
 
-      const res = await fetch("http://127.0.0.1:5000/generate_quiz", {
+      const res = await fetch("https://flowly-1-pkxf.onrender.com/generate_quiz", {
         method: "POST",
         body: formData
       });
@@ -718,12 +718,12 @@ formData.append("email", localStorage.getItem("userEmail") || "");
         // Use sendBeacon so the request survives even if the user
         // navigates away / logs out right after finishing the quiz
         const sent = navigator.sendBeacon(
-        "http://127.0.0.1:5000/submit_quiz",
+        "https://flowly-1-pkxf.onrender.com/submit_quiz",
         new Blob([payload], { type: "text/plain" })
       );
 
         if (!sent) {
-          fetch("http://127.0.0.1:5000/submit_quiz", {
+          fetch("https://flowly-1-pkxf.onrender.com/submit_quiz", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: payload,

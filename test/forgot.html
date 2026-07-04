@@ -233,6 +233,8 @@
   </div>
 
   <script>
+    const BASE = "https://flowly-1-pkxf.onrender.com";
+
   // ===== APPLY SAVED THEME =====
   (function () {
       const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
@@ -264,7 +266,7 @@
     message.innerText = "Sending reset link...";
 
     try {
-      const res = await fetch("http://127.0.0.1:5000/forgot_password", {
+      const res = await fetch(`${BASE}/forgot_password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email })
