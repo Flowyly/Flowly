@@ -1,13 +1,10 @@
 from backend import app, db, User
-from werkzeug.security import generate_password_hash
 
 with app.app_context():
-    # Change these to your actual admin details
     admin_email = "admin@flowly.com"
     admin_username = "Admin"
     admin_password = "admin123"
 
-    # Check if already exists
     existing = User.query.filter_by(email=admin_email).first()
 
     if existing:
@@ -16,8 +13,8 @@ with app.app_context():
         admin = User(
             username=admin_username,
             email=admin_email,
-            password=generate_password_hash(admin_password),  # 👈 now hashed
-            is_admin=1  # 👈 This is what makes them admin
+            password=admin_password,  # plaintext, matches login's comparison
+            is_admin=1
         )
         db.session.add(admin)
         db.session.commit()

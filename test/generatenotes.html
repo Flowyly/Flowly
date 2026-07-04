@@ -1085,6 +1085,16 @@ document.addEventListener("click", function(event) {
     }
 
     function loadSubjects() {
+    const currentEmail = localStorage.getItem("userEmail");
+    const cachedOwner = localStorage.getItem("subjectsOwner");
+
+    // If cached data belongs to a different user (or no owner tag exists), wipe it
+    if (cachedOwner !== currentEmail) {
+        localStorage.removeItem("subjects");
+        localStorage.removeItem("selectedSubjectId");
+        localStorage.removeItem("selectedTopicId");
+        localStorage.setItem("subjectsOwner", currentEmail);
+    }
         const saved = JSON.parse(localStorage.getItem("subjects")) || [];
 
         return saved.map(subject => {
@@ -1129,10 +1139,11 @@ document.addEventListener("click", function(event) {
     }
 
     function saveSubjects() {
-        localStorage.setItem("subjects", JSON.stringify(subjects));
-        localStorage.setItem("selectedSubjectId", selectedSubjectId || "");
-        localStorage.setItem("selectedTopicId", selectedTopicId || "");
-    }
+    localStorage.setItem("subjects", JSON.stringify(subjects));
+    localStorage.setItem("selectedSubjectId", selectedSubjectId || "");
+    localStorage.setItem("selectedTopicId", selectedTopicId || "");
+    localStorage.setItem("subjectsOwner", localStorage.getItem("userEmail") || "");
+}
 
     async function loadNotesFromBackend() {
     try {
