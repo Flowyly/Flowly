@@ -162,6 +162,35 @@
       margin-bottom: 20px;
     }
 
+    /* FORM CONTAINERS FOR LAYOUT ADJUSTMENT */
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0px;
+      margin-bottom: 15px;
+    }
+
+    .form-row {
+      display: flex;
+      width: 100%;
+    }
+
+    #subject {
+      flex: 2;
+    }
+
+    #members {
+      width: calc(100% - 10px);
+    }
+
+    #dueDate {
+      flex: 1;
+    }
+
+    #status {
+      flex: 1;
+    }
+
     input, select {
       padding: 10px;
       margin: 5px;
@@ -179,16 +208,19 @@
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
+      margin: 5px;
     }
 
     button:hover {
       background: #2563eb;
     }
 
+    /* FIXED TABLE LAYOUT */
     table {
       width: 100%;
       margin-top: 20px;
       border-collapse: collapse;
+      table-layout: fixed; /* Forces columns to stay structured */
     }
 
     th, td {
@@ -196,7 +228,16 @@
       border-bottom: 1px solid #e2e8f0;
       text-align: left;
       color: #1f2937;
+      word-wrap: break-word; /* Forces long unbroken words to wrap */
+      overflow-wrap: break-word; /* Ensures descriptions stay inside the box */
     }
+
+    /* Giving layout priority proportions so columns stay uniform */
+    th:nth-child(1), td:nth-child(1) { width: 20%; } /* Subject */
+    th:nth-child(2), td:nth-child(2) { width: 35%; } /* Group Members/Description */
+    th:nth-child(3), td:nth-child(3) { width: 15%; } /* Due Date */
+    th:nth-child(4), td:nth-child(4) { width: 15%; } /* Status */
+    th:nth-child(5), td:nth-child(5) { width: 15%; } /* Action */
 
     .delete-btn {
       padding: 6px 12px;
@@ -265,23 +306,27 @@
   <div class="container">
     <h2>Coursework Dashboard</h2>
 
-    <input type="text" id="subject" placeholder="Subject Name">
-    <input type="text" id="members" placeholder="Group Members (comma separated)">
-    <input type="date" id="dueDate">
-
-    <select id="status">
-      <option value="In Progress">In Progress</option>
-      <option value="In Review">In Review</option>
-      <option value="Completed">Completed</option>
-    </select>
-
-    <button onclick="addCoursework()">Add</button>
+    <div class="form-container">
+      <div class="form-row">
+        <input type="text" id="subject" placeholder="Subject Name">
+        <input type="date" id="dueDate">
+        <select id="status">
+          <option value="In Progress">In Progress</option>
+          <option value="In Review">In Review</option>
+          <option value="Completed">Completed</option>
+        </select>
+        <button onclick="addCoursework()">Add</button>
+      </div>
+      <div class="form-row">
+        <input type="text" id="members" placeholder="Description">
+      </div>
+    </div>
 
     <table>
       <thead>
         <tr>
           <th>Subject</th>
-          <th>Group Members</th>
+          <th>Description</th>
           <th>Due Date</th>
           <th>Status</th>
           <th>Action</th>
@@ -340,16 +385,26 @@
   function goProfile() { window.location.href = "profile.html"; }
   function goSettings() { window.location.href = "settings.html"; }
   
-  function logout() { 
-    if(confirm("Are you sure you want to logout?")) {
-      window.location.href = "login1.html"; 
-    }
-  }
+  function logout() {
+
+    if (!confirm("Are you sure you want to logout?"))
+        return;
+
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("username");
+    localStorage.removeItem("is_admin");
+
+    window.location.href = "login1.html";
+}
 
   /* ================= LOAD ================= */
   async function loadCoursework() {
     try {
-      const res = await fetch("http://127.0.0.1:5000/coursework");
+      const userEmail = localStorage.getItem("userEmail");
+
+      const res = await fetch(
+    `http://127.0.0.1:5000/coursework?email=${encodeURIComponent(userEmail)}`
+);
       const data = await res.json();
 
       coursework = data;
@@ -384,11 +439,12 @@
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          title: subject,
-          description: members,
-          due_date: dueDate,
-          status: status
-        })
+    title: subject,
+    description: members,
+    due_date: dueDate,
+    status: status,
+    email: localStorage.getItem("userEmail")
+})
       });
 
       const data = await res.json();
@@ -451,9 +507,14 @@
     if (!confirm("Delete this coursework?")) return;
 
     try {
-      await fetch(`http://127.0.0.1:5000/delete_coursework/${id}`, {
+      const userEmail = localStorage.getItem("userEmail");
+
+    await fetch(
+    `http://127.0.0.1:5000/delete_coursework/${id}?email=${encodeURIComponent(userEmail)}`,
+    {
         method: "DELETE"
-      });
+    }
+    );
 
       loadCoursework();
 

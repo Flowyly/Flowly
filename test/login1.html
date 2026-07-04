@@ -254,7 +254,7 @@ async function loginUser(event) {
     const data = await res.json();
 
     if (data.success) {
-      localStorage.setItem("userEmail", email);
+      localStorage.setItem("userEmail", data.email);
       localStorage.setItem("is_admin", data.is_admin);
       localStorage.setItem("username", data.username);
 

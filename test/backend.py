@@ -1,6 +1,8 @@
 # ==============================
 # IMPORT LIBRARIES
 # ==============================
+import email
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -94,26 +96,13 @@ class Quiz(db.Model):
 
 
 class Coursework(db.Model):
-    __tablename__ = "coursework"
-
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(150), nullable=False)
-    description = db.Column(db.String(300))
-    due_date = db.Column(db.Date, nullable=False)
-    status = db.Column(db.String(20), default="In Progress")
+    title = db.Column(db.String(255))
+    description = db.Column(db.Text)
+    due_date = db.Column(db.Date)
+    status = db.Column(db.String(50), default="Pending")
 
-    members = db.relationship("Member", backref="coursework", lazy=True)
-
-
-class Member(db.Model):
-    __tablename__ = "member"
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100))
-    role = db.Column(db.String(50))
-    coursework_id = db.Column(db.Integer, db.ForeignKey("coursework.id"))
-
+    created_by = db.Column(db.String(100))
 
 # ==============================
 # CREATE DATABASE TABLES
@@ -305,7 +294,73 @@ def login():
             "success": False,
             "message": str(e)
         }), 500
+    
+# ==============================
+# ADMIN - GET ALL NOTES
+# ==============================
+@app.route("/admin/notes", methods=["GET"])
+def admin_get_notes():
+    notes = Notes.query.order_by(Notes.created_at.desc()).all()
 
+    return jsonify([
+        {
+            "id": n.id,
+            "subject": n.subject,
+            "topic": n.topic,
+            "content": n.content,
+            "created_by": n.created_by or "Unknown",
+            "created_at": n.created_at.isoformat() if n.created_at else None
+        }
+        for n in notes
+    ]), 200
+
+
+# ==============================
+# ADMIN - GET ALL QUIZZES
+# ==============================
+@app.route("/admin/quizzes", methods=["GET"])
+def admin_get_quizzes():
+    quizzes = Quiz.query.order_by(Quiz.created_at.desc()).all()
+
+    return jsonify([
+        {
+            "id": q.id,
+            "title": q.title,
+            "content": q.content,
+            "created_by": q.created_by or "Unknown",
+            "marks": q.marks,
+            "attempted": q.attempted,
+            "created_at": q.created_at.isoformat() if q.created_at else None,
+            "submitted_at": q.submitted_at.isoformat() if q.submitted_at else None
+        }
+        for q in quizzes
+    ]), 200
+
+# ==============================
+# ADD ADMIN
+# ==============================
+@app.route("/admin/promote_user/<int:user_id>", methods=["POST"])
+def promote_user(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"success": False, "message": "User not found"}), 404
+
+    user.is_admin = 1
+    db.session.commit()
+    return jsonify({"success": True, "message": f"{user.email} is now an admin"})
+
+# ==============================
+# DEMOTE ADMIN
+# ==============================
+@app.route("/admin/demote_user/<int:user_id>", methods=["POST"])
+def demote_user(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"success": False, "message": "User not found"}), 404
+
+    user.is_admin = 0
+    db.session.commit()
+    return jsonify({"success": True, "message": f"{user.email} is no longer an admin"})
 
 # ==============================
 # UPDATE PROFILE
@@ -551,11 +606,14 @@ def add_coursework():
 
         due_date_obj = datetime.strptime(data["due_date"], "%Y-%m-%d").date()
 
+        email = data.get("email")
+
         task = Coursework(
             title=data["title"],
             description=data.get("description", ""),
             due_date=due_date_obj,
-            status=data.get("status", "In Progress")
+            status=data.get("status", "In Progress"),
+            created_by=email
         )
 
         db.session.add(task)
@@ -581,7 +639,17 @@ def add_coursework():
 # ==============================
 @app.route("/coursework", methods=["GET"])
 def get_coursework():
-    tasks = Coursework.query.all()
+
+    email = request.args.get("email")
+
+    if not email:
+        return jsonify({"success": False, "message": "Email is required"}), 400
+
+    tasks = Coursework.query.filter_by(
+        created_by=email
+    ).order_by(
+        Coursework.due_date.asc()
+    ).all()
 
     return jsonify([
         {
@@ -600,12 +668,24 @@ def get_coursework():
 # ==============================
 @app.route("/delete_coursework/<int:id>", methods=["DELETE"])
 def delete_coursework(id):
-    task = Coursework.query.get(id)
+
+    email = request.args.get("email")
+
+    if not email:
+        return jsonify({
+            "success": False,
+            "message": "Email is required"
+        }), 400
+
+    task = Coursework.query.filter_by(
+        id=id,
+        created_by=email
+    ).first()
 
     if not task:
         return jsonify({
             "success": False,
-            "message": "Not found"
+            "message": "Coursework not found or you don't have permission to delete it."
         }), 404
 
     db.session.delete(task)
@@ -616,18 +696,27 @@ def delete_coursework(id):
         "message": "Deleted successfully"
     }), 200
 
-
 # ==============================
 # GET UPCOMING COURSEWORK
 # ==============================
 @app.route("/upcoming", methods=["GET"])
 def upcoming():
-    tasks = Coursework.query.all()
+
+    email = request.args.get("email")
+
+    if not email:
+        return jsonify({"success": False, "message": "Email is required"}), 400
+
     today = datetime.now().date()
+
+    tasks = Coursework.query.filter_by(
+        created_by=email
+    ).all()
 
     result = []
 
     for t in tasks:
+
         days_left = (t.due_date - today).days
 
         if days_left >= 0:
@@ -643,7 +732,6 @@ def upcoming():
     result.sort(key=lambda x: x["days_left"])
 
     return jsonify(result), 200
-
 
 # ==============================
 # URGENT ALERTS
@@ -809,14 +897,18 @@ def summarize_notes():
 # ==============================
 @app.route("/generate_notes_from_file", methods=["POST"])
 def generate_notes_from_file():
+
+    print("FILES:", request.files)
+    print("FORM:", request.form)
+    
     try:
-        if "file" not in request.files:
+        if "pdf" not in request.files:
             return jsonify({
                 "success": False,
                 "message": "No PDF uploaded"
             }), 400
 
-        pdf = request.files["file"]
+        pdf = request.files["pdf"]
         subject = request.form.get("subject", "")
         topic = request.form.get("topic", "")
         email = request.form.get("email", "")  # who is generating this note
@@ -902,7 +994,14 @@ Material:
 # ==============================
 @app.route("/notes", methods=["GET"])
 def get_notes():
-    notes = Notes.query.order_by(Notes.created_at.desc()).all()
+
+    email = request.args.get("email")
+
+    notes = Notes.query.filter_by(
+        created_by=email
+    ).order_by(
+        Notes.created_at.desc()
+    ).all()
 
     return jsonify([
         {
@@ -926,6 +1025,7 @@ def save_note():
         subject = data.get("subject", "").strip()
         topic = data.get("topic", "").strip()
         content = data.get("content", "").strip()
+        email = data.get("email", "").strip()
 
         if not subject or not topic or not content:
             return jsonify({
@@ -936,7 +1036,8 @@ def save_note():
         new_note = Notes(
             subject=subject,
             topic=topic,
-            content=content
+            content=content,
+            created_by=email
         )
 
         db.session.add(new_note)
@@ -1130,7 +1231,16 @@ Notes:
 # ==============================
 @app.route("/quizzes", methods=["GET"])
 def get_quizzes():
-    quizzes = Quiz.query.order_by(Quiz.created_at.desc()).all()
+    email = request.args.get("email")
+
+    if not email:
+      return jsonify([]), 200
+
+    quizzes = Quiz.query.filter_by(
+        created_by=email
+    ).order_by(
+        Quiz.created_at.desc()
+    ).all()
 
     return jsonify([
         {
@@ -1152,7 +1262,10 @@ def get_quizzes():
 @app.route("/submit_quiz", methods=["POST"])
 def submit_quiz():
     try:
-        data = request.get_json()
+        data = request.get_json(force=True, silent=True)
+
+        if not data:
+            return jsonify({"success": False, "message": "No data received"}), 400
 
         quiz_id = data.get("quiz_id")
         score = data.get("score")
@@ -1178,6 +1291,27 @@ def submit_quiz():
         print("SUBMIT QUIZ ERROR:", e)
         return jsonify({"success": False, "message": str(e)}), 500
     
+# ==============================
+# DELETE NOTE
+# ==============================
+@app.route("/delete_note", methods=["DELETE"])
+def delete_note():
+    note_id = request.args.get("id")
+    email = request.args.get("email")
+
+    if not note_id or not email:
+        return jsonify({"success": False, "message": "Missing id or email"}), 400
+
+    note = Notes.query.filter_by(id=note_id, created_by=email).first()
+
+    if not note:
+        return jsonify({"success": False, "message": "Note not found or you don't have permission"}), 404
+
+    db.session.delete(note)
+    db.session.commit()
+
+    return jsonify({"success": True, "message": "Note deleted"}), 200
+
 # ==============================
 # RUN SERVER
 # ==============================

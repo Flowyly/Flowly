@@ -259,79 +259,90 @@
     body.dark-mode .profile-menu div {
       color: #1f2937;
     }
+    
     .quiz-result {
-  padding: 14px;
-  margin-top: 12px;
-  border-radius: 10px;
-  background: #f8fafc;
-  border-left: 4px solid #3b82f6;
-}
-.quiz-result .quiz-result-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 600;
-  color: #1e293b;
-}
-.quiz-result .quiz-result-score {
-  font-size: 20px;
-  color: #2563eb;
-}
-.quiz-result .quiz-result-time {
-  font-size: 12px;
-  color: #64748b;
-  margin-top: 4px;
-}
-.quiz-result .quiz-result-quote {
-  font-size: 13px;
-  color: #475569;
-  margin-top: 6px;
-}
-.quiz-result.high { border-left-color: #10b981; }
-.quiz-result.mid  { border-left-color: #f59e0b; }
-.quiz-result.low  { border-left-color: #ef4444; }
+      padding: 14px;
+      margin-top: 12px;
+      border-radius: 10px;
+      background: #f8fafc;
+      border-left: 4px solid #3b82f6;
+    }
+    .quiz-result .quiz-result-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: #1e293b;
+    }
+    .quiz-result .quiz-result-score {
+      font-size: 20px;
+      color: #2563eb;
+    }
+    .quiz-result .quiz-result-time {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+    .quiz-result .quiz-result-quote {
+      font-size: 13px;
+      color: #475569;
+      margin-top: 6px;
+    }
+    .quiz-result.high { border-left-color: #10b981; }
+    .quiz-result.mid  { border-left-color: #f59e0b; }
+    .quiz-result.low  { border-left-color: #ef4444; }
 
-.calendar div.has-event {
-  background: #dbeafe;
-  border: 1px solid #93c5fd;
-  color: #1e40af;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.15s ease;
-}
+    .calendar div.has-event {
+      background: #dbeafe;
+      border: 1px solid #93c5fd;
+      color: #1e40af;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
 
-.calendar div.has-event:hover {
-  background: #bfdbfe;
-}
+    .calendar div.has-event:hover {
+      background: #bfdbfe;
+    }
 
-.calendar div.has-event.selected {
-  background: #3b82f6;
-  color: white;
-  border-color: #2563eb;
-}
+    .calendar div.has-event.selected {
+      background: #3b82f6;
+      color: white;
+      border-color: #2563eb;
+    }
 
-.calendar-detail {
-  margin-top: 14px;
-  padding: 14px 16px;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  border-radius: 10px;
-  font-size: 14px;
-  color: #1e293b;
-  line-height: 1.6;
-}
+    .calendar-detail {
+      margin-top: 14px;
+      padding: 14px 16px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      font-size: 14px;
+      color: #1e293b;
+      line-height: 1.6;
+      /* FIXED: Break text cleanly and prevent container expansion */
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
 
-.calendar-detail .detail-title {
-  font-weight: 700;
-  color: #1e40af;
-  margin-bottom: 4px;
-}
+    .calendar-detail .detail-title {
+      font-weight: 700;
+      color: #1e40af;
+      margin-bottom: 4px;
+    }
 
-.calendar-detail .detail-item + .detail-item {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #bfdbfe;
-}
+    .calendar-detail .detail-item {
+      /* FIXED: Break text clean on items internally */
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .calendar-detail .detail-item + .detail-item {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #bfdbfe;
+    }
   </style>
 </head>
 
@@ -359,10 +370,10 @@
     <div class="grid">
 
       <div class="card">
-  <h3>Today's Quiz Results</h3>
-  <div id="quizResultsList">
-    <p style="color:#475569;">No quizzes answered today yet.</p>
-     </div>
+        <h3>Today's Quiz Results</h3>
+        <div id="quizResultsList">
+          <p style="color:#475569;">No quizzes answered today yet.</p>
+        </div>
       </div>
 
       <div class="card calendar-card">
@@ -441,49 +452,70 @@
   function goProfile() { window.location.href = "profile.html"; }
   function goSettings() { window.location.href = "settings.html"; }
   
-  function logout() { 
-    if(confirm("Are you sure you want to logout?")) {
-      window.location.href = "login1.html"; 
-    }
-  }
+  function logout() {
+
+    if (!confirm("Are you sure you want to logout?"))
+        return;
+
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("username");
+    localStorage.removeItem("is_admin");
+
+    window.location.href = "login1.html";
+}
 
   /* ================= REMINDERS LOGIC ================= */
   async function loadUpcoming() {
+
+    const userEmail = localStorage.getItem("userEmail");
+
     try {
-      const res = await fetch("http://127.0.0.1:5000/upcoming");
-      const data = await res.json();
 
-      const box = document.getElementById("reminderList");
-      box.innerHTML = "";
+        const res = await fetch(
+            `http://127.0.0.1:5000/upcoming?email=${encodeURIComponent(userEmail)}`
+        );
 
-      if (!data.length) {
-        box.innerHTML = "<div class='item done' style='border-left:none;'>No upcoming tasks 📅</div>";
-        return;
-      }
+        const data = await res.json();
 
-      data.slice(0, 3).forEach(task => {
-        const div = document.createElement("div");
+        const box = document.getElementById("reminderList");
+        box.innerHTML = "";
 
-        if (task.days_left <= 1) {
-          div.className = "item urgent";
-        }
-        else if (task.days_left <= 3) {
-          div.className = "item warning";
-        }
-        else {
-          div.className = "item done";
+        if (!data.length) {
+            box.innerHTML =
+                "<div class='item done' style='border-left:none;'>No upcoming tasks 📅</div>";
+            return;
         }
 
-        div.textContent = `${task.title} - ${task.days_left} days left`;
-        box.appendChild(div);
-      });
+        data.slice(0, 3).forEach(task => {
 
-    } catch (err) {
-      console.log("Error loading upcoming:", err);
-      document.getElementById("reminderList").innerHTML =
-        "<div class='item urgent' style='border-left:none;'>Failed to load tasks</div>";
+            const div = document.createElement("div");
+
+            if (task.days_left <= 1) {
+                div.className = "item urgent";
+            }
+            else if (task.days_left <= 3) {
+                div.className = "item warning";
+            }
+            else {
+                div.className = "item done";
+            }
+
+            div.textContent =
+                `${task.title} - ${task.days_left} days left`;
+
+            box.appendChild(div);
+
+        });
+
     }
-  }
+    catch (err) {
+
+        console.log("Error loading upcoming:", err);
+
+        document.getElementById("reminderList").innerHTML =
+            "<div class='item urgent' style='border-left:none;'>Failed to load tasks</div>";
+    }
+}
 
   /* ================= CALENDAR ENGINE ================= */
 let currentDate = new Date();
@@ -577,7 +609,10 @@ function prevMonth() {
 /* ================= LOAD COURSEWORK FOR CALENDAR ================= */
 async function loadCourseworkForCalendar() {
   try {
-    const res = await fetch("http://127.0.0.1:5000/coursework");
+    const userEmail = localStorage.getItem("userEmail");
+    const res = await fetch(
+      `http://127.0.0.1:5000/coursework?email=${encodeURIComponent(userEmail)}`
+    );
     const data = await res.json();
 
     courseworkByDate = {};
@@ -602,59 +637,107 @@ async function loadCourseworkForCalendar() {
 }
 
 async function loadTodayQuizzes() {
-  const list = document.getElementById("quizResultsList");
-  const userEmail = (localStorage.getItem("userEmail") || "").toLowerCase();
 
-  try {
-    const res = await fetch("http://127.0.0.1:5000/quizzes");
-    const quizzes = await res.json();
+    const list = document.getElementById("quizResultsList");
 
-    const today = new Date().toDateString();
+    const userEmail = localStorage.getItem("userEmail");
 
-    const todaysResults = quizzes.filter(q => {
-      if (!q.attempted || !q.submitted_at) return false;
-      if ((q.created_by || "").toLowerCase() !== userEmail) return false;
-      return new Date(q.submitted_at).toDateString() === today;
-    });
+    try {
 
-    todaysResults.sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at));
+        const res = await fetch(
+            `http://127.0.0.1:5000/quizzes?email=${encodeURIComponent(userEmail)}`
+        );
 
-    if (!todaysResults.length) {
-      list.innerHTML = `<p style="color:#475569;">No quizzes answered today yet.</p>`;
-      return;
-    }
+        const quizzes = await res.json();
 
-    list.innerHTML = todaysResults.map(q => {
-      const [scoreStr, totalStr] = (q.marks || "0/0").split("/");
-      const score = Number(scoreStr) || 0;
-      const total = Number(totalStr) || 0;
-      const pct = total > 0 ? Math.round((score / total) * 100) : 0;
-
-      let tier = "low";
-      if (pct >= 75) tier = "high";
-      else if (pct >= 40) tier = "mid";
-
-      const time = new Date(q.submitted_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-
-      return `
-        <div class="quiz-result ${tier}">
-          <div class="quiz-result-top">
-            <span>${q.title || "Quiz"}</span>
-            <span class="quiz-result-score">${pct}%</span>
-          </div>
-          <div class="quiz-result-time">${score}/${total} correct • ${time}</div>
-          <div class="quiz-result-quote">${getMotivation(pct)}</div>
-        </div>
-      `;
-    }).join("");
-
-  } catch (err) {
-    console.log("Error loading today's quizzes:", err);
-    list.innerHTML = `<p style="color:#b91c1c;">Failed to load quiz results.</p>`;
-  }
+if (!Array.isArray(quizzes)) {
+    console.log("Invalid quiz response:", quizzes);
+    list.innerHTML =
+        "<p style='color:#b91c1c;'>Failed to load quiz results.</p>";
+    return;
 }
 
-  // Boot processes
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const todaysResults = quizzes.filter(q => {
+
+       if (!q.submitted_at) return false;
+
+        const quizDate = new Date(q.submitted_at);
+       quizDate.setHours(0, 0, 0, 0);
+
+    return quizDate.getTime() === today.getTime();
+      });
+
+        todaysResults.sort((a, b) =>
+            new Date(b.submitted_at) - new Date(a.submitted_at)
+        );
+
+        if (!todaysResults.length) {
+
+            list.innerHTML =
+                "<p style='color:#475569;'>No quizzes answered today yet.</p>";
+
+            return;
+        }
+
+        list.innerHTML = todaysResults.map(q => {
+
+            const marks = q.marks || "0/0";
+            const [scoreStr, totalStr] = marks.split("/");
+
+            const score = Number(scoreStr) || 0;
+            const total = Number(totalStr) || 0;
+
+            const pct =
+                total > 0
+                    ? Math.round((score / total) * 100)
+                    : 0;
+
+            let tier = "low";
+
+            if (pct >= 75)
+                tier = "high";
+            else if (pct >= 40)
+                tier = "mid";
+
+            const time = new Date(q.submitted_at)
+                .toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                });
+
+            return `
+                <div class="quiz-result ${tier}">
+                    <div class="quiz-result-top">
+                        <span>${q.title || "Quiz"}</span>
+                        <span class="quiz-result-score">${pct}%</span>
+                    </div>
+
+                    <div class="quiz-result-time">
+                        ${score}/${total} correct • ${time}
+                    </div>
+
+                    <div class="quiz-result-quote">
+                        ${getMotivation(pct)}
+                    </div>
+                </div>
+            `;
+
+        }).join("");
+
+    }
+    catch (err) {
+
+        console.log(err);
+
+        list.innerHTML =
+            "<p style='color:#b91c1c;'>Failed to load quiz results.</p>";
+    }
+}
+
+// Boot processes
 loadUpcoming();
 renderCalendar();
 loadCourseworkForCalendar();

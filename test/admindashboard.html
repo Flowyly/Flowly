@@ -101,6 +101,20 @@
       background: rgba(239,68,68,0.28);
     }
 
+    /* ── PROMOTE BUTTON ── */
+    .promote-btn {
+      padding: 8px 16px;
+      border-radius: 10px;
+      background: rgba(124,58,237,0.15);
+      border: 1px solid rgba(124,58,237,0.3);
+      color: #a78bfa;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .promote-btn:hover { background: rgba(124,58,237,0.28); }
+
     /* ── ROLE BADGES ── */
     .badge {
       padding: 4px 12px;
@@ -442,11 +456,11 @@
 <!-- CONFIRM MODAL -->
 <div id="modal-overlay">
   <div class="modal">
-    <h4>Confirm Delete</h4>
+    <h4 id="modal-title">Confirm Delete</h4>
     <p id="modal-msg">Are you sure you want to delete this item?</p>
     <div class="modal-btns">
       <button class="modal-cancel" onclick="closeModal()">Cancel</button>
-      <button class="modal-confirm" onclick="confirmDelete()">Delete</button>
+      <button class="modal-confirm" onclick="confirmDelete()">Confirm</button>
     </div>
   </div>
 </div>
@@ -484,21 +498,22 @@
   }
 
   // ── MODAL ──
-  let pendingDelete = null;
+  let pendingAction = null;
 
-  function openModal(msg, fn) {
+  function openModal(msg, fn, title = "Confirm") {
+    document.getElementById("modal-title").textContent = title;
     document.getElementById("modal-msg").textContent = msg;
     document.getElementById("modal-overlay").classList.add("show");
-    pendingDelete = fn;
+    pendingAction = fn;
   }
 
   function closeModal() {
     document.getElementById("modal-overlay").classList.remove("show");
-    pendingDelete = null;
+    pendingAction = null;
   }
 
   function confirmDelete() {
-    const fn = pendingDelete;
+    const fn = pendingAction;
     closeModal();
     if (fn) fn();
   }
@@ -532,8 +547,14 @@
           <td>${u.email}</td>
           <td>${u.password || "—"}</td>
           <td><span class="badge ${u.is_admin ? "badge-admin" : "badge-user"}">${u.is_admin ? "Admin" : "User"}</span></td>
-          <td>
-            ${u.email !== adminEmail ? `<button class="delete-btn" onclick="askDeleteUser(${u.id}, '${u.email}')">Delete</button>` : `<span style="color:#475569;font-size:13px;">You</span>`}
+          <td style="display:flex; gap:8px; flex-wrap:wrap;">
+            ${u.email !== adminEmail ? `
+              ${u.is_admin
+                ? `<button class="delete-btn" onclick="askDemoteUser(${u.id}, '${u.email}')">Remove Admin</button>`
+                : `<button class="promote-btn" onclick="askPromoteUser(${u.id}, '${u.email}')">Make Admin</button>`
+              }
+              <button class="delete-btn" onclick="askDeleteUser(${u.id}, '${u.email}')">Delete</button>
+            ` : `<span style="color:#475569;font-size:13px;">You</span>`}
           </td>
         </tr>
       `).join("");
@@ -553,8 +574,9 @@
     }
   }
 
+  // ── DELETE USER ──
   function askDeleteUser(id, email) {
-    openModal(`Delete user "${email}"? This cannot be undone.`, () => deleteUser(id));
+    openModal(`Delete user "${email}"? This cannot be undone.`, () => deleteUser(id), "Confirm Delete");
   }
 
   async function deleteUser(id) {
@@ -572,10 +594,50 @@
     }
   }
 
+  // ── PROMOTE USER ──
+  function askPromoteUser(id, email) {
+    openModal(`Make "${email}" an admin?`, () => promoteUser(id), "Confirm Promotion");
+  }
+
+  async function promoteUser(id) {
+    try {
+      const res = await fetch(`${BASE}/admin/promote_user/${id}`, { method: "POST" });
+      const data = await res.json();
+      if (data.success) {
+        showToast(data.message, "success");
+        loadUsers();
+      } else {
+        showToast(data.message || "Failed to promote user.", "error");
+      }
+    } catch (e) {
+      showToast("Error promoting user.", "error");
+    }
+  }
+
+  // ── DEMOTE USER ──
+  function askDemoteUser(id, email) {
+    openModal(`Remove admin access from "${email}"?`, () => demoteUser(id), "Confirm Removal");
+  }
+
+  async function demoteUser(id) {
+    try {
+      const res = await fetch(`${BASE}/admin/demote_user/${id}`, { method: "POST" });
+      const data = await res.json();
+      if (data.success) {
+        showToast(data.message, "success");
+        loadUsers();
+      } else {
+        showToast(data.message || "Failed to demote user.", "error");
+      }
+    } catch (e) {
+      showToast("Error demoting user.", "error");
+    }
+  }
+
   // ── LOAD NOTES ──
   async function loadNotes() {
     try {
-      const res = await fetch(`${BASE}/notes`);
+      const res = await fetch(`${BASE}/admin/notes`);
       const notes = await res.json();
 
       document.getElementById("statNotes").textContent = notes.length;
@@ -613,7 +675,7 @@
   }
 
   function askDeleteNote(id) {
-    openModal(`Delete note #${id}? This cannot be undone.`, () => deleteNote(id));
+    openModal(`Delete note #${id}? This cannot be undone.`, () => deleteNote(id), "Confirm Delete");
   }
 
   async function deleteNote(id) {
@@ -634,7 +696,7 @@
   // ── LOAD QUIZZES ──
   async function loadQuizzes() {
     try {
-      const res = await fetch(`${BASE}/quizzes`);
+      const res = await fetch(`${BASE}/admin/quizzes`);
       const quizzes = await res.json();
 
       document.getElementById("statQuizzes").textContent = quizzes.length;
@@ -691,7 +753,7 @@
   }
 
   function askDeleteQuiz(id) {
-    openModal(`Delete quiz #${id}? This cannot be undone.`, () => deleteQuiz(id));
+    openModal(`Delete quiz #${id}? This cannot be undone.`, () => deleteQuiz(id), "Confirm Delete");
   }
 
   async function deleteQuiz(id) {

@@ -13,9 +13,10 @@
       font-family: Arial, sans-serif;
     }
 
+    /* DEFAULT LIGHT MODE CANVAS */
     body {
       min-height: 100vh;
-      background: #8fb9d6;
+      background: linear-gradient(135deg, #f8fafc, #e0f2fe);
       color: #1f2937;
       transition: background 0.3s ease;
     }
@@ -314,24 +315,19 @@
     body.dark-mode {
       background: radial-gradient(circle at 20% 20%, #1e3a8a, transparent 40%),
                   radial-gradient(circle at 80% 30%, #312e81, transparent 40%),
-                  #0f172a;
+                  #0f172a !important; /* Forces dark mode color over light gradient */
       background-attachment: fixed;
     }
 
-    /* Adjust ambient glow elements for dark mode */
     body.dark-mode .shape1 { background: #1e3a8a; }
     body.dark-mode .shape2 { background: #312e81; }
 
-    /* Only change texts sitting directly on the dark background canvas */
     body.dark-mode .title-section h1 {
       color: #ffffff;
     }
     body.dark-mode .title-section p {
       color: #cbd5e1;
     }
-
-    /* ALL BOXES, CARDS, INPUTS, AND DROPDOWN STYLES REMOVED FROM HERE */
-    /* They will now stay white even in Dark Mode */
 
     @media (max-width: 900px) {
       .settings-grid {
@@ -407,60 +403,13 @@
       </div>
 
       <div class="settings-card">
-        <h2>Study Preferences</h2>
-        <p class="desc">Set your default options for quiz and notes generation.</p>
+        <h2>Theme</h2>
+        <p class="desc">Customize simple display options for the interface</p>
 
         <div class="form-group">
-          <label>Default Quiz Difficulty</label>
-          <select id="defaultDifficulty">
-            <option value="Easy">Easy</option>
-            <option value="Medium">Medium</option>
-            <option value="Hard">Hard</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Default Number of Questions</label>
-          <select id="defaultQuestionCount">
-            <option value="5">5 Questions</option>
-            <option value="10">10 Questions</option>
-            <option value="15">15 Questions</option>
-            <option value="20">20 Questions</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Default Notes Style</label>
-          <select id="defaultNotesStyle">
-            <option value="Short Notes">Short Notes</option>
-            <option value="Detailed Notes">Detailed Notes</option>
-            <option value="Exam Revision">Exam Revision</option>
-            <option value="Bullet Points">Bullet Points</option>
-          </select>
-        </div>
-
-        <button class="btn" onclick="saveStudyPreferences()">Save Preferences</button>
-        <div id="studyStatus" class="status-message success"></div>
-      </div>
-
-      <div class="settings-card">
-        <h2>Appearance</h2>
-        <p class="desc">Customize simple display options for the interface.</p>
-
-        <div class="form-group">
-          <label>Theme</label>
           <select id="theme">
             <option value="Light">Light</option>
             <option value="Dark">Default Dark Blue</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Font Size</label>
-          <select id="fontSize">
-            <option value="Small">Small</option>
-            <option value="Medium">Medium</option>
-            <option value="Large">Large</option>
           </select>
         </div>
 
@@ -472,23 +421,7 @@
         </div>
       </div>
 
-      <div class="settings-card">
-        <h2>Data Management</h2>
-        <p class="desc">Manage saved notes, subjects, revision progress, and preferences stored in this browser.</p>
-
-        <div class="data-row">
-          <button class="secondary-btn" onclick="showStorageInfo()">Check Saved Data</button>
-          <button class="danger-btn" onclick="clearSavedNotesOnly()">Clear Saved Notes</button>
-          <button class="danger-btn" onclick="clearSubjectsAndProgress()">Clear Subjects & Progress</button>
-          <button class="danger-btn" onclick="resetAllData()">Reset All Data</button>
-        </div>
-
-        <div id="dataStatus" class="status-message success"></div>
-
-        <div class="info-box" id="storageInfo">
-          Click "Check Saved Data" to view current local storage status.
-        </div>
-      </div>
+      
 
       <div class="settings-card full-width">
         <h2>Current Settings Summary</h2>
@@ -531,7 +464,6 @@
       }
     }
 
-    // Close profile menu when clicking outside
     document.addEventListener("click", function(event) {
       const profile = document.querySelector(".profile");
       const menu = document.getElementById("menu");
@@ -539,10 +471,6 @@
         menu.style.display = "none";
       }
     });
-
-    // =========================
-    // HELPER STATUS MESSAGE
-    // =========================
 
     function showMessage(elementId, message, type = "success") {
       const element = document.getElementById(elementId);
@@ -579,36 +507,12 @@
     }
 
     // =========================
-    // STUDY PREFERENCES
-    // =========================
-
-    function saveStudyPreferences() {
-      const studyPreferences = {
-        defaultDifficulty: document.getElementById("defaultDifficulty").value,
-        defaultQuestionCount: document.getElementById("defaultQuestionCount").value,
-        defaultNotesStyle: document.getElementById("defaultNotesStyle").value
-      };
-
-      localStorage.setItem("studyPreferences", JSON.stringify(studyPreferences));
-      showMessage("studyStatus", "Study preferences saved successfully.", "success");
-      updateSummary();
-    }
-
-    function loadStudyPreferences() {
-      const savedPreferences = JSON.parse(localStorage.getItem("studyPreferences")) || {};
-      document.getElementById("defaultDifficulty").value = savedPreferences.defaultDifficulty || "Easy";
-      document.getElementById("defaultQuestionCount").value = savedPreferences.defaultQuestionCount || "5";
-      document.getElementById("defaultNotesStyle").value = savedPreferences.defaultNotesStyle || "Short Notes";
-    }
-
-    // =========================
     // APPEARANCE SETTINGS
     // =========================
 
     function saveAppearance() {
       const appearanceSettings = {
-        theme: document.getElementById("theme").value,
-        fontSize: document.getElementById("fontSize").value
+        theme: document.getElementById("theme").value
       };
 
       localStorage.setItem("appearanceSettings", JSON.stringify(appearanceSettings));
@@ -619,29 +523,18 @@
 
     function loadAppearance() {
       const savedAppearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
-      document.getElementById("theme").value = savedAppearance.theme || "Dark";
-      document.getElementById("fontSize").value = savedAppearance.fontSize || "Medium";
+      document.getElementById("theme").value = savedAppearance.theme || "Light";
       applyAppearance();
     }
 
     function applyAppearance() {
       const theme = document.getElementById("theme").value;
-      const fontSize = document.getElementById("fontSize").value;
 
-      // THEME
+      // FIXED: Removed missing fontSize logic that was crashing execution
       if (theme === "Dark") {
         document.body.classList.add("dark-mode");
       } else {
         document.body.classList.remove("dark-mode");
-      }
-
-      // FONT SIZE
-      if (fontSize === "Small") {
-        document.body.style.fontSize = "14px";
-      } else if (fontSize === "Medium") {
-        document.body.style.fontSize = "16px";
-      } else if (fontSize === "Large") {
-        document.body.style.fontSize = "18px";
       }
     }
 
@@ -652,7 +545,6 @@
     function showStorageInfo() {
       const subjects = JSON.parse(localStorage.getItem("subjects")) || [];
       const profile = JSON.parse(localStorage.getItem("profileSettings")) || {};
-      const study = JSON.parse(localStorage.getItem("studyPreferences")) || {};
       const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
 
       let totalNotes = 0;
@@ -667,7 +559,6 @@
         Subjects: ${subjects.length}<br>
         Saved Notes: ${totalNotes}<br>
         Profile Saved: ${Object.keys(profile).length > 0 ? "Yes" : "No"}<br>
-        Study Preferences Saved: ${Object.keys(study).length > 0 ? "Yes" : "No"}<br>
         Appearance Settings Saved: ${Object.keys(appearance).length > 0 ? "Yes" : "No"}
       `;
 
@@ -702,7 +593,6 @@
       if (!confirmReset) return;
 
       localStorage.removeItem("profileSettings");
-      localStorage.removeItem("studyPreferences");
       localStorage.removeItem("appearanceSettings");
       localStorage.removeItem("subjects");
 
@@ -717,7 +607,6 @@
 
     function updateSummary() {
       const profile = JSON.parse(localStorage.getItem("profileSettings")) || {};
-      const study = JSON.parse(localStorage.getItem("studyPreferences")) || {};
       const appearance = JSON.parse(localStorage.getItem("appearanceSettings")) || {};
       const subjects = JSON.parse(localStorage.getItem("subjects")) || [];
 
@@ -735,14 +624,8 @@
         Email: ${profile.email || "Not set"}<br>
         Student ID: ${profile.studentId || "Not set"}<br><br>
 
-        <strong>Study Preferences</strong><br>
-        Quiz Difficulty: ${study.defaultDifficulty || "Easy"}<br>
-        Question Count: ${study.defaultQuestionCount || "5"}<br>
-        Notes Style: ${study.defaultNotesStyle || "Short Notes"}<br><br>
-
         <strong>Appearance</strong><br>
-        Theme: ${appearance.theme || "Default Dark Blue"}<br>
-        Font Size: ${appearance.fontSize || "Medium"}<br><br>
+        Theme: ${appearance.theme || "Light"}<br><br>
 
         <strong>Study Data</strong><br>
         Subjects: ${subjects.length}<br>
@@ -753,14 +636,10 @@
 
     function loadSettings() {
       loadProfile();
-      loadStudyPreferences();
       loadAppearance();
       updateSummary();
     }
 
-    // =========================
-    // INITIAL LOAD
-    // =========================
     loadSettings();
   </script>
 

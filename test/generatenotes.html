@@ -1048,11 +1048,31 @@ document.addEventListener("click", function(event) {
     function goGenerateNotes() { window.location.href = "generatenotes.html"; }
     function goProfile() { window.location.href = "profile.html"; }
     function goSettings() { window.location.href = "settings.html"; }
-    function logout() { 
-    if (confirm("Are you sure you want to logout?")) {
-        window.location.href = "login1.html"; 
-    }
+    function logout() {
+    if (!confirm("Are you sure you want to logout?"))
+        return;
+
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("username");
+    localStorage.removeItem("is_admin");
+
+    localStorage.removeItem("currentQuiz");
+    localStorage.removeItem("currentQuizId");
+    localStorage.removeItem("quizAnswers");
+    localStorage.removeItem("quizScore");
+
+    localStorage.removeItem("generatedNote");
+    localStorage.removeItem("lastSubject");
+    localStorage.removeItem("lastTopic");
+
+    // NEW: clear local subject/topic state so it doesn't leak into the next login
+    localStorage.removeItem("subjects");
+    localStorage.removeItem("selectedSubjectId");
+    localStorage.removeItem("selectedTopicId");
+
+    window.location.href = "login1.html";
 }
+
     function startQuizFromNotes() { window.location.href = "generatequiz.html"; }
 
     const API_BASE_URL = "http://127.0.0.1:5000";
@@ -1115,9 +1135,10 @@ document.addEventListener("click", function(event) {
     }
 
     async function loadNotesFromBackend() {
-        try {
-            const response = await fetch(API_BASE_URL + "/notes");
-            const backendNotes = await response.json();
+    try {
+        const email = localStorage.getItem("userEmail");
+        const response = await fetch(API_BASE_URL + "/notes?email=" + encodeURIComponent(email));
+        const backendNotes = await response.json();
             if (!Array.isArray(backendNotes)) return;
 
             backendNotes.forEach(note => {
@@ -1155,7 +1176,12 @@ document.addEventListener("click", function(event) {
             const response = await fetch(API_BASE_URL + "/save_note", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ subject: subjectName, topic: topicTitle, content })
+                body: JSON.stringify({
+                    subject: subjectName,
+                    topic: topicTitle,
+                    content: content,
+                    email: localStorage.getItem("userEmail")
+                })
             });
             return await response.json();
         } catch (error) {
@@ -1164,6 +1190,59 @@ document.addEventListener("click", function(event) {
         }
     }
 
+    async function deleteTopic(topicId) {
+        const subject = getSelectedSubject();
+        if (!subject) return;
+
+        const topic = subject.topics.find(item => item.id === topicId);
+        if (!topic) return;
+
+        if (!confirm(`Delete topic "${topic.title}"? This cannot be undone.`)) return;
+
+        if (topic.backendId) {
+            const email = localStorage.getItem("userEmail");
+            try {
+                await fetch(`${API_BASE_URL}/delete_note?id=${topic.backendId}&email=${encodeURIComponent(email)}`, {
+                    method: "DELETE"
+                });
+            } catch (err) {
+                console.error("Failed to delete note from server:", err);
+            }
+        }
+
+        subject.topics = subject.topics.filter(t => t.id !== topicId);
+        selectedTopicId = subject.topics[0] ? subject.topics[0].id : null;
+        document.getElementById("notesArea").value = getSelectedTopic() ? getSelectedTopic().notes : "";
+        renderPage();
+    }
+
+    async function deleteSubject(subjectId) {
+        const subject = subjects.find(s => s.id === subjectId);
+        if (!subject) return;
+
+        if (!confirm(`Delete subject "${subject.name}" and all its topics? This cannot be undone.`)) return;
+
+        const email = localStorage.getItem("userEmail");
+        const deletions = subject.topics
+            .filter(topic => topic.backendId)
+            .map(topic =>
+                fetch(`${API_BASE_URL}/delete_note?id=${topic.backendId}&email=${encodeURIComponent(email)}`, {
+                    method: "DELETE"
+                }).catch(err => console.error("Failed to delete note:", err))
+            );
+        await Promise.all(deletions);
+
+        subjects = subjects.filter(s => s.id !== subjectId);
+        if (selectedSubjectId === subjectId) {
+            selectedSubjectId = subjects[0] ? subjects[0].id : null;
+            const newSubject = getSelectedSubject();
+            selectedTopicId = newSubject && newSubject.topics[0] ? newSubject.topics[0].id : null;
+            document.getElementById("notesArea").value = "";
+        }
+        renderPage();
+    }
+ 
+    
     function getSelectedSubject() {
         return subjects.find(subject => subject.id === selectedSubjectId) || null;
     }
@@ -1372,17 +1451,6 @@ document.addEventListener("click", function(event) {
         renderPage();
     }
 
-    function deleteSubject(subjectId) {
-        subjects = subjects.filter(subject => subject.id !== subjectId);
-        if (selectedSubjectId === subjectId) {
-            selectedSubjectId = subjects[0] ? subjects[0].id : null;
-            const subject = getSelectedSubject();
-            selectedTopicId = subject && subject.topics[0] ? subject.topics[0].id : null;
-            document.getElementById("notesArea").value = "";
-        }
-        renderPage();
-    }
-
     function addTopic() {
         const subject = getSelectedSubject();
         const input = document.getElementById("newTopicInput");
@@ -1430,16 +1498,6 @@ document.addEventListener("click", function(event) {
         renderPage();
     }
 
-    function deleteTopic(topicId) {
-        const subject = getSelectedSubject();
-        if (!subject) return;
-
-        subject.topics = subject.topics.filter(topic => topic.id !== topicId);
-        selectedTopicId = subject.topics[0] ? subject.topics[0].id : null;
-        document.getElementById("notesArea").value = getSelectedTopic() ? getSelectedTopic().notes : "";
-        renderPage();
-    }
-
     function showSelectedFile() {
         const fileInput = document.getElementById("fileUpload");
         const fileNameDisplay = document.getElementById("fileNameDisplay");
@@ -1462,6 +1520,9 @@ document.addEventListener("click", function(event) {
         if (fileInput.files.length === 0) return alert("Please choose a PDF file first.");
 
         const file = fileInput.files[0];
+
+        console.log("FileList:", fileInput.files);
+        console.log("Selected file:", file);
         if (!isPdfFile(file)) {
             alert("Please upload PDF files only.");
             fileInput.value = "";
@@ -1469,10 +1530,21 @@ document.addEventListener("click", function(event) {
             return;
         }
 
-        const formData = new FormData();
-        formData.append("subject", subject.name);
-        formData.append("topic", topic.title);
-        formData.append("file", file);
+        // Save last selections (optional but useful)
+       localStorage.setItem("lastSubject", subject.name);
+       localStorage.setItem("lastTopic", topic.title);
+
+    
+
+    const formData = new FormData();
+    formData.append("pdf", file);
+    formData.append("subject", subject.name);
+    formData.append("topic", topic.title);
+    formData.append("email", localStorage.getItem("userEmail") || "");
+
+    for (const pair of formData.entries()) {
+    console.log(pair[0], pair[1]);
+    }
 
         notesArea.value = "Generating notes...";
         generateBtn.disabled = true;
