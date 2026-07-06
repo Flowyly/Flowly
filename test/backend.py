@@ -1254,6 +1254,67 @@ def delete_note():
     return jsonify({"success": True, "message": "Note deleted"}), 200
 
 # ==============================
+# TEMP DATABASE VIEWER
+# REMOVE AFTER CHECKING
+# ==============================
+@app.route("/debug/database")
+def debug_database():
+
+    users = User.query.all()
+    notes = Notes.query.all()
+    quizzes = Quiz.query.all()
+    coursework = Coursework.query.all()
+
+    return jsonify({
+
+        "USERS": [
+            {
+                "id": u.id,
+                "username": u.username,
+                "email": u.email,
+                "is_admin": u.is_admin
+            }
+            for u in users
+        ],
+
+        "NOTES": [
+            {
+                "id": n.id,
+                "subject": n.subject,
+                "topic": n.topic,
+                "created_by": n.created_by,
+                "created_at": str(n.created_at)
+            }
+            for n in notes
+        ],
+
+        "QUIZZES": [
+            {
+                "id": q.id,
+                "title": q.title,
+                "created_by": q.created_by,
+                "marks": q.marks,
+                "attempted": q.attempted,
+                "created_at": str(q.created_at),
+                "submitted_at": str(q.submitted_at)
+            }
+            for q in quizzes
+        ],
+
+        "COURSEWORK": [
+            {
+                "id": c.id,
+                "title": c.title,
+                "description": c.description,
+                "due_date": str(c.due_date),
+                "status": c.status,
+                "created_by": c.created_by
+            }
+            for c in coursework
+        ]
+
+    })
+# ==============================
 # RUN SERVER
 # ==============================
 if __name__ == "__main__":
