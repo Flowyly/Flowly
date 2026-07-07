@@ -37,9 +37,11 @@ print("DATABASE PATH:", os.path.join(basedir, "database.db"))
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL:
-    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+    # psycopg3 needs a slightly different URL scheme than psycopg2
+    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
 else:
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "database.db")
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
