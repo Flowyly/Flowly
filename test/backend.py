@@ -34,7 +34,12 @@ load_dotenv(dotenv_path=os.path.join(basedir, ".env"))
 
 print("DATABASE PATH:", os.path.join(basedir, "database.db"))
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "database.db")
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "database.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
@@ -506,7 +511,7 @@ We received a request to reset your password.
 
 Click the link below to reset it:
 
-http://127.0.0.1:5500/resetpassword.html?email={email}
+https://flowly-1-pkxf.onrender.com/resetpassword.html?email={email}
 
 If you did not request this,
 please ignore this email.
